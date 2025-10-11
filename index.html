@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Songtexte</title>
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    height: 100vh;
+  }
+  #menu {
+    width: 250px;
+    background: #f4f4f4;
+    border-right: 1px solid #ccc;
+    overflow-y: auto;
+    padding: 10px;
+  }
+  #menu button {
+    display: block;
+    width: 100%;
+    margin: 3px 0;
+    padding: 8px;
+    text-align: left;
+    border: none;
+    background: none;
+    cursor: pointer;
+  }
+  #menu button:hover {
+    background: #ddd;
+  }
+  #content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+  }
+  h2 {
+    margin-top: 0;
+  }
+  pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+</style>
+</head>
+<body>
+
+<div id="menu"></div>
+<div id="content"><h2>Songtexte</h2><p>Wähle links einen Titel aus.</p></div>
+
+<script>
+  const songs = {
+"Helloween ‧ I Want Out (1988)": `From our lives beginning on
+We are pushed in little forms
+No one asks us how we like to be
+In school they teach you what to think
+But everyone says different things
+But they're all convinced that
+They're the ones to see
+
+So they keep talking and they never stop
+And at a certain point you give it up
+So the only thing that's left to think is this
+
+I want out
+To live my life alone
+I want out
+leave me be
+I want out
+To do things on my own
+I want out
+To live my life and to be free
+
+People tell me A and B
+They tell me how I have to see
+Things that I have seen already clear
+So they push me then from side to side
+They're pushing me from black to white
+They're pushing 'til there's nothing more to hear
+
+But don't push me to the maximum
+Shut your mouth and take it home
+Cause I decide the way things gonna be
+
+I want out
+To live my life alone
+I want out
+leave me be
+I want out
+To do things on my own
+I want out
+To live my life and to be free
+
+There's a million ways to see the things in life
+A million ways to be the fool
+In the end of it, none of us is right
+Sometimes we need to be alone
+
+No, no, no, leave me alone
+
+I want out
+To live my life alone
+I want out
+leave me be
+I want out
+To do things on my own
+I want out
+To live my life and to be free
+
+I want out!`,
+
+"Al Bano & Romina Power ‧ Domani Domani (1993)": `Bar di periferia
+C'è gente che ormai
+Offre solo fobia
+E ormai non si sa
+Se avere pietà
+O chiudersi il cuore
+Qui l'impegno è un'idea
+Si vive in apnea
+Tra dubbi e rancore
+È un viaggio nel peggio
+Ma c'è chi dirà
+
+Domani, domani
+Finiscono i guai
+Ci fanno promesse
+Ma sempre le stesse
+Domani, domani
+Parola del mai
+E intanto affonda
+Lo stivale nel fango
+Aspettando domani
+Vedrai che domani
+
+Qui si va sulla luna
+Ma invece in tribuna
+C'è chi rischia la pelle
+Qui funziona il caffè
+La mamma è ok
+Ma poi tutto il resto?
+Se giustizia è un'idea
+Tu falla anche tua
+Difendila sempre
+Da chi ancora dirà
+Le cose a metà
+
+Domani, domani
+Finiscono i guai
+Ci fanno promesse
+Ma sempre le stesse
+Domani, domani
+Parola del mai
+E intanto affonda
+Lo stivale nel fango
+Aspettando domani
+Vedrai che domani
+
+Ma sul pozzo del tempo
+Ai piedi del monte aspetterò
+Per stringere tra le mie mani
+Un nuovo domani
+
+Domani, domani
+Nel sole verrà
+La voce di un uomo
+Dimenticato
+Domani, domani
+Più giusto sarà
+Il mondo avrà il cuore
+Che hai sempre sognato
+
+Aspetta domani
+Domani, domani
+Soltanto domani
+Domani, domani`,
+
+"Primal Fear ‧ At War With the World (2016)": `There is something deep inside me
+That keeps my faith alive tonight
+You're gonna burn, there's no return
+A fight to survive
+
+There is no superman hero
+There is no place where I can hide
+It comes alive
+The monster in me
+In my body, in my head
+
+I see you die
+These demons are killing me
+Right here - right now
+It comes alive
+
+I'm on attack
+At war with the world
+There's no surrender
+No time to remember
+I'm on attack
+At war with the world
+There's no surrender
+I'm just the defender
+
+I see faces full of anger
+I never took the easy way
+I'm gonna burn, there's no return
+On my crusade hope
+
+I see you die
+These demons are killing me
+Right here - right now
+It comes alive
+
+I'm on attack
+At war with the world
+There's no surrender
+No time to remember
+I'm on attack
+At war with the world
+There's no surrender
+I'm just the defender
+At war with the world`,
+
+"Dean Martin ‧ Dinah (1955)": `Dinah, is there anyone finer
+In the state of Carolina
+If there is and you know her
+Show her to me
+Dinah, with her Dixie eyes blazing
+How I'd like to sit and gaze into the eyes of Dinah Lee
+
+Every night why do I shake with fright
+Because my Dinah might change her mind about me
+Got to tell you about Dinah
+If she went to China
+I'd would hop an ocean liner
+Just to be with Dinah Lee
+
+Dinah, is there anyone finer
+In the state of Carolina
+If she is and you know her
+Show her to me
+Dinah, with her Dixie eyes blazing
+How I'd like to sit and gaze into the eyes of Dinah Lee
+
+Every night why do I shake with fright
+Because my Dinah might change her mind about me
+Here's the story about Dinah
+If she went to China
+I'd would hop an ocean liner
+Just to be with Dinah Lee
+Pretty Dinah Lee`,
+
+"Mr. Duck ‧ That’s Donald (1995)": `Hallo Donald, willst du tanzen?
+Donald: ja
+Donald, willst du mit Daisy tanzen?
+Donald: (lacht)
+
+Donald: oh oh
+Donald: jetzt brauche ich erst mal einen Bass
+Donald: (lacht)
+Donald: jetzt Base drum
+Donald: ha ha ha ha ha ha ha ha ha
+Donald: oh
+Donald: komm Daisy
+Donald: (lacht)
+Donald: jetzt zeige ich’s euch
+
+Tick: heiliger Quackstrudel
+
+Here comes Mr. Duck
+Mr. Duck Mr. Donald Duck,
+Here comes Mr. Duck
+The one and only
+
+Calling Mr. Duck
+Mr. Duck Mr. Donald Duck
+Calling Mr. Duck Mr. Duck
+
+He’s crazy so crazy.
+He’s crazy over Daisy.
+He’s crazy so crazy.
+He’s crazy over Daisy
+
+That’s Donald
+
+There’s a party tonight
+and the feeling is right
+come on dance with me
+dance with me.
+
+Let’s have lots of fun.
+The party‘s just begun.
+Come on dance with me.
+
+Donald: Donald will tanzen
+Donald: (lacht)
+
+Tick: Heiliger Quackstrudel
+
+Here comes Mr. Duck
+Mr. Duck Mr. Donald Duck,
+Here comes Mr. Duck
+The one and only
+
+Calling Mr. Duck
+Mr. Duck Mr. Donald Duck,
+Calling Mr. Duck Mr. Duck
+
+He’s crazy so crazy.
+He’s crazy over Daisy.
+He’s crazy so crazy.
+He’s crazy over Daisy
+
+That’s Donald.
+
+Donald: (schnattert)
+
+Duck duck duck oh hey
+Duck duck duck oh hey
+Duck duck duck oh hey
+
+Donald: (schnattert)
+
+Duck duck duck oh hey
+Duck duck duck oh hey
+Duck duck duck oh hey
+
+Tick: heiliger Quackstrudel
+
+Here comes Mr. Duck
+Mr. Duck Mr. Donald Duck,
+Here comes Mr. Duck
+The one and only
+
+Calling Mr. Duck
+Mr. Duck Mr. Donald Duck,
+Calling Mr. Duck Mr. Duck.
+
+Here comes Mr. Duck
+Mr. Duck Mr. Donald Duck,
+Here comes Mr. Duck
+The one, and only
+
+Calling Mr. Duck
+Mr. Duck Mr. Donald Duck,
+Calling Mr. Duck Mr. Duck
+
+Here comes Mr. Duck
+Mr. Duck Mr. Donald Duck,
+Here comes Mr. Duck
+The one, and only
+
+Calling Mr. Duck
+Mr. Duck Mr. Donald Duck,
+Calling Mr. Duck Mr. Duck
+
+Here comes Mr. Duck
+
+Donald: jetzt brauche ich erst mal einen Schluck Wasser`,
+
+"X‑Marks The Pedwalk ‧ Fading Waves (2023)": `In my mind I feel a fire rain
+And my heartbeat's raging loud and wild
+In my dreams a paradise – again
+Won’t wake up and stay there for a while
+
+Can‘t moving on
+Can‘t moving on
+
+Seasons drowned in flood of tears
+Sorrow on a broken shore
+
+I just want to walk through fading waves
+I just want to walk through fading waves
+And past the ocean‘s haze
+Change these dying days
+I just want to walk through fading waves
+
+Can‘t moving on
+Can‘t moving on
+
+Hope and faith are buried, ghosts in chains
+All my gods have turned away, no time
+There is no pray and I don't lose a game
+I would like to save a life – mine
+
+Seasons drowned in flood of tears
+Sorrow on a broken shore
+
+I just want to walk through fading waves
+I just want to walk through fading waves
+And past the ocean‘s haze
+Change these dying days
+I just want to walk through fading waves
+
+fading waves`,
+
+"Imperative Reaction ‧ Glass (2021)": `Time is fading
+While I'm failing
+To communicate to you
+Life is fleeting
+And void of meaning
+If I can't live it with you
+
+I can see you but I can't reach through the glass
+In time show you we can break away from the past
+
+Years will go by
+And I will still try
+To communicate to you
+I will follow
+Into tomorrow
+My forever is you
+
+I can see you but I can't reach through the glass
+In time show you we can break away from the past
+
+I can see you but I can't reach through the glass
+In time show you we can break away from the past`,
+
+"And One ‧ Sometimes (1997)": `Daddy said that I′m a good boy,
+'cause I always did his will,
+but I can′t remember,
+was it me? How did I feel?
+
+I call them family,
+but in the heart of hearts I know,
+there's something wrong with me,
+What can I do?
+
+Mother said that I'm a good girl,
+I was always dressed to kill,
+but I can′t remember,
+was it me? How did I feel?
+
+Now this is long ago,
+but today I′m really sure,
+I don't wanna crawl no more.
+No, I don′t want to!
+
+I want to be all alone
+to be all alone
+(leave me all alone, I'm so lonely)
+Sometimes I don't know what I prefer to be
+(that's all that I can see)
+
+So I burnt down the house of hate,
+the key to close the door,
+what a nice September,
+I found out it′s not too late.
+
+It happened yesterday,
+but today I'm really sure,
+I don't wanna crawl no more.
+No I don′t want to!
+
+I want to be all alone
+to be all alone
+(leave me all alone, I′m so lonely)
+Sometimes I don't know what I prefer to be
+(that′s all that I can see)`,
+
+"Dean Martin ‧ I Don't Care If The Sun Don't Shine (1950)": `I don′t care if the sun don't shine
+I get my lovin′ in the evening time
+When I'm with my baby
+
+It's no fun with the sun around
+But I get going when the sun goes down
+And I meet my baby
+
+That's when we kiss and kiss and kiss
+And then we kiss some more
+Don′t ask how many times we kiss
+At a time like this, who keeps score?
+
+So I don't care if the sun don′t shine
+I get my lovin' in the evening time
+When I'm with my baby
+
+That's when we kiss and kiss and kiss
+And then we kiss some more
+Don′t ask how many times we kiss
+At a time like this, who keeps score?
+
+So I don't care if the sun don't shine
+I get my lovin′ in the evening time
+When I'm with my baby`,
+
+"Annalisa ‧ Bellissima (2023)": `Insieme solo dentro casa, che senso ha?
+Di me non parli con nessuno e non me lo merito
+Il tuo modo di dire le cose, che sesso fa
+Mi sto impegnando ad essere più elastica
+Ti sto pensando e non ti scrivo da tanto, è un classico
+E poi senza avvisare sei qui
+
+Oddio però tu mi piaci, oh-oh-oh
+Ho fatto i salti mortali, oh-oh-oh
+No, non mi dire che è tardi, ah-ah-ah
+Avevo voglia di vo-voglia di, voglia di
+
+Dove vai? Te ne vai
+Quella volta non dovevi andare via
+Ero bellissima, bellissima
+Dove vai? Ma che cosa vuoi?
+Quella volta ti aspettavo in Saint Laurent
+Ero bellissima, bellissima
+
+Mettiamo un po' di musica da ginnastica
+È tutto il giorno che mi salvo da un pianto isterico
+Vado a letto col pantaloncino dell'Adidas
+E poi volevo dirti che non ci dormo più
+Madonna se mi manchi, sì, chiamatemi un medico
+E poi senza avvisare sei qui
+
+Oddio però tu mi piaci, oh-oh-oh
+Ho fatto i salti mortali, oh-oh-oh
+No, non mi dire che è tardi, ah-ah-ah
+Avevo voglia di vo-voglia di, voglia di
+
+Dove vai? Te ne vai
+Quella volta non dovevi andare via
+Ero bellissima, bellissima
+Dove vai? Ma che cosa vuoi?
+Quella volta ti aspettavo in Saint Laurent
+Ero bellissima, bellissima, bellissima
+
+Ah-ah-ah, ah-ah, bellissima
+Ah-ah-ah, ah-ah, bellissima
+Ah-ah-ah, ah, avevo voglia di
+(Ah-ah-ah, ah-ah)
+(Ah-ah-ah, ah-ah)
+Avevo voglia di
+(Ah-ah-ah, ah-ah)
+Avevo voglia di, vo-voglia di, voglia di
+
+Dove vai? Te ne vai
+Quella volta non dovevi andare via
+Ero bellissima, bellissima
+Dove vai? Ma che cosa vuoi?
+Quella volta ti aspettavo in Saint Laurent
+Ero bellissima, bellissima`,
+
+"CHROM ‧ Staring at the Sun (2016)": `Everything I used to know
+Were the things you told me
+And I almost disappeared
+But you came to save me
+Now you left me incomplete
+And I′m searching for you
+Another dawn is breaking through
+
+I'm staring at the sun
+And hope that you will come
+I′m staring at the sun
+
+Everything I used to know
+Were the things you told me
+And I almost disappeared
+But you came to save me
+I can see you in my dreams
+I don't wanna wake up
+Another dawn is breaking through
+
+I'm staring at the sun
+And hope that you will come
+I′m walking all alone
+And try to find my home
+I′m staring at the sun
+
+I'm staring at the sun
+And hope that you will come
+I′m walking all alone
+And try to find my home
+I′m staring at the sun
+
+I'm staring at the sun
+And hope that you will come
+I′m walking all alone
+And try to find my home
+I'm staring at the sun`,
+
+"YUNGBLUD ‧ Zombie (2025)": `If I was to talk about the words
+They would hurt, they would hurt
+So if you were to ask about the pain
+I would lie, I would lie
+To fix my mind, I need time
+
+But it′s runnin' out, it′s runnin' out
+
+Oh, I know that I can't live without you
+But this world will keep turning if you do
+Would you even want me looking like a zombie?
+Would you even want me, want me, want me?
+
+We could catch a spaceship to the moon
+But we′d crash, it wouldn′t last
+Because the world is just a figment of the fools
+A blank stare, they don't care
+So say your prayers, you′re almost there
+
+But it's runnin′ out, it's runnin′ out
+
+Oh, I know that I can't live without you
+But this world will keep turning if you do
+Would you even want me looking like a zombie?
+Would you even want me, want me, want me?
+Would you even want me looking like a zombie?
+Would you even want me, want me, want me?
+
+Oh, I don't know what I′ll turn out to be
+But you′ll own every moment, believe me
+Would you even want me looking like a zombie?
+Would you even want me, want me, want me?`,
+
+"NamNamBulu ‧ Memories (2003)": `All the things were going through
+Let me know when it is over
+I have never felt this way
+I'm marked with scares that won't recover
+
+I have always wanted you
+Will I ever be returning
+Now that I'm away from you
+I feel the desperation's burning
+
+The war has lasted for so long
+We've all forgotten how it started
+I don't remember right or wrong
+I only know that we were parted
+
+All the loving memories
+All the time we spent together
+It will stay for centuries
+Our souls will last forever
+
+I'll await the days ahead
+To make sure that I'll be with you
+And when the sky is turning red
+Another day has past without you
+
+I'll avenge for what I've missed
+And no one will be trying to stop me
+And if there's no one to assist
+I'll still fight for memories of thee
+
+I will always keep on me
+Memories of what I wanted
+What remains of what I see
+Memories of what I wanted
+I'll be trying to achieve
+Memories of what I wanted
+It is part of my belief
+Memories of what I wanted`,
+
+"Auger Feat. Bonnie Mavis ‧ Too Soon (2025)": `[Verse 1]
+I bit my tongue but the words kept tryna reach you, what could I do?
+There's something about the way it feels, with you
+Every word and awkward conversation made it clear
+There's something about the way it feels, with you
+
+[Chorus]
+I'm standing in the doorway trying to be strong
+I wanna say I love you but it feels wrong
+I'm worried what'll happen next but I guess I'll wait
+It's too soon to care but too late to change
+
+[Verse 2]
+Picture this, lying on the grass at sunset counting stars
+I think about it all the time
+But in my dream, I would turn to kiss you and you'd be gone
+I think about it all the time
+
+[Chorus]
+I'm standing in the doorway trying to be strong
+I wanna say I love you but it feels wrong
+I'm worried what'll happen next but I guess I'll wait
+It's too soon to care but too late to change
+
+[Bridge]
+Too soon to care but too late to change
+Too soon to care but too late to change
+I feel like this anxiety is pulling me in front of you
+It's building up inside of me with everything I do
+It's hard to think when air is thin, I breathe in three and hold for two
+I want you more than anything there's nothing I won't do
+
+[Chorus]
+I'm standing in the doorway trying to be strong
+I wanna say I love you but it feels wrong
+I'm worried what'll happen next but I guess I'll wait
+It's too soon to care but too late to change
+
+[Outro]
+Too soon to care but too late to change
+Too soon to care but too late to change
+Standing in the doorway, standing in the doorway`,
+
+"Pharao ‧ There Is a Star (1994)": `[Intro]
+31 seconds and we're gone from auto sequence start
+10 seconds... 4... 3... 2... 1... Ignition and lift-off
+
+There is a star
+There is a star
+
+[Hook]
+There is a star, there is a star
+There must be one
+Whatever you wish it will be done
+And if you believe the star's always shining
+There is a star, there is a star
+
+Star light, so bright. First star
+I see tonight. Make me think about life
+The meaning you and me, myself, I
+
+Can you picture why
+If your mind is strong, no matter what's going on
+Believe in yourself and shine on
+And the meaning is so clear to see
+Understand the power then a life goes deep
+Then a life goes deep
+
+[Hook]
+There is a star, there is a star
+There must be one
+Whatever you wish it will be done
+And if you believe the star's always shining
+There is a star, there is a star
+
+Just let it go, but believe in you
+Do what you want to do, with the limit true
+Twinkle, twinkle see the star
+Now believe in who you are
+Cause all you want is a future of love and peace
+Then everything is clear to see
+The starting point is the star
+Just believe in who you are
+
+[Hook]
+There is a star, there is a star
+There must be one
+Whatever you wish it will be done
+And if you believe the star's always shining
+There is a star, there is a star
+There is a star, there is a star
+Must be one
+Whatever you wish it will be done
+And if you believe the star's always shining
+There is a star, there is a star`
+};
+
+  const menuDiv = document.getElementById("menu");
+  const contentDiv = document.getElementById("content");
+
+  for (let title in songs) {
+    const btn = document.createElement("button");
+    btn.textContent = title;
+    btn.addEventListener("click", () => {
+      contentDiv.innerHTML = `<h2>${title}</h2><pre>${songs[title]}</pre>`;
+    });
+    menuDiv.appendChild(btn);
+  }
+</script>
+
+</body>
+</html>
