@@ -101,10 +101,17 @@
     font-family: "Cormorant Garamond", "Georgia", serif;
     font-style:italic; font-size:18px; line-height:1.6; color:var(--text-color);
   }
+  
+  /* HIER IST DIE ÄNDERUNG FÜR DIE ÜBERSCHRIFT (H2) */
   .lyrics h2{
     margin:0 0 2px 0; 
     font-style:normal; font-size:22px; color:#111;
+    /* Zwingt den Text in eine Zeile: */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
+
   .song-copyright {
     font-family: Inter, sans-serif;
     font-style: normal;
@@ -334,7 +341,7 @@ Hör auf dein Herz
 Und wir verlieren den Verstand`
   },
 
-  /* 4. Meine Heiligkeit (Zusatz "Deutsch" entfernt) */
+  /* 4. Meine Heiligkeit (Einzeilig erzwungen via CSS) */
   {
     artist: "One Day in Rome",
     title: "Meine Heiligkeit (What If..?)",
