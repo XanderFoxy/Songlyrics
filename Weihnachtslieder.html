@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Weihnachtsfeier 12.12.2025</title>
+<title>Weihnachtslieder</title>
 <style>
   :root{
     --menu-w:320px;
@@ -214,49 +214,52 @@ const CHORD_MAP = {
   "G":  [7, 11, 14]     // G-Dur (Linear)
 };
 
-/* ---------- SONGDATA ---------- */
+/* ---------- SONGDATA (Weihnachtslieder) ---------- */
 const songs = [
-  /* E: Ein Leben Lang */
+  /* 1. Als Wenn Ein Engel.. */
   {
-    artist: "One Day in Rome", title: "Ein Leben Lang", year: "2025", copyright: "© Xander Fox", image: "Snapshot 11-02-2024 02:00.jpeg",
-    text: `So lang du denkst\nWie schön es wär\nLebst du dem Traum\nNur hinterher\n\nMit allen Wolken\nWillst du ziehen\nDeinem Gefühl\nNie mehr widerstehen\n\nUnd wenn du fällst\nNimm meine Hand\nIch will mit dir gemeinsam gehen\nEin Leben lang\nDurch diese Welt\nHab keine Angst\nHör auf dein Herz\nUnd wir verlieren den Verstand\n\nDie Sehnsucht brennt\nDer Weg ist weit\nBis in das Licht\nTrägt uns die Zeit\n\nUnd irgendwann\nWird um uns ein\nHimmel so hoch\nUnd endlos sein\n\nUnd wenn du fällst\nNimm meine Hand\nIch will mit dir gemeinsam gehen\nEin Leben lang\nDurch diese Welt\nHab keine Angst\nHör auf dein Herz\nUnd wir verlieren den Verstand`
+    artist: "Sweet Velvet",
+    title: "Als Wenn Ein Engel..",
+    year: "2012",
+    copyright: "© Xander Fox",
+    image: "IMG_0107.jpeg", /* NEUES BILD */
+    text: `Die Zeit Ist Nah\nSo Lang Schon Hab Ich\nEs Herbei Gesehnt\n\nWie Jedes Jahr\nEin Lichterglanz Sich\nAuf Uns Niederlegt\n\nDein Zauber Fällt Herab\nIn Eine Welt Aus Sternenstaub\nIn Diese Stille Heilige Nacht\nSo Tief berührt die Liebe\nDie Mein Herz In Atem Hält\nAls Wenn Ein Engel\nÜber Mir Wacht..\n\nStarr Ruht Der See\nUnd Alles Scheint Nun\nWieder Still Zu Stehn\n\nHier Wo Ich Geh\nKlingt Leis Ein Lied\nWill Mir Von Dir Erzähln\n\nUnd Dort\nAm Waldesrand Ein Licht\nEs Scheint\nAls Ob Es Zu Mir Spricht\nKomm Laß\nDas Alte Leid Verwehn\nAuf Das\nWir Bald Uns Wieder Sehn\n\nDein Zauber Fällt Herab\nIn Eine Welt Aus Sternenstaub\nIn Diese Stille Heilige Nacht\nSo Tief berührt die Liebe\nDie Mein Herz In Atem Hält\nAls Wenn Ein Engel\nÜber Mir Wacht..\n\nDein Zauber Fällt Herab\nIn Eine Welt Aus Sternenstaub\nIn Diese Stille Heilige Nacht\nSo Tief berührt die Liebe\nDie Mein Herz In Atem Hält\nAls Wenn Ein Engel\n\nÜber Mir Wacht..`
   },
-  /* K: Kein Mensch */
+  /* 2. As Close As You Can Come */
   {
-    artist: "One Day in Rome", title: "Kein Mensch", year: "2025", copyright: "© Xander Fox", image: "Snapshot 11-02-2024 02:00.jpeg",
-    text: `Es ist Nacht\nhier\nin deinen Armen\nNimm meine Hand\nDenn du weißt genau\ndass ich auch\nnicht mehr anders kann\nDu musst nichts verstehen\nIch bin schon lang in deinem Bann\nDarum bleib bei mir\nKomm und sieh mich\nnur noch einmal\nso an\n\nSo als würden wir\nunsere Seelen inhalieren\nIch will dich mit mir\nbis die Sterne explodieren\nSelbst wenn wir\ngemeinsam fallen\nWer kommt mich heilen?\nUnd ich weiß\nkein Mensch\nWürde\nSo wie du mit mir sein\n\nIch lieg wach\nhier\nin deinen Armen\nbin ich dir nah\nGrad hab ich noch\nvon dir geträumt\nUnd schon bist du wahr\nUnd so wunderschön\nDas ist alles\nnicht mehr normal\nHalt dich bei mir fest\nDenn wir haben\neh keine andere\nWahl\n\nSo als würden wir\nunsere Seelen inhalieren\nIch will dich mit mir\nbis die Sterne explodieren\nSelbst wenn wir\ngemeinsam fallen\nWer kommt mich heilen?\nUnd ich weiß\nkein Mensch\nWürde\nSo wie du mit mir sein`
+    artist: "One Day in Rome",
+    title: "As Close As You Can Come",
+    year: "2017",
+    copyright: "© Xander Fox",
+    image: "Facetune_14-12-2024-17-46-57.jpeg",
+    text: `When the Stars appear so near\nSeem to shine only for you\nThrough the Trees so silently\nGive me company\nCome on, walk with me\n\nFill My Eyes\nwith all the magic love and light\n\nGive my heart\nthe joy of Christmas for this night\n\nHold on tight\nBecause I want you to be close\n\nWithin my arms\nAs close as you can come\n\nEyes illuminate from candle shine\nShare the holy tide with me\nOn your heartbeat I can hear\ncarol melodies\nLet it talk to me\n\nFill My Eyes\nwith all the magic love and light\n\nGive my heart\nthe joy of Christmas for this night\n\nHold on tight\nBecause I want you to be close\n\nWithin my arms\nAs close as you can come`
   },
-  /* L: Let Me Know (NEU) */
+  /* 3. Ohne Deine Liebe */
   {
-    artist: "One Day in Rome", title: "Let Me Know", year: "2025", copyright: "© Xander Fox", image: "Snapshot 11-02-2024 02:00.jpeg",
-    text: `Since I am born, I beg and cry\nFor love I yearn each day at night\nDark, like my world inside you hide\nNo sign, no word, no wrong or right\n\nWhenever you return let me know why\nDo I have to burn while I'm alive\nIf there's a chance to get out and survive\nGive me a light to see, open up my eyes\n\nMy life, it hurts without you now\nI find no cure, can’t make it out\nIf I deserve please set me free\nAlmighty girl, let it be me\n\nWhenever you return let me know why\nDo I have to burn while I'm alive\nIf there's a chance to get out and survive\nGive me a light to see, open up my eyes`
-  },
-  /* M: Meine Heiligkeit */
-  {
-    artist: "One Day in Rome", title: "Meine Heiligkeit (What If..?)", year: "2025", copyright: "© Xander Fox", image: "Snapshot 11-02-2024 02:00.jpeg",
-    text: `Wenn mein Herz sich nach dir sehnt\nSo heiß, wie ein Feuer brennt\nTrag mich bis zu dir hinauf\nWeil ich an deine Liebe glaub\n\nMeine Heiligkeit bist du\nHörst du, wie mein Herz dich ruft?\nDu bist alles, was es sucht\nWenn ich fall, fängst du mich auf\nDu und ich, fühlst du es auch?\nJetzt wird alles wieder gut\n\nDenn ich lieb dich unentwegt\nWie ein Gefühl, das nie vergeht\nWenn mich niemand mehr versteht\nHilft deine Hand mir auf den Weg\n\nMeine Heiligkeit bist du\nHörst du, wie mein Herz dich ruft?\nDu bist alles, was es sucht\nWenn ich fall, fängst du mich auf\nDu und ich, fühlst du es auch?\nJetzt wird alles wieder gut`
-  },
-  /* O: Ohne Deine Liebe */
-  {
-    artist: "One Day in Rome", title: "Ohne Deine Liebe", year: "2025", copyright: "© Xander Fox", image: "Facetune_14-12-2024-17-46-57.jpeg",
+    artist: "One Day in Rome",
+    title: "Ohne Deine Liebe",
+    year: "2025",
+    copyright: "© Xander Fox",
+    image: "Facetune_14-12-2024-17-46-57.jpeg",
+    /* Hier ebenfalls mit Akkorden, falls gewünscht - ich habe sie hinzugefügt */
     chords: {
       verse: ["C", "Am", "F", "G"],
       chorus: ["Am", "F", "C", "G"]
     },
     text: `Kannst du mir erklären\nWas geschehen ist\nMusst du denn zerstören\nWas du mir noch bist\n\nWarum bin ich einsam\nDu nicht mehr bei mir\nWollten wir gemeinsam\nNicht die Welt regieren\n\nWarum bin ich hier\nWie lang muss ich bleiben\nOhne deine Liebe\nDie mich still entführt\n\nMein Herz ruft nach dir\nKann dich nicht verschweigen\nDu wirst immer bleiben\nIrgendwo in mir\n\nWarum bist du so\nFern und unerreichbar\nDa wohin du gehen willst\nKann ich dich nicht sehen\n\nWas hält uns am Leben\nWorin liegt der Sinn\nSag mir doch weswegen\nWir verloren sind\n\nWarum bin ich hier\nWie lang muss ich bleiben\nOhne deine Liebe\nDie mich still entführt\n\nMein Herz ruft nach dir\nKann dich nicht verschweigen\nDu wirst immer bleiben\nIrgendwo in mir`
   },
-  /* W: Wir */
+  /* 4. So schön ist die Weihnacht */
   {
-    artist: "One Day in Rome", title: "Wir", year: "2025", copyright: "© Xander Fox", image: "Facetune_27-11-2025-22-42-01.jpeg",
-    text: `Es ist gar nicht so leicht\nDieses Leben zu verstehen\nManchmal darum vielleicht\nAuch so schwer, einfach weiterzugehen\n\nWenn du denkst, durchzudrehen\nWeil du noch etwas spürst in dir\nLass uns nicht lange reden\nEs gibt viel zu viel zu verlieren\n\nWenn die Welt untergeht\nBin ich bei dir\nDu bist alles, was zählt\nWas ich fühl in mir\nDarum lass uns nicht warten\nWarum sollen wir leiden, wofür?\nDas ist unsere Wahrheit\nAlles was wir noch haben, sind wir\n\nWir sind groß\nWir sind schön, unerreicht\nSchwer zu greifen\nDenn wir schweben federleicht\n\nAuch wenn sie uns versuchen\nzu verführen\nKeine Chance\nWir sind viel zu wir dafür\n\nWenn die Welt untergeht\nBin ich bei dir\nDu bist alles, was zählt\nWas ich fühl in mir\nDarum lass uns nicht warten\nWarum sollen wir leiden, wofür?\nDas ist unsere Wahrheit\nAlles was wir noch haben, sind wir`
-  },
-  /* W: Words Of Love */
-  {
-    artist: "One Day in Rome", title: "Words Of Love", year: "2025", copyright: "© Xander Fox", image: "IMG_0105.jpeg",
-    text: `Tell Me Little Angel\nWon't You Kiss My Sensual Lips\nClose The Golden Gates Behind\nCome Move In Closer\nOn A Mystic Trip\nWe Feel So High\n\nLet's Call It Love\nLet's Fake It All\nLet It Seem\nEverything\nYou Never Dream Of\nA Little Closer\nUntil I Cut Your Wings\nNow You're Trapped In\n\nSay Do You Believe My Words Of Love\nI Am The Devil In Disguise\nNothing Here Is Real\nYou Just Forgot\nThe Shock Will Make You Feel\nAnd Let You Fall\n\nSay Do You Receive My Words Of Hope\nMelodramatic Eyes Reply\nWe Don't Really Need\nTo Talk About\nOnce You Sign And Seal It\nThere Is No Way Out\n\nTell Me Pretty Angel\nWon't You Take It By Surprise\nT-T- The Time Is Over\nBreak Up The Shell And\nMirror Me Inside\nLet All The Secrets Fly\n\nWe Call It Love\nWe Waste It All\nAnd We Want\nEverything\nWe Hate To Deal With\nYou Can't Conceal How Sweet\nThe Sirens Sing\nThe Beat Drops In....\n\nSay Do You Believe My Words Of Love\nI Am The Devil In Disguise\nNothing Here Is Real\nYou Just Forgot\nThe Shock Will Make You Feel\nAnd Let You Fall\n\nSay Do You Receive My Words Of Hope\nMelodramatic Eyes Reply\nWe Don't Really Need\nTo Talk About\nOnce You Sign And Seal It\nThere Is No Way Out`
+    artist: "One Day in Rome",
+    title: "So schön ist die Weihnacht",
+    year: "2025",
+    copyright: "© Xander Fox",
+    image: "Facetune_27-11-2025-22-54-43.jpeg",
+    text: `Wie aus einem Bild\nNichts gleich dem Gefühl\nSo still steht die Zeit hier\nSiehst du mich nur an\nBin ich wie gebannt\nFühl dich so nah bei mir\n\nKomm, mach dich bereit\nEs ist an der Zeit\nSo schön ist die Weihnacht\nSo wie jedes Jahr\nWie es immer war\nWill ich es noch einmal\n\nWenn du mich nur hältst\nVersinkt diese Welt\nIn friedliches Schweigen\nDein Licht strahlt so hell\nKüss mich, denn es soll\nFür immer so bleiben\n\nKomm, mach dich bereit\nEs ist an der Zeit\nSo schön ist die Weihnacht\nSo wie jedes Jahr\nWie es immer war\nWill ich es noch einmal\n\nSo schön ist die Weihnacht..\nSo schön ist die Weihnacht..\nSo schön ist die Weihnacht..`
   }
 ];
 
+/* SORT alphabetisch nach TITLE */
 songs.sort((a,b) => {
   const T1 = (a.title || "").toLowerCase(); const T2 = (b.title || "").toLowerCase();
   if(T1 < T2) return -1; if(T1 > T2) return 1; return 0;
