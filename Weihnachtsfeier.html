@@ -121,19 +121,19 @@
   }
   
   .chord-section { 
-    width: 100%; margin-bottom: 15px; 
+    width: 100%; margin-bottom: 12px; 
   }
   .chord-section:last-child { margin-bottom: 0; }
 
   .chord-part-label {
     font-family: Inter, sans-serif; font-size: 10px; text-transform: uppercase;
-    color: #666; margin: 0 0 6px 0; letter-spacing: 1px; width:100%; text-align:left; border-bottom:1px solid #333;
+    color: #666; margin: 0 0 4px 0; letter-spacing: 1px; width:100%; text-align:left; border-bottom:1px solid #333;
   }
   .chord-grid {
     display: flex; 
     flex-flow: row nowrap; 
     justify-content: center; 
-    gap: 10px; 
+    gap: 12px; 
   }
   .piano-box {
     display: flex; flex-direction: column; align-items: center;
@@ -257,37 +257,61 @@ songs.sort((a,b) => {
   if(T1 < T2) return -1; if(T1 > T2) return 1; return 0;
 });
 
-/* HELPER: INTELLIGENTES PIANO SVG - TIGHT FIT MIT ANKER */
+/* HELPER: INTELLIGENTES PIANO SVG (Anker-Logik: IMMER 7 WEIßE TASTEN / 1 OKTAVE) */
 function createPianoSVG(activeKeys) {
   let minKey = Math.min(...activeKeys);
   let maxKey = Math.max(...activeKeys);
   
-  // 1. Start-Anker (Links): Suche C oder F
-  let startKey = minKey;
-  while(true) {
-    let noteInOctave = (startKey % 12 + 12) % 12;
-    if (noteInOctave === 0 || noteInOctave === 5) break;
-    startKey--;
-  }
+  // 1. Start-Anker: Wir suchen die erste weiße Taste VOR oder AUF dem tiefsten Ton.
+  // Das ist unser Startpunkt für die Ansicht.
+  // Wir stellen sicher, dass es ein "logischer" Start ist, idealerweise C oder F,
+  // aber am wichtigsten ist: Wir zeigen ab hier 7 weiße Tasten.
   
-  // 2. End-Punkt (Rechts): Tight Fit
-  // Wenn maxKey weiß ist: Stopp.
-  // Wenn maxKey schwarz ist: Nimm die weiße Taste rechts davon mit.
+  // Check: Ist minKey weiß?
   const isWhite = (k) => [0,2,4,5,7,9,11].includes((k % 12 + 12) % 12);
   
-  let endKey = maxKey;
-  if(!isWhite(endKey)) {
-    endKey = endKey + 1; 
-  }
+  // Wir starten beim minKey (wenn weiß) oder eins davor (wenn schwarz).
+  // Das ist der linke Rand unseres Fensters.
+  let startKey = isWhite(minKey) ? minKey : minKey - 1;
   
-  // Zähle weiße Tasten im Bereich (für die Breite)
-  let whiteCount = 0;
+  // 2. Ende: Wir wollen exakt 7 weiße Tasten sehen (C bis H, oder F bis E, etc.).
+  // Das garantiert das Orientierungsmuster (2er + 3er Block).
+  
+  let whiteKeysNeeded = 7;
+  let currentKey = startKey;
+  let count = 0;
+  
+  // Zähle hoch bis wir 7 weiße Tasten haben
+  // Dabei prüfen wir, ob maxKey schon drin ist.
+  // Falls der Akkord breiter als eine Oktave ist, müssen wir weiter zählen.
+  
+  while(true) {
+    if(isWhite(currentKey)) {
+      count++;
+    }
+    
+    // Abbruchbedingung: Wir haben mind. 7 weiße Tasten UND wir haben den höchsten Ton erreicht.
+    if(count >= whiteKeysNeeded && currentKey >= maxKey) {
+      // Wenn wir maxKey erreicht haben, aber das Ende eine schwarze Taste ist,
+      // nehmen wir die weiße Taste danach noch mit für den sauberen Abschluss.
+      if(!isWhite(currentKey)) {
+         // loop weiter bis zur nächsten weißen
+      } else {
+        break; // Ende gefunden
+      }
+    }
+    currentKey++;
+  }
+  let endKey = currentKey;
+  
+  // Anzahl der weißen Tasten im finalen Bereich berechnen
+  let totalWhiteKeys = 0;
   for(let k=startKey; k<=endKey; k++) {
-    if(isWhite(k)) whiteCount++;
+    if(isWhite(k)) totalWhiteKeys++;
   }
   
   // Layout Maße (40px Breite fix)
-  const keyWidth = 40 / whiteCount; 
+  const keyWidth = 40 / totalWhiteKeys; 
   const hWhite = 24;
   const wBlack = keyWidth * 0.65;
   const hBlack = 14;
