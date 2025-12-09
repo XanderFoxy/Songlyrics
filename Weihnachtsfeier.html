@@ -214,7 +214,7 @@ const CHORD_MAP = {
   "G":  [7, 11, 14],    // G-Dur
   "Dm": [2, 5, 9],      // D-Moll
   
-  // Moll-Akkorde (FÜR OHNE DEINE LIEBE & EIN LEBEN LANG)
+  // Moll-Akkorde (FÜR OHNE DEINE LIEBE & HALT MICH & EIN LEBEN LANG)
   "Cm": [0, 3, 7],      // C-Moll (C, Eb, G)
   "Gm": [7, 10, 14],    // G-Moll (G, Bb, D - D in nächster Oktave)
   "Ab": [8, 12, 15],    // Ab-Dur (Ab, C, Eb)
@@ -233,51 +233,59 @@ const songs = [
     },
     text: `Bis zum Morgen\nLass uns bleiben\nLass mich deine Blicke spüren\nJede Seite neu beschreiben\n\nOhne Wärme, ohne Liebe\nWürden wir nicht existieren\nIn der kalten Atmosphäre\nHoffnungslos erfrieren\n\nReiß dich los, lass uns treiben\nEinmal um die ganze Welt\nBis zum Mond und immer weiter\n\nDir allein nur will ich zeigen\nWas den höchsten Stern erhellt\nLass uns lieben, lass uns schweigen\n\nNur für eine Ewigkeit\nWill ich in deinen Armen sein\nSteh mir bei, sei mein Begleiter\nLass mich nicht allein\n\nReiß dich los, lass uns treiben\nEinmal um die ganze Welt\nBis zum Mond und immer weiter\n\nLass uns fliegen, übersteig\nWas sich in deinen Schatten stellt\nBis zum Mond und immer weiter\n\nUnd immer weiter...`
   },
-  /* 2. Ein Leben Lang (KORRIGIERTE URSPRUNGSVERSION) */
+  /* 2. Ein Leben Lang (KORRIGIERT: KEIN C-Dur, sondern C-Moll Sequenz) */
   {
     artist: "One Day in Rome", title: "Ein Leben Lang", year: "2025", copyright: "© Xander Fox", image: "IMG_0166.jpeg",
-    // FINAL KORREKTUR: Laut Beweis die Cm-basierte Folge
     chords: { 
-      verse: ["Cm", "Gm", "Ab", "Eb"],
-      chorus: ["Cm", "Ab", "Eb", "Bb"] 
+      verse: ["Cm", "Gm", "Ab", "Eb"], // Ihre explizite Anweisung: Cm Gm Ab Eb
+      chorus: ["Cm", "Ab", "Eb", "Bb"] // Ihre explizite Anweisung: Cm Ab Eb Bb
     },
     text: `So lang du denkst\nWie schön es wär\nLebst du dem Traum\nNur hinterher\n\nMit allen Wolken\nWillst du ziehen\nDeinem Gefühl\nNie mehr widerstehen\n\nUnd wenn du fällst\nNimm meine Hand\nIch will mit dir gemeinsam gehen\nEin Leben lang\nDurch diese Welt\nHab keine Angst\nHör auf dein Herz\nUnd wir verlieren den Verstand\n\nDie Sehnsucht brennt\nDer Weg ist weit\nBis in das Licht\nTrägt uns die Zeit\n\nUnd irgendwann\nWird um uns ein\nHimmel so hoch\nUnd endlos sein\n\nUnd wenn du fällst\nNimm meine Hand\nIch will mit dir gemeinsam gehen\nEin Leben lang\nDurch diese Welt\nHab keine Angst\nHör auf dein Herz\nUnd wir verlieren den Verstand`
   },
-  /* 3. Kein Mensch */
+  /* 3. Halt mich */
+  {
+    artist: "One Day in Rome", title: "Halt mich", year: "2025", copyright: "© Xander Fox", image: "fQ5C8n5z.jpeg",
+    chords: {
+      verse: ["Cm", "Eb", "Ab", "Eb", "Gm", "Ab", "Eb", "Bb"],
+      chorus: ["Ab", "Eb", "Cm", "Bb"]
+    },
+    text: `Halt mich! Sag mir nur noch einmal was es heißt, dass wir uns so tief berühren.\nDeine Nähe die mich fast zerreißt, kann ich nicht mehr ignorieren.\n\nGib mir ein Herz, in das ich mich verlieren kann\nHalt mich und sieh mich an, wie du mich siehst.\nNimm meinen Schmerz von mir, dass ich dich fühlen kann,\nWie du mit deiner Hand mich reparierst.\n\nDeine Augen reflektieren ein unbeschreiblich schönes Bild.\nLass mich wieder deine Liebe spüren alles was ich fühl.\n\nGib mir ein Herz, in das ich mich verlieren kann,\nHalt mich und sieh mich an, wie du mich siehst.\nNimm meinen Schmerz von mir, dass ich dich fühlen kann,\nWie du mit deiner Hand mich reparierst\n\nGib mir ein Herz, gib mir ein Herz,\nHalt mich und sieh mich an, wie du mich siehst.\nNimm meinen Schmerz nimm meinen Schmerz.\nWie du mit deiner Hand mich reparierst`
+  },
+  /* 4. Kein Mensch */
   {
     artist: "One Day in Rome", title: "Kein Mensch", year: "2025", copyright: "© Xander Fox", image: "Snapshot 11-02-2024 02:00.jpeg",
     text: `Es ist Nacht\nhier\nin deinen Armen\nNimm meine Hand\nDenn du weißt genau\ndass ich auch\nnicht mehr anders kann\nDu musst nichts verstehen\nIch bin schon lang in deinem Bann\nDarum bleib bei mir\nKomm und sieh mich\nnur noch einmal\nso an\n\nSo als würden wir\nunsere Seelen inhalieren\nIch will dich mit mir\nbis die Sterne explodieren\nSelbst wenn wir\ngemeinsam fallen\nWer kommt mich heilen?\nUnd ich weiß\nkein Mensch\nWürde\nSo wie du mit mir sein\n\nIch lieg wach\nhier\nin deinen Armen\nbin ich dir nah\nGrad hab ich noch\nvon dir geträumt\nUnd schon bist du wahr\nUnd so wunderschön\nDas ist alles\nnicht mehr normal\nHalt dich bei mir fest\nDenn wir haben\neh keine andere\nWahl\n\nSo als würden wir\nunsere Seelen inhalieren\nIch will dich mit mir\nbis die Sterne explodieren\nSelbst wenn wir\ngemeinsam fallen\nWer kommt mich heilen?\nUnd ich weiß\nkein Mensch\nWürde\nSo wie du mit mir sein`
   },
-  /* 4. Let Me Know */
+  /* 5. Let Me Know */
   {
     artist: "One Day in Rome", title: "Let Me Know", year: "2025", copyright: "© Xander Fox", image: "IMG_1393.jpeg",
     text: `Since I am born, I beg and cry\nFor love I yearn each day at night\nDark, like my world inside you hide\nNo sign, no word, no wrong or right\n\nWhenever you return let me know why\nDo I have to burn while I'm alive\nIf there's a chance to get out and survive\nGive me a light to see, open up my eyes\n\nMy life, it hurts without you now\nI find no cure, can’t make it out\nIf I deserve please set me free\nAlmighty girl, let it be me\n\nWhenever you return let me know why\nDo I have to burn while I'm alive\nIf there's a chance to get out and survive\nGive me a light to see, open up my eyes`
   },
-  /* 5. Meine Heiligkeit (What If..?) */
+  /* 6. Meine Heiligkeit (What If..?) */
   {
-    artist: "One Day in Rome", title: "Meine Heiligkeit (What If..?)", year: "2025", copyright: "© Xander Fox", image: "Snapshot 11-02-2024 02:00.jpeg",
+    artist: "One Day in Rome", title: "Meine Heiligkeit (What If..?)", year: "2025", copyright: "© Xander Fox", image: "IMG_0174.jpeg",
     text: `Wenn mein Herz sich nach dir sehnt\nSo heiß, wie ein Feuer brennt\nTrag mich bis zu dir hinauf\nWeil ich an deine Liebe glaub\n\nMeine Heiligkeit bist du\nHörst du, wie mein Herz dich ruft?\nDu bist alles, was es sucht\nWenn ich fall, fängst du mich auf\nDu und ich, fühlst du es auch?\nJetzt wird alles wieder gut\n\nDenn ich lieb dich unentwegt\nWie ein Gefühl, das nie vergeht\nWenn mich niemand mehr versteht\nHilft deine Hand mir auf den Weg\n\nMeine Heiligkeit bist du\nHörst du, wie mein Herz dich ruft?\nDu bist alles, was es sucht\nWenn ich fall, fängst du mich auf\nDu und ich, fühlst du es auch?\nJetzt wird alles wieder gut`
   },
-  /* 6. Ohne Deine Liebe (FINAL UND VERIFIZIERTE AKKORDE) */
+  /* 7. Ohne Deine Liebe */
   {
     artist: "One Day in Rome", title: "Ohne Deine Liebe", year: "2025", copyright: "© Xander Fox", image: "Facetune_29-07-2023-13-55-27.jpeg",
     chords: {
-      verse: ["Ab", "Bb", "Ab", "Gm"], // FINAL
-      chorus: ["Cm", "Eb", "Ab", "Gm"] // FINAL
+      verse: ["Ab", "Bb", "Ab", "Gm"], // Screenshot-Korrektur: Ab Bb Ab Gm
+      chorus: ["Cm", "Eb", "Ab", "Gm"] // Screenshot-Korrektur: Cm Eb Ab Gm
     },
     text: `Kannst du mir erklären\nWas geschehen ist\nMusst du denn zerstören\nWas du mir noch bist\n\nWarum bin ich einsam\nDu nicht mehr bei mir\nWollten wir gemeinsam\nNicht die Welt regieren\n\nWarum bin ich hier\nWie lang muss ich bleiben\nOhne deine Liebe\nDie mich still entführt\n\nMein Herz ruft nach dir\nKann dich nicht verschweigen\nDu wirst immer bleiben\nIrgendwo in mir\n\nWarum bist du so\nFern und unerreichbar\nDa wohin du gehen willst\nKann ich dich nicht sehen\n\nWas hält uns am Leben\nWorin liegt der Sinn\nSag mir doch weswegen\nWir verloren sind\n\nWarum bin ich hier\nWie lang muss ich bleiben\nOhne deine Liebe\nDie mich still entführt\n\nMein Herz ruft nach dir\nKann dich nicht verschweigen\nDu wirst immer bleiben\nIrgendwo in mir`
   },
-  /* 7. The Wall (NEU) */
+  /* 8. The Wall */
   {
     artist: "One Day in Rome", title: "The Wall", year: "2025", copyright: "© Xander Fox", image: "nDkD8XLZ.jpeg",
     text: `Welcome to the fake\nZombies living for God's sake\nIn a world of Sheep\nEverything we do believe\n\nWe claim we know it all\nCan’t see who is behind this wall.\nDon’t wait, follow the light\nWake up, open your eyes.\n\nWhy can’t we just feel\nThere is so much more to see\nAre we hypnotised?\nWhat does it need to realise\n\nWe claim we know it all\nCan’t see who is behind this wall.\nDon’t wait, follow the light\nWake up, open your eyes.`
   },
-  /* 8. Wir */
+  /* 9. Wir */
   {
     artist: "One Day in Rome", title: "Wir", year: "2025", copyright: "© Xander Fox", image: "Facetune_27-11-2025-22-42-01.jpeg",
     text: `Es ist gar nicht so leicht\nDieses Leben zu verstehen\nManchmal darum vielleicht\nAuch so schwer, einfach weiterzugehen\n\nWenn du denkst, durchzudrehen\nWeil du noch etwas spürst in dir\nLass uns nicht lange reden\nEs gibt viel zu viel zu verlieren\n\nWenn die Welt untergeht\nBin ich bei dir\nDu bist alles, was zählt\nWas ich fühl in mir\nDarum lass uns nicht warten\nWarum sollen wir leiden, wofür?\nDas ist unsere Wahrheit\nAlles was wir noch haben, sind wir\n\nWir sind groß\nWir sind schön, unerreicht\nSchwer zu greifen\nDenn wir schweben federleicht\n\nAuch wenn sie uns versuchen\nzu verführen\nKeine Chance\nWir sind viel zu wir dafür\n\nWenn die Welt untergeht\nBin ich bei dir\nDu bist alles, was zählt\nWas ich fühl in mir\nDarum lass uns nicht warten\nWarum sollen wir leiden, wofür?\nDas ist unsere Wahrheit\nAlles was wir noch haben, sind wir`
   },
-  /* 9. Words Of Love */
+  /* 10. Words Of Love */
   {
     artist: "One Day in Rome", title: "Words Of Love", year: "2025", copyright: "© Xander Fox", image: "IMG_0105.jpeg",
     text: `Tell Me Little Angel\nWon't You Kiss My Sensual Lips\nClose The Golden Gates Behind\nCome Move In Closer\nOn A Mystic Trip\nWe Feel So High\n\nLet's Call It Love\nLet's Fake It All\nLet It Seem\nEverything\nYou Never Dream Of\nA Little Closer\nUntil I Cut Your Wings\nNow You're Trapped In\n\nSay Do You Believe My Words Of Love\nI Am The Devil In Disguise\nNothing Here Is Real\nYou Just Forgot\nThe Shock Will Make You Feel\nAnd Let You Fall\n\nSay Do You Receive My Words Of Hope\nMelodramatic Eyes Reply\nWe Don't Really Need\nTo Talk About\nOnce You Sign And Seal It\nThere Is No Way Out\n\nTell Me Pretty Angel\nWon't You Take It By Surprise\nT-T- The Time Is Over\nBreak Up The Shell And\nMirror Me Inside\nLet All The Secrets Fly\n\nWe Call It Love\nWe Waste It All\nAnd We Want\nEverything\nWe Hate To Deal With\nYou Can't Conceal How Sweet\nThe Sirens Sing\nThe Beat Drops In....\n\nSay Do You Believe My Words Of Love\nI Am The Devil In Disguise\nNothing Here Is Real\nYou Just Forgot\nThe Shock Will Make You Feel\nAnd Let You Fall\n\nSay Do You Receive My Words Of Hope\nMelodramatic Eyes Reply\nWe Don't Really Need\nTo Talk About\nOnce You Sign And Seal It\nThere Is No Way Out`
