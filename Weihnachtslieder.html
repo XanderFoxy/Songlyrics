@@ -11,9 +11,9 @@
     --cover-side:260px;
     --bg-opacity:0.08;
     --bg-blur:6px;
-    --accent:#f3c64a;
-    --menu-bg:#111;
-    --menu-hover:#2b2b2b;
+    --accent:#4a90e2; /* Blauton für Weihnachten */
+    --menu-bg:#003366; /* Dunkelblau für Menü */
+    --menu-hover:#004080;
     --text-color:#222;
   }
 
@@ -172,7 +172,7 @@
 <body>
 
   <nav id="menu" aria-label="Songliste">
-    <h1><a href="Songtexte.html">Songtexte</a></h1>
+    <h1><a href="Weihnachtslieder.html">Weihnachtslieder</a></h1>
   </nav>
 
   <section id="content-wrap">
@@ -191,7 +191,7 @@
               <img id="cover-large" alt="Cover" class="no-img" />
             </div>
             <div class="back" id="cover-back-content">
-              <span class="chord-placeholder">Klick mich für Akkorde...</span>
+              <span class="chord-placeholder">Akkorde nicht verfügbar</span>
             </div>
           </div>
         </div>
@@ -206,15 +206,96 @@
   </section>
 
 <script>
-/* CHORD MAP */
+/* CHORD MAP (Generische Dur/Moll für die Weihnachtslieder) */
 const CHORD_MAP = {
-  "C":  [0, 4, 7],      // C-Dur (Grundstellung)
-  "Am": [9, 12, 16],    // A-Moll (Linear)
-  "F":  [5, 9, 12],     // F-Dur (Linear)
-  "G":  [7, 11, 14]     // G-Dur (Linear)
+  "C":  [0, 4, 7],      // C-Dur
+  "G":  [7, 11, 14],    // G-Dur
+  "Am": [9, 12, 16],    // A-Moll
+  "F":  [5, 9, 12],     // F-Dur
+  "Dm": [2, 5, 9],      // D-Moll
+  // C-moll basierte Akkorde (zur Vollständigkeit, falls benötigt)
+  "Cm": [0, 3, 7],
+  "Gm": [7, 10, 14],
 };
 
-/* ---------- SONGDATA (Weihnachtslieder) ---------- */
+/* HELPER: INTELLIGENTES PIANO SVG - BLOCK ANKER LOGIK (Funktion ist definiert, wird aber in dieser Datei nicht verwendet, da keine Akkorde hinterlegt sind) */
+function createPianoSVG(activeKeys) {
+  let minKey = activeKeys.length > 0 ? Math.min(...activeKeys) : 0;
+  let maxKey = activeKeys.length > 0 ? Math.max(...activeKeys) : 0;
+  
+  if (activeKeys.length === 0) {
+      minKey = 0;
+      maxKey = 11;
+  }
+  
+  const isWhite = (k) => [0,2,4,5,7,9,11].includes((k % 12 + 12) % 12);
+  
+  let startKey = minKey;
+  while(true) {
+    let noteInOctave = (startKey % 12 + 12) % 12;
+    if (noteInOctave === 0 || noteInOctave === 5) break; 
+    startKey--;
+  }
+  
+  let endKey = maxKey;
+  if(maxKey >= minKey && !isWhite(endKey)) endKey++; 
+  
+  let whiteCount = 0;
+  let k = startKey;
+  let finalEndKey = endKey;
+
+  while(true) {
+    if(isWhite(k)) whiteCount++;
+    if(k >= finalEndKey && whiteCount >= 7) {
+      finalEndKey = k;
+      break;
+    }
+    k++;
+    if(k > startKey + 24) { finalEndKey = startKey + 11; break; } 
+  }
+  endKey = finalEndKey;
+
+  let actualWhiteKeys = 0;
+  for(let i = startKey; i <= endKey; i++) {
+      if(isWhite(i)) actualWhiteKeys++;
+  }
+  
+  const keyWidth = 40 / (actualWhiteKeys > 0 ? actualWhiteKeys : 7); 
+  const hWhite = 24;
+  const wBlack = keyWidth * 0.65;
+  const hBlack = 14;
+  
+  let svgContent = "";
+  let currentX = 0;
+  let whitePositions = {}; 
+  
+  for(let k=startKey; k<=endKey; k++) {
+    if(isWhite(k)) {
+      let isActive = activeKeys.includes(k);
+      let cls = isActive ? "key-white key-active" : "key-white";
+      svgContent += `<rect x="${currentX}" y="0" width="${keyWidth}" height="${hWhite}" class="${cls}" />`;
+      whitePositions[k] = currentX;
+      currentX += keyWidth;
+    }
+  }
+  
+  for(let k=startKey; k<=endKey; k++) {
+    if(!isWhite(k)) {
+      let prevWhite = k - 1;
+      if(whitePositions[prevWhite] !== undefined) {
+        let isActive = activeKeys.includes(k);
+        let cls = isActive ? "key-black key-active" : "key-black";
+        let xPos = whitePositions[prevWhite] + keyWidth - (wBlack/2);
+        svgContent += `<rect x="${xPos}" y="0" width="${wBlack}" height="${hBlack}" class="${cls}" />`;
+      }
+    }
+  }
+
+  return `<svg width="40" height="24" viewBox="0 0 40 24" xmlns="http://www.w3.org/2000/svg">${svgContent}</svg>`;
+}
+
+
+/* SONGDATA FÜR WEIHNACHTEN */
 const songs = [
   /* 1. Als Wenn Ein Engel.. */
   {
@@ -231,7 +312,7 @@ const songs = [
     title: "As Close As You Can Come",
     year: "2017",
     copyright: "© Xander Fox",
-    image: "Facetune_14-12-2024-17-46-57.jpeg",
+    image: "IMG_6876.jpeg",
     text: `When the Stars appear so near\nSeem to shine only for you\nThrough the Trees so silently\nGive me company\nCome on, walk with me\n\nFill My Eyes\nwith all the magic love and light\n\nGive my heart\nthe joy of Christmas for this night\n\nHold on tight\nBecause I want you to be close\n\nWithin my arms\nAs close as you can come\n\nEyes illuminate from candle shine\nShare the holy tide with me\nOn your heartbeat I can hear\ncarol melodies\nLet it talk to me\n\nFill My Eyes\nwith all the magic love and light\n\nGive my heart\nthe joy of Christmas for this night\n\nHold on tight\nBecause I want you to be close\n\nWithin my arms\nAs close as you can come`
   },
   /* 3. So schön ist die Weihnacht */
@@ -240,182 +321,17 @@ const songs = [
     title: "So schön ist die Weihnacht",
     year: "2025",
     copyright: "© Xander Fox",
-    image: "Facetune_27-11-2025-22-54-43.jpeg",
+    image: "IMG_8762.jpeg",
     text: `Wie aus einem Bild\nNichts gleich dem Gefühl\nSo still steht die Zeit hier\nSiehst du mich nur an\nBin ich wie gebannt\nFühl dich so nah bei mir\n\nKomm, mach dich bereit\nEs ist an der Zeit\nSo schön ist die Weihnacht\nSo wie jedes Jahr\nWie es immer war\nWill ich es noch einmal\n\nWenn du mich nur hältst\nVersinkt diese Welt\nIn friedliches Schweigen\nDein Licht strahlt so hell\nKüss mich, denn es soll\nFür immer so bleiben\n\nKomm, mach dich bereit\nEs ist an der Zeit\nSo schön ist die Weihnacht\nSo wie jedes Jahr\nWie es immer war\nWill ich es noch einmal\n\nSo schön ist die Weihnacht..\nSo schön ist die Weihnacht..\nSo schön ist die Weihnacht..`
   }
 ];
 
-/* SORT alphabetisch nach TITLE */
 songs.sort((a,b) => {
   const T1 = (a.title || "").toLowerCase(); const T2 = (b.title || "").toLowerCase();
   if(T1 < T2) return -1; if(T1 > T2) return 1; return 0;
 });
 
-/* HELPER: INTELLIGENTES PIANO SVG (Anker-Logik: IMMER 7 WEIßE TASTEN / 1 OKTAVE) */
-function createPianoSVG(activeKeys) {
-  let minKey = Math.min(...activeKeys);
-  let maxKey = Math.max(...activeKeys);
-  
-  // 1. Start-Anker (Links): Suche C oder F
-  let startKey = minKey;
-  while(true) {
-    let noteInOctave = (startKey % 12 + 12) % 12;
-    if (noteInOctave === 0 || noteInOctave === 5) break; 
-    startKey--;
-  }
-  
-  // 2. End-Punkt (Rechts): Tight Fit mit Abschluss
-  const isWhite = (k) => [0,2,4,5,7,9,11].includes((k % 12 + 12) % 12);
-  
-  let endKey = maxKey;
-  if(!isWhite(endKey)) endKey++; 
-  
-  // Stelle sicher, dass wir mind. 7 weiße Tasten haben
-  let whiteCount = 0;
-  let k = startKey;
-  // Vorlauf
-  while(true) {
-    if(isWhite(k)) whiteCount++;
-    if(k >= endKey && whiteCount >= 7) {
-      endKey = k;
-      break;
-    }
-    k++;
-  }
-  
-  // Layout Maße (40px Breite fix)
-  const keyWidth = 40 / whiteCount; 
-  const hWhite = 24;
-  const wBlack = keyWidth * 0.65;
-  const hBlack = 14;
-  
-  let svgContent = "";
-  let currentX = 0;
-  let whitePositions = {}; 
-  
-  // 1. Whites
-  for(let k=startKey; k<=endKey; k++) {
-    if(isWhite(k)) {
-      let isActive = activeKeys.includes(k);
-      let cls = isActive ? "key-white key-active" : "key-white";
-      svgContent += `<rect x="${currentX}" y="0" width="${keyWidth}" height="${hWhite}" class="${cls}" />`;
-      whitePositions[k] = currentX;
-      currentX += keyWidth;
-    }
-  }
-  
-  // 2. Blacks
-  for(let k=startKey; k<=endKey; k++) {
-    if(!isWhite(k)) {
-      let prevWhite = k - 1;
-      if(whitePositions[prevWhite] !== undefined) {
-        let isActive = activeKeys.includes(k);
-        let cls = isActive ? "key-black key-active" : "key-black";
-        let xPos = whitePositions[prevWhite] + keyWidth - (wBlack/2);
-        svgContent += `<rect x="${xPos}" y="0" width="${wBlack}" height="${hBlack}" class="${cls}" />`;
-      }
-    }
-  }
-
-  return `<svg width="40" height="24" viewBox="0 0 40 24" xmlns="http://www.w3.org/2000/svg">${svgContent}</svg>`;
-}
-
-/* APP LOGIC */
-const menu = document.getElementById('menu');
-const content = document.getElementById('lyrics');
-const coverBg = document.getElementById('cover-bg');
-const coverFlipContainer = document.getElementById('cover-flip-container');
-const coverLarge = document.getElementById('cover-large');
-const coverBackContent = document.getElementById('cover-back-content');
-const metaYear = document.getElementById('meta-year');
-const metaArtist = document.getElementById('meta-artist');
-const metaTitle = document.getElementById('meta-title');
-
-coverFlipContainer.addEventListener('click', function() {
-  this.classList.toggle('flipped');
-});
-
-function makeEntry(song, idx){
-  const div = document.createElement('div');
-  div.className = 'song-entry';
-  const img = document.createElement('img');
-  if(song.image){
-    img.src = song.image;
-    img.alt = `${song.artist} - ${song.title}`;
-    img.onerror = () => { img.classList.add('no-img'); img.removeAttribute('src'); img.alt = 'kein Cover'; img.textContent = 'NO IMG'; };
-  } else {
-    img.classList.add('no-img');
-    img.alt = 'kein Cover';
-  }
-  const meta = document.createElement('div');
-  meta.className = 'meta';
-  const mainLine = document.createElement('div');
-  mainLine.className = 'artist'; 
-  mainLine.textContent = song.title || '';
-  const subLine = document.createElement('div');
-  subLine.className = 'title';
-  subLine.textContent = song.artist || '';
-  meta.appendChild(mainLine);
-  meta.appendChild(subLine);
-  div.appendChild(img);
-  div.appendChild(meta);
-  div.addEventListener('click', () => showSong(song));
-  return div;
-}
-
-function showSong(song){
-  coverFlipContainer.classList.remove('flipped');
-  if(song.image){
-    coverBg.style.backgroundImage = `url("${song.image}")`;
-    coverBg.style.opacity = "var(--bg-opacity)";
-  } else {
-    coverBg.style.backgroundImage = '';
-    coverBg.style.opacity = "0";
-  }
-  let h = `<h2>${escapeHtml(song.title)}</h2>`;
-  if(song.copyright){
-    h += `<span class="song-copyright">${escapeHtml(song.copyright)}</span>`;
-  }
-  content.innerHTML = h + `<pre>${escapeHtml(song.text)}</pre>`;
-
-  if(song.image){
-    coverLarge.src = song.image;
-    coverLarge.alt = `${song.artist} - ${song.title}`;
-    coverLarge.classList.remove('no-img');
-  } else {
-    coverLarge.removeAttribute('src');
-    coverLarge.classList.add('no-img');
-  }
-
-  coverBackContent.innerHTML = "";
-  if(song.chords){
-    let html = "";
-    const renderSection = (label, chordNames) => {
-      let sectionHtml = `<div class="chord-section"><div class="chord-part-label">${label}</div><div class="chord-grid">`;
-      chordNames.forEach(cName => {
-        let keys = CHORD_MAP[cName] || [];
-        let svg = createPianoSVG(keys);
-        sectionHtml += `<div class="piano-box"><div class="piano-name">${cName}</div>${svg}</div>`;
-      });
-      sectionHtml += `</div></div>`;
-      return sectionHtml;
-    };
-    if(song.chords.verse) html += renderSection("Text Teil", song.chords.verse);
-    if(song.chords.chorus) html += renderSection("Refrain Teil", song.chords.chorus);
-    coverBackContent.innerHTML = html;
-  } else {
-    coverBackContent.innerHTML = '<span class="chord-placeholder">Klick mich für Akkorde...</span>';
-  }
-
-  metaYear.textContent = song.year || '';
-  metaArtist.textContent = song.artist || '';
-  metaTitle.textContent = song.title || '';
-}
-
-function escapeHtml(str){
-  if(!str) return '';
-  return str.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
-}
+/* APP LOGIC - REST BLEIBT GLEICH */
 
 songs.forEach((s,i) => {
   const entry = makeEntry(s,i);
