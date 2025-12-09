@@ -109,7 +109,7 @@
   .front { z-index: 2; transform: rotateY(0deg); }
   .front img { width: 100%; height: 100%; object-fit: cover; background:#ddd; }
   
-  /* RÜCKSEITE STYLE (PIANO MINIATUREN) */
+  /* RÜCKSEITE STYLE */
   .back {
     transform: rotateY(180deg);
     background: #1a1a1a;
@@ -121,32 +121,33 @@
   }
   
   .chord-section { 
-    width: 100%; margin-bottom: 12px; 
+    width: 100%; margin-bottom: 15px; 
   }
   .chord-section:last-child { margin-bottom: 0; }
 
   .chord-part-label {
     font-family: Inter, sans-serif; font-size: 10px; text-transform: uppercase;
-    color: #666; margin: 0 0 4px 0; letter-spacing: 1px; width:100%; text-align:left; border-bottom:1px solid #333;
+    color: #666; margin: 0 0 5px 0; letter-spacing: 1px; width:100%; text-align:left; border-bottom:1px solid #333;
   }
   .chord-grid {
     display: flex; 
     flex-flow: row nowrap; 
-    justify-content: center; 
-    gap: 12px; /* Etwas mehr Abstand für bessere Lesbarkeit */
+    justify-content: space-between; /* Verteilt Platz gleichmäßig */
+    gap: 2px;
   }
   .piano-box {
     display: flex; flex-direction: column; align-items: center;
   }
   .piano-name {
     font-family: Inter, sans-serif; font-weight: 700; font-size: 10px; 
-    color: var(--accent); margin-bottom: 2px; line-height: 1;
+    color: var(--accent); margin-bottom: 3px; line-height: 1;
   }
   /* SVG Styles */
   .key-white { fill: #fff; stroke: #ccc; stroke-width: 0.5px; } 
   .key-black { fill: #000; stroke: #000; stroke-width: 0.5px; }
   .key-active { fill: var(--accent) !important; }
-
+  /* Markierung für das C (optional zur Orientierung, hier via Border gelöst) */
+  
   .chord-placeholder { color: #666; font-style: italic; margin-top: auto; margin-bottom: auto;}
 
   .meta-right{ width:100%; text-align:center; color:#333; font-family:Inter, Arial, sans-serif; }
@@ -206,22 +207,26 @@
   </section>
 
 <script>
-/* CHORD MAP - Erweitert für unbegrenzte Oktaven
-   0 = C (Basis), 12 = C (Oktave höher), 24 = C (noch höher) usw.
-   Hier definieren wir die Voicings (Griffbilder) GENAU so, wie du sie willst.
+/* CHORD MAP
+   Die Zahlen repräsentieren die Halbtöne. 
+   0 ist das erste C. 
+   12 ist das nächste C (Oktave).
+   24 ist das hohe C.
+   
+   Voicings sind hier so gewählt, wie sie auf dem Screenshot aussahen oder gut klingen.
 */
 const CHORD_MAP = {
-  // Grundakkorde (Basis C-Lage)
-  "C":  [0, 4, 7],      // C-E-G
-  "Am": [9, 12, 16],    // A, C(hoch), E(hoch) - Lineare Lage
-  "F":  [5, 9, 12],     // F-A-C(hoch)
-  
-  // G-Dur in "natürlicher" Lage (nicht invertiert)
-  // G(7), H(11), D(14 -> D in der nächsten Oktave)
+  // C-Dur (Grundstellung C-E-G)
+  "C":  [0, 4, 7],      
+  // A-Moll (A-C-E) - Hier nehmen wir A(9), C(12), E(16) -> geht über Oktave
+  "Am": [9, 12, 16],    
+  // F-Dur (F-A-C) - F(5), A(9), C(12) -> geht über Oktave
+  "F":  [5, 9, 12],     
+  // G-Dur (G-H-D) - G(7), H(11), D(14) -> geht über Oktave
   "G":  [7, 11, 14]     
 };
 
-/* ---------- SONGDATA ---------- */
+/* ---------- SONGDATA (Auftritt 12.12.2025) ---------- */
 const songs = [
   {
     artist: "One Day in Rome", title: "Wir", year: "2025", copyright: "© Xander Fox", image: "Facetune_27-11-2025-22-42-01.jpeg",
@@ -258,31 +263,20 @@ songs.sort((a,b) => {
   if(T1 < T2) return -1; if(T1 > T2) return 1; return 0;
 });
 
-/* HELPER: DYNAMIC PIANO SVG */
+/* HELPER: PIANO SVG - IMMER START BEI C */
 function createPianoSVG(activeKeys) {
-  // 1. Finde Bereich (Min/Max Note)
+  // Das ist der Schlüssel: Wir suchen das C, das VOR der tiefsten Note liegt.
+  // Damit fängt das Bild immer mit einem C an und das Muster ist erkennbar.
+  
   let minKey = Math.min(...activeKeys);
-  let maxKey = Math.max(...activeKeys);
+  // Finde das C, das kleiner oder gleich minKey ist. (Abrunden auf nächstes Vielfaches von 12)
+  let startKey = Math.floor(minKey / 12) * 12;
   
-  // Padding links und rechts (1-2 weiße Tasten Puffer, damit es gut aussieht)
-  // Wir runden minKey auf die nächste weiße Taste drunter ab und ziehen noch was ab
-  let startKey = minKey - 2; 
-  let endKey = maxKey + 2; 
-  
-  // Sicherstellen, dass StartKey nicht negativ wird (optional, hier egal, da relativ)
-  // Wir bauen die SVG basierend auf der Anzahl der WEISSEN Tasten in diesem Bereich
-  
-  // Helper: Ist Taste Weiß? (0=C, 2=D, 4=E, 5=F, 7=G, 9=A, 11=B)
-  const isWhite = (k) => [0,2,4,5,7,9,11].includes((k % 12 + 12) % 12);
-  
-  // Berechne Breite basierend auf weißen Tasten
-  let whiteKeyCount = 0;
-  for(let k=startKey; k<=endKey; k++) {
-    if(isWhite(k)) whiteKeyCount++;
-  }
+  // Wir zeichnen 14 weiße Tasten (2 volle Oktaven C bis H), damit jeder Akkord gut reinpasst.
+  let numWhiteKeys = 14; 
   
   // Layout Maße (Miniatur)
-  const keyWidth = 40 / Math.max(whiteKeyCount, 3); // Dynamische Breite, min 3 Tasten Breite
+  const keyWidth = 48 / numWhiteKeys; // Dynamische Breite auf 48px Gesamtbreite
   const hWhite = 24;
   const wBlack = keyWidth * 0.6;
   const hBlack = 14;
@@ -290,33 +284,59 @@ function createPianoSVG(activeKeys) {
   let svgContent = "";
   let currentX = 0;
   
-  // Draw Whites First
-  for(let k=startKey; k<=endKey; k++) {
+  // Hilfsfunktion: Ist Taste weiß?
+  // 0,2,4,5,7,9,11 (C,D,E,F,G,A,H)
+  const isWhite = (k) => [0,2,4,5,7,9,11].includes((k % 12 + 12) % 12);
+
+  // Range berechnen: Wir brauchen 14 weiße Tasten ab startKey.
+  // Wir iterieren einfach chromatisch hoch, bis wir 14 weiße gezeichnet haben.
+  
+  let keysDrawn = 0;
+  let k = startKey;
+  
+  // 1. Weiße Tasten zeichnen
+  // Wir speichern die X-Positionen der weißen Tasten für die schwarzen später
+  let whiteKeyPositions = {}; 
+  
+  while(keysDrawn < numWhiteKeys) {
     if(isWhite(k)) {
       let isActive = activeKeys.includes(k);
       let cls = isActive ? "key-white key-active" : "key-white";
       svgContent += `<rect x="${currentX}" y="0" width="${keyWidth}" height="${hWhite}" class="${cls}" />`;
+      
+      whiteKeyPositions[k] = currentX; // Speichern für schwarze Tasten
+      
       currentX += keyWidth;
+      keysDrawn++;
     }
+    k++;
   }
   
-  // Draw Blacks Second (Overlay)
-  currentX = 0; // Reset X walker
-  for(let k=startKey; k<=endKey; k++) {
-    if(isWhite(k)) {
-      // Check if NEXT key is black and inside range
-      let nextKey = k + 1;
-      if (!isWhite(nextKey) && nextKey <= endKey) {
-        let isActive = activeKeys.includes(nextKey);
+  // 2. Schwarze Tasten zeichnen (Overlay)
+  // Wir gehen den gleichen Bereich nochmal durch
+  keysDrawn = 0;
+  k = startKey;
+  
+  // Wir müssen wissen, wann Schluss ist (nach der 14. weißen Taste)
+  // Einfacher: wir prüfen einfach alle Tasten im Bereich startKey bis startKey+24
+  for(let n = startKey; n < startKey + 25; n++) {
+    if(!isWhite(n)) {
+      // Schwarze Taste. Sie liegt zwischen (n-1) und (n+1)
+      // Wir holen die Position der vorherigen weißen Taste
+      let prevWhiteX = whiteKeyPositions[n-1];
+      
+      // Nur zeichnen, wenn wir im sichtbaren Bereich sind (prevWhiteX existiert)
+      if (prevWhiteX !== undefined) {
+        let isActive = activeKeys.includes(n);
         let cls = isActive ? "key-black key-active" : "key-black";
-        // Draw black key centered on the line between current and next white key
-        svgContent += `<rect x="${currentX + keyWidth - (wBlack/2)}" y="0" width="${wBlack}" height="${hBlack}" class="${cls}" />`;
+        // Position: Mitte der Linie zwischen den weißen Tasten
+        let bX = prevWhiteX + keyWidth - (wBlack/2);
+        svgContent += `<rect x="${bX}" y="0" width="${wBlack}" height="${hBlack}" class="${cls}" />`;
       }
-      currentX += keyWidth;
     }
   }
 
-  return `<svg width="40" height="24" viewBox="0 0 40 24" xmlns="http://www.w3.org/2000/svg">${svgContent}</svg>`;
+  return `<svg width="48" height="24" viewBox="0 0 48 24" xmlns="http://www.w3.org/2000/svg">${svgContent}</svg>`;
 }
 
 /* APP LOGIC */
