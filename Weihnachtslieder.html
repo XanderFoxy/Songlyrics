@@ -109,7 +109,7 @@
   .front { z-index: 2; transform: rotateY(0deg); }
   .front img { width: 100%; height: 100%; object-fit: cover; background:#ddd; }
   
-  /* RÜCKSEITE STYLE (PIANO MINIATUREN) */
+  /* RÜCKSEITE STYLE (PIANO MINIATUREN) - OPTIMIERT */
   .back {
     transform: rotateY(180deg);
     background: #1a1a1a;
@@ -122,13 +122,13 @@
   }
   
   .chord-section { 
-    width: 100%; margin-bottom: 12px; 
+    width: 100%; margin-bottom: 6px; 
   }
   .chord-section:last-child { margin-bottom: 0; }
 
   .chord-part-label {
     font-family: Inter, sans-serif; font-size: 10px; text-transform: uppercase;
-    color: #666; margin: 0 0 4px 0; letter-spacing: 1px; width:100%; text-align:left; border-bottom:1px solid #333;
+    color: #666; margin: 0 0 2px 0; letter-spacing: 1px; width:100%; text-align:left; border-bottom:1px solid #333;
   }
   .chord-grid {
     display: flex; 
@@ -138,7 +138,7 @@
   }
   .piano-box {
     display: flex; flex-direction: column; align-items: center;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
   }
   .piano-name {
     font-family: Inter, sans-serif; font-weight: 700; font-size: 10px; 
@@ -210,17 +210,18 @@
 <script>
 /* CHORD MAP */
 const CHORD_MAP = {
-  "C":  [0, 4, 7],      // C-Dur
-  "G":  [7, 11, 14],    // G-Dur
-  "Am": [9, 12, 16],    // A-Moll
-  "F":  [5, 9, 12],     // F-Dur
-  "Dm": [2, 5, 9],      // D-Moll
-  // C-moll basierte Akkorde
-  "Cm": [0, 3, 7],
-  "Gm": [7, 10, 14],
-  "Ab": [8, 12, 15],
-  "Eb": [3, 7, 10],
-  "Bb": [10, 14, 17]
+  "C":  [0, 4, 7],      
+  "G":  [7, 11, 14],    
+  "Am": [9, 12, 16],    
+  "F":  [5, 9, 12],     
+  "Dm": [2, 5, 9],
+  
+  // Moll & Flat Akkorde
+  "Cm": [0, 3, 7],      // C-Moll
+  "Gm": [7, 10, 14],    // G-Moll
+  "Ab": [8, 12, 15],    // As-Dur
+  "Eb": [3, 7, 10],     // Es-Dur
+  "Bb": [10, 14, 17]    // B-Dur
 };
 
 /* HELPER: INTELLIGENTES PIANO SVG */
@@ -314,7 +315,7 @@ const songs = [
     image: "IMG_6876.jpeg",
     text: `When the Stars appear so near\nSeem to shine only for you\nThrough the Trees so silently\nGive me company\nCome on, walk with me\n\nFill My Eyes\nwith all the magic love and light\n\nGive my heart\nthe joy of Christmas for this night\n\nHold on tight\nBecause I want you to be close\n\nWithin my arms\nAs close as you can come\n\nEyes illuminate from candle shine\nShare the holy tide with me\nOn your heartbeat I can hear\ncarol melodies\nLet it talk to me\n\nFill My Eyes\nwith all the magic love and light\n\nGive my heart\nthe joy of Christmas for this night\n\nHold on tight\nBecause I want you to be close\n\nWithin my arms\nAs close as you can come`
   },
-  /* 3. So schön ist die Weihnacht - ORIGINAL TEXT & KORRIGIERTE AKKORDE */
+  /* 3. So schön ist die Weihnacht (RESTAURIERT) */
   {
     artist: "One Day in Rome",
     title: "So schön ist die Weihnacht",
@@ -323,7 +324,7 @@ const songs = [
     image: "IMG_8762.jpeg",
     chords: {
       verse: ["Eb", "Cm", "Ab", "Bb", "Cm", "Eb", "Ab", "Bb"],
-      chorus: ["Ab", "Eb", "Gm", "Bb", "Ab", "Eb", "Gm", "Ab"] // KORREKTUR: Ende auf Gm, Ab
+      chorus: ["Ab", "Eb", "Gm", "Bb", "Ab", "Eb", "Gm", "Ab"] 
     },
     text: `Wie aus einem Bild\nNichts gleich dem Gefühl\nSo still steht die Zeit hier\nSiehst du mich nur an\nBin ich wie gebannt\nFühl dich so nah bei mir\n\nKomm, mach dich bereit\nEs ist an der Zeit\nSo schön ist die Weihnacht\nSo wie jedes Jahr\nWie es immer war\nWill ich es noch einmal\n\nWenn du mich nur hältst\nVersinkt diese Welt\nIn friedliches Schweigen\nDein Licht strahlt so hell\nKüss mich, denn es soll\nFür immer so bleiben\n\nKomm, mach dich bereit\nEs ist an der Zeit\nSo schön ist die Weihnacht\nSo wie jedes Jahr\nWie es immer war\nWill ich es noch einmal\n\nSo schön ist die Weihnacht..\nSo schön ist die Weihnacht..\nSo schön ist die Weihnacht..`
   }
@@ -430,7 +431,6 @@ window.onload = function() {
   const menu = document.getElementById('menu');
   const coverFlipContainer = document.getElementById('cover-flip-container');
 
-  // FLIP EVENT LISTENER WIEDERHERGESTELLT
   coverFlipContainer.addEventListener('click', function() {
     this.classList.toggle('flipped');
   });
