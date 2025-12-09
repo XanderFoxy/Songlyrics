@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Songtexte</title>
+<title>Weihnachtslieder</title>
 <style>
   :root{
     --menu-w:320px;
@@ -36,59 +36,32 @@
     font-weight:600;color:var(--accent);
   }
 
-  /* HIER IST DIE ÄNDERUNG FÜR DEN VERSTECKTEN LINK */
-  /* Der Link sieht aus wie normaler Text (erbt die Farbe vom h1) */
-  #menu h1 a {
-    color: inherit; 
-    text-decoration: none;
-    cursor: pointer; /* Zeigt die Hand an, damit du weißt, dass es klickbar ist */
-  }
-  /* Verhindert Farbänderungen bei Besuch oder Hover */
-  #menu h1 a:visited, #menu h1 a:hover, #menu h1 a:active {
-    color: inherit;
-    text-decoration: none;
-  }
+  /* VERSTECKTER LINK */
+  #menu h1 a { color: inherit; text-decoration: none; cursor: pointer; }
+  #menu h1 a:hover, #menu h1 a:visited, #menu h1 a:active { color: inherit; text-decoration: none; }
 
   .song-entry{
-    display:flex;
-    gap:10px;
-    align-items:center;
-    padding:8px;
-    border-radius:8px;
-    margin-bottom:8px;
-    cursor:pointer;
-    transition:background .15s, transform .06s;
+    display:flex; gap:10px; align-items:center; padding:8px; border-radius:8px;
+    margin-bottom:8px; cursor:pointer; transition:background .15s, transform .06s;
   }
   .song-entry:hover{ background:var(--menu-hover); transform:translateY(-1px); }
   .song-entry img{
-    width:var(--thumb-size); height:var(--thumb-size);
-    object-fit:cover; border-radius:6px; background:#666;
-    flex:0 0 auto;
+    width:var(--thumb-size); height:var(--thumb-size); object-fit:cover;
+    border-radius:6px; background:#666; flex:0 0 auto;
   }
-  .meta{
-    display:flex; flex-direction:column; min-width:0;
-  }
+  .meta{ display:flex; flex-direction:column; min-width:0; }
   
-  /* ORIGINAL STYLES */
-  .artist{
-    font-weight:700; font-size:15px; line-height:1; color:#fff;
-    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-  }
-  .title{
-    font-style:italic; font-size:13px; color:#ddd; margin-top:4px;
-    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-  }
+  .artist{ font-weight:700; font-size:15px; line-height:1; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .title{ font-style:italic; font-size:13px; color:#ddd; margin-top:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 
   /* CONTENT AREA */
   #content-wrap{flex:1;position:relative;display:flex;overflow:hidden;}
-  /* background cover (blurred + faint) */
   #cover-bg{
     position:absolute;inset:0;z-index:0;pointer-events:none;
     background-size:cover;background-position:center;
     opacity:var(--bg-opacity);filter:blur(var(--bg-blur));
     transition:background-image .25s ease, opacity .2s ease;
   }
-  /* content panel */
   #content{
     position:relative; z-index:1; padding:28px; overflow:auto; display:flex;
     gap:22px; align-items:flex-start; box-sizing:border-box; width:100%;
@@ -96,49 +69,95 @@
   .lyrics{
     flex:1 1 auto; max-width:calc(100% - var(--cover-side) - 40px);
     background:rgba(255,255,255,0.8); padding:22px; border-radius:10px;
-    box-shadow:0 6px 20px rgba(0,0,0,0.08);
-    backdrop-filter: blur(2px);
+    box-shadow:0 6px 20px rgba(0,0,0,0.08); backdrop-filter: blur(2px);
     font-family: "Cormorant Garamond", "Georgia", serif;
     font-style:italic; font-size:18px; line-height:1.6; color:var(--text-color);
   }
   .lyrics h2{
-    margin:0 0 2px 0; 
-    font-style:normal; font-size:22px; color:#111;
+    margin:0 0 2px 0; font-style:normal; font-size:22px; color:#111;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
   .song-copyright {
-    font-family: Inter, sans-serif;
-    font-style: normal;
-    font-size: 14px;
-    color: #666;
-    margin-bottom: 20px;
-    display: block;
+    font-family: Inter, sans-serif; font-style: normal; font-size: 14px;
+    color: #666; margin-bottom: 20px; display: block;
   }
   .lyrics pre{
     margin:0; white-space:pre-wrap; word-break:break-word; font-family:inherit;
     font-style:italic; font-size:17px; color:#222;
   }
 
-  /* cover aside */
+  /* COVER & 3D FLIP */
   .cover-aside{
-    width:var(--cover-side); flex:0 0 var(--cover-side); display:flex; flex-direction:column; gap:12px;
-    align-items:center;
+    width:var(--cover-side); flex:0 0 var(--cover-side); display:flex;
+    flex-direction:column; gap:12px; align-items:center;
   }
-  .cover-aside img{
-    width:220px; height:220px; object-fit:cover; border-radius:8px; background:#ddd;
+  
+  .flip-container {
+    perspective: 1000px;
+    width: 220px; height: 220px; cursor: pointer;
+  }
+  .flipper {
+    transition: 0.6s; transform-style: preserve-3d; position: relative;
+    width: 100%; height: 100%; border-radius:8px;
     box-shadow:0 8px 30px rgba(0,0,0,0.12);
   }
-  .meta-right{
-    width:100%; text-align:center; color:#333; font-family:Inter, Arial, sans-serif;
+  .flip-container.flipped .flipper { transform: rotateY(180deg); }
+  .front, .back {
+    backface-visibility: hidden; position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%; border-radius:8px; overflow: hidden;
   }
+  .front { z-index: 2; transform: rotateY(0deg); }
+  .front img { width: 100%; height: 100%; object-fit: cover; background:#ddd; }
+  
+  /* RÜCKSEITE STYLE (PIANO MINIATUREN) */
+  .back {
+    transform: rotateY(180deg);
+    background: #1a1a1a;
+    color: #fff;
+    display: flex; flex-direction: column; 
+    justify-content: center; 
+    align-items: center;
+    padding: 10px; box-sizing: border-box; text-align: center;
+  }
+  
+  .chord-section { 
+    width: 100%; margin-bottom: 12px; 
+  }
+  .chord-section:last-child { margin-bottom: 0; }
+
+  .chord-part-label {
+    font-family: Inter, sans-serif; font-size: 10px; text-transform: uppercase;
+    color: #666; margin: 0 0 4px 0; letter-spacing: 1px; width:100%; text-align:left; border-bottom:1px solid #333;
+  }
+  .chord-grid {
+    display: flex; 
+    flex-flow: row nowrap; 
+    justify-content: center; 
+    gap: 12px; 
+  }
+  .piano-box {
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .piano-name {
+    font-family: Inter, sans-serif; font-weight: 700; font-size: 10px; 
+    color: var(--accent); margin-bottom: 2px; line-height: 1;
+  }
+  /* SVG Styles */
+  .key-white { fill: #fff; stroke: #888; stroke-width: 0.5px; } 
+  .key-black { fill: #000; stroke: #000; stroke-width: 0.5px; }
+  .key-active { fill: var(--accent) !important; }
+
+  .chord-placeholder { color: #666; font-style: italic; margin-top: auto; margin-bottom: auto;}
+
+  .meta-right{ width:100%; text-align:center; color:#333; font-family:Inter, Arial, sans-serif; }
   .meta-right .year{font-weight:600;color:#111;}
   .meta-right .artist{font-weight:700;font-size:16px;color:#111;}
   .meta-right .title{font-style:italic;color:#333;font-size:15px;margin-top:4px;}
 
-  /* responsive */
   @media (max-width:900px){
     :root{--menu-w:240px; --cover-side:180px;}
     .lyrics{font-size:16px;}
-    .cover-aside img{width:160px;height:160px;}
+    .flip-container{width:160px;height:160px;}
   }
   @media (max-width:700px){
     body{flex-direction:column;}
@@ -147,8 +166,6 @@
     .lyrics{max-width:100%;}
     .cover-aside{display:none;}
   }
-
-  /* small helper for missing image (transparent placeholder) */
   .no-img{background:linear-gradient(135deg,#ddd,#eee);display:flex;align-items:center;justify-content:center;color:#999;font-weight:600;font-size:12px;}
 </style>
 </head>
@@ -156,7 +173,7 @@
 
   <nav id="menu" aria-label="Songliste">
     <h1><a href="Songtexte.html">Songtexte</a></h1>
-    </nav>
+  </nav>
 
   <section id="content-wrap">
     <div id="cover-bg" aria-hidden="true"></div>
@@ -168,7 +185,17 @@
       </article>
 
       <aside class="cover-aside" id="cover-aside" aria-hidden="true">
-        <img id="cover-large" alt="Cover" class="no-img" />
+        <div class="flip-container" id="cover-flip-container">
+          <div class="flipper">
+            <div class="front">
+              <img id="cover-large" alt="Cover" class="no-img" />
+            </div>
+            <div class="back" id="cover-back-content">
+              <span class="chord-placeholder">Klick mich für Akkorde...</span>
+            </div>
+          </div>
+        </div>
+
         <div class="meta-right">
           <div class="year" id="meta-year"></div>
           <div class="artist" id="meta-artist"></div>
@@ -179,179 +206,152 @@
   </section>
 
 <script>
-/* ---------- SONGDATA ---------- */
+/* CHORD MAP */
+const CHORD_MAP = {
+  "C":  [0, 4, 7],      // C-Dur (Grundstellung)
+  "Am": [9, 12, 16],    // A-Moll (Linear)
+  "F":  [5, 9, 12],     // F-Dur (Linear)
+  "G":  [7, 11, 14]     // G-Dur (Linear)
+};
+
+/* ---------- SONGDATA (Weihnachtslieder) ---------- */
 const songs = [
-  /* Song 1 */
+  /* 1. Als Wenn Ein Engel.. */
   {
     artist: "Sweet Velvet",
     title: "Als Wenn Ein Engel..",
     year: "2012",
     copyright: "© Xander Fox",
-    image: "IMG_1824.jpeg",
-    text: `Die Zeit Ist Nah
-So Lang Schon Hab Ich
-Es Herbei Gesehnt
-
-Wie Jedes Jahr
-Ein Lichterglanz Sich
-Auf Uns Niederlegt
-
-Dein Zauber Fällt Herab
-In Eine Welt Aus Sternenstaub
-In Diese Stille Heilige Nacht
-So Tief berührt die Liebe
-Die Mein Herz In Atem Hält
-Als Wenn Ein Engel
-Über Mir Wacht..
-
-Starr Ruht Der See
-Und Alles Scheint Nun
-Wieder Still Zu Stehn
-
-Hier Wo Ich Geh
-Klingt Leis Ein Lied
-Will Mir Von Dir Erzähln
-
-Und Dort
-Am Waldesrand Ein Licht
-Es Scheint
-Als Ob Es Zu Mir Spricht
-Komm Laß
-Das Alte Leid Verwehn
-Auf Das
-Wir Bald Uns Wieder Sehn
-
-Dein Zauber Fällt Herab
-In Eine Welt Aus Sternenstaub
-In Diese Stille Heilige Nacht
-So Tief berührt die Liebe
-Die Mein Herz In Atem Hält
-Als Wenn Ein Engel
-Über Mir Wacht..
-
-Dein Zauber Fällt Herab
-In Eine Welt Aus Sternenstaub
-In Diese Stille Heilige Nacht
-So Tief berührt die Liebe
-Die Mein Herz In Atem Hält
-Als Wenn Ein Engel
-
-Über Mir Wacht..`
+    image: "IMG_0107.jpeg", /* NEUES BILD */
+    text: `Die Zeit Ist Nah\nSo Lang Schon Hab Ich\nEs Herbei Gesehnt\n\nWie Jedes Jahr\nEin Lichterglanz Sich\nAuf Uns Niederlegt\n\nDein Zauber Fällt Herab\nIn Eine Welt Aus Sternenstaub\nIn Diese Stille Heilige Nacht\nSo Tief berührt die Liebe\nDie Mein Herz In Atem Hält\nAls Wenn Ein Engel\nÜber Mir Wacht..\n\nStarr Ruht Der See\nUnd Alles Scheint Nun\nWieder Still Zu Stehn\n\nHier Wo Ich Geh\nKlingt Leis Ein Lied\nWill Mir Von Dir Erzähln\n\nUnd Dort\nAm Waldesrand Ein Licht\nEs Scheint\nAls Ob Es Zu Mir Spricht\nKomm Laß\nDas Alte Leid Verwehn\nAuf Das\nWir Bald Uns Wieder Sehn\n\nDein Zauber Fällt Herab\nIn Eine Welt Aus Sternenstaub\nIn Diese Stille Heilige Nacht\nSo Tief berührt die Liebe\nDie Mein Herz In Atem Hält\nAls Wenn Ein Engel\nÜber Mir Wacht..\n\nDein Zauber Fällt Herab\nIn Eine Welt Aus Sternenstaub\nIn Diese Stille Heilige Nacht\nSo Tief berührt die Liebe\nDie Mein Herz In Atem Hält\nAls Wenn Ein Engel\n\nÜber Mir Wacht..`
   },
-
-  /* Song 2 */
+  /* 2. As Close As You Can Come */
   {
     artist: "One Day in Rome",
     title: "As Close As You Can Come",
     year: "2017",
     copyright: "© Xander Fox",
     image: "Facetune_14-12-2024-17-46-57.jpeg",
-    text: `When the Stars appear so near
-Seem to shine only for you
-Through the Trees so silently
-Give me company
-Come on, walk with me
-
-Fill My Eyes
-with all the magic love and light
-
-Give my heart
-the joy of Christmas for this night
-
-Hold on tight
-Because I want you to be close
-
-Within my arms
-As close as you can come
-
-Eyes illuminate from candle shine
-Share the holy tide with me
-On your heartbeat I can hear
-carol melodies
-Let it talk to me
-
-Fill My Eyes
-with all the magic love and light
-
-Give my heart
-the joy of Christmas for this night
-
-Hold on tight
-Because I want you to be close
-
-Within my arms
-As close as you can come`
+    text: `When the Stars appear so near\nSeem to shine only for you\nThrough the Trees so silently\nGive me company\nCome on, walk with me\n\nFill My Eyes\nwith all the magic love and light\n\nGive my heart\nthe joy of Christmas for this night\n\nHold on tight\nBecause I want you to be close\n\nWithin my arms\nAs close as you can come\n\nEyes illuminate from candle shine\nShare the holy tide with me\nOn your heartbeat I can hear\ncarol melodies\nLet it talk to me\n\nFill My Eyes\nwith all the magic love and light\n\nGive my heart\nthe joy of Christmas for this night\n\nHold on tight\nBecause I want you to be close\n\nWithin my arms\nAs close as you can come`
   },
-
-  /* Song 3 */
+  /* 3. Ohne Deine Liebe */
+  {
+    artist: "One Day in Rome",
+    title: "Ohne Deine Liebe",
+    year: "2025",
+    copyright: "© Xander Fox",
+    image: "Facetune_14-12-2024-17-46-57.jpeg",
+    /* Hier ebenfalls mit Akkorden, falls gewünscht - ich habe sie hinzugefügt */
+    chords: {
+      verse: ["C", "Am", "F", "G"],
+      chorus: ["Am", "F", "C", "G"]
+    },
+    text: `Kannst du mir erklären\nWas geschehen ist\nMusst du denn zerstören\nWas du mir noch bist\n\nWarum bin ich einsam\nDu nicht mehr bei mir\nWollten wir gemeinsam\nNicht die Welt regieren\n\nWarum bin ich hier\nWie lang muss ich bleiben\nOhne deine Liebe\nDie mich still entführt\n\nMein Herz ruft nach dir\nKann dich nicht verschweigen\nDu wirst immer bleiben\nIrgendwo in mir\n\nWarum bist du so\nFern und unerreichbar\nDa wohin du gehen willst\nKann ich dich nicht sehen\n\nWas hält uns am Leben\nWorin liegt der Sinn\nSag mir doch weswegen\nWir verloren sind\n\nWarum bin ich hier\nWie lang muss ich bleiben\nOhne deine Liebe\nDie mich still entführt\n\nMein Herz ruft nach dir\nKann dich nicht verschweigen\nDu wirst immer bleiben\nIrgendwo in mir`
+  },
+  /* 4. So schön ist die Weihnacht */
   {
     artist: "One Day in Rome",
     title: "So schön ist die Weihnacht",
     year: "2025",
     copyright: "© Xander Fox",
     image: "Facetune_27-11-2025-22-54-43.jpeg",
-    text: `Wie aus einem Bild
-Nichts gleich dem Gefühl
-So still steht die Zeit hier
-Siehst du mich nur an
-Bin ich wie gebannt
-Fühl dich so nah bei mir
-
-Komm, mach dich bereit
-Es ist an der Zeit
-So schön ist die Weihnacht
-So wie jedes Jahr
-Wie es immer war
-Will ich es noch einmal
-
-Wenn du mich nur hältst
-Versinkt diese Welt
-In friedliches Schweigen
-Dein Licht strahlt so hell
-Küss mich, denn es soll
-Für immer so bleiben
-
-Komm, mach dich bereit
-Es ist an der Zeit
-So schön ist die Weihnacht
-So wie jedes Jahr
-Wie es immer war
-Will ich es noch einmal
-
-So schön ist die Weihnacht..
-So schön ist die Weihnacht..
-So schön ist die Weihnacht..`
+    text: `Wie aus einem Bild\nNichts gleich dem Gefühl\nSo still steht die Zeit hier\nSiehst du mich nur an\nBin ich wie gebannt\nFühl dich so nah bei mir\n\nKomm, mach dich bereit\nEs ist an der Zeit\nSo schön ist die Weihnacht\nSo wie jedes Jahr\nWie es immer war\nWill ich es noch einmal\n\nWenn du mich nur hältst\nVersinkt diese Welt\nIn friedliches Schweigen\nDein Licht strahlt so hell\nKüss mich, denn es soll\nFür immer so bleiben\n\nKomm, mach dich bereit\nEs ist an der Zeit\nSo schön ist die Weihnacht\nSo wie jedes Jahr\nWie es immer war\nWill ich es noch einmal\n\nSo schön ist die Weihnacht..\nSo schön ist die Weihnacht..\nSo schön ist die Weihnacht..`
   }
 ];
 
-/* ---------- SORT alphabetisch nach TITLE, dann Artist ---------- */
+/* SORT alphabetisch nach TITLE */
 songs.sort((a,b) => {
-  const T1 = (a.title || "").toLowerCase();
-  const T2 = (b.title || "").toLowerCase();
-  if(T1 < T2) return -1;
-  if(T1 > T2) return 1;
-  
-  const A = (a.artist || "").toLowerCase();
-  const B = (b.artist || "").toLowerCase();
-  if(A < B) return -1;
-  if(A > B) return 1;
-  
-  return 0;
+  const T1 = (a.title || "").toLowerCase(); const T2 = (b.title || "").toLowerCase();
+  if(T1 < T2) return -1; if(T1 > T2) return 1; return 0;
 });
 
-/* ---------- build menu ---------- */
+/* HELPER: INTELLIGENTES PIANO SVG (Anker-Logik: IMMER 7 WEIßE TASTEN / 1 OKTAVE) */
+function createPianoSVG(activeKeys) {
+  let minKey = Math.min(...activeKeys);
+  let maxKey = Math.max(...activeKeys);
+  
+  // 1. Start-Anker (Links): Suche C oder F
+  let startKey = minKey;
+  while(true) {
+    let noteInOctave = (startKey % 12 + 12) % 12;
+    if (noteInOctave === 0 || noteInOctave === 5) break; 
+    startKey--;
+  }
+  
+  // 2. End-Punkt (Rechts): Tight Fit mit Abschluss
+  const isWhite = (k) => [0,2,4,5,7,9,11].includes((k % 12 + 12) % 12);
+  
+  let endKey = maxKey;
+  if(!isWhite(endKey)) endKey++; 
+  
+  // Stelle sicher, dass wir mind. 7 weiße Tasten haben
+  let whiteCount = 0;
+  let k = startKey;
+  // Vorlauf
+  while(true) {
+    if(isWhite(k)) whiteCount++;
+    if(k >= endKey && whiteCount >= 7) {
+      endKey = k;
+      break;
+    }
+    k++;
+  }
+  
+  // Layout Maße (40px Breite fix)
+  const keyWidth = 40 / whiteCount; 
+  const hWhite = 24;
+  const wBlack = keyWidth * 0.65;
+  const hBlack = 14;
+  
+  let svgContent = "";
+  let currentX = 0;
+  let whitePositions = {}; 
+  
+  // 1. Whites
+  for(let k=startKey; k<=endKey; k++) {
+    if(isWhite(k)) {
+      let isActive = activeKeys.includes(k);
+      let cls = isActive ? "key-white key-active" : "key-white";
+      svgContent += `<rect x="${currentX}" y="0" width="${keyWidth}" height="${hWhite}" class="${cls}" />`;
+      whitePositions[k] = currentX;
+      currentX += keyWidth;
+    }
+  }
+  
+  // 2. Blacks
+  for(let k=startKey; k<=endKey; k++) {
+    if(!isWhite(k)) {
+      let prevWhite = k - 1;
+      if(whitePositions[prevWhite] !== undefined) {
+        let isActive = activeKeys.includes(k);
+        let cls = isActive ? "key-black key-active" : "key-black";
+        let xPos = whitePositions[prevWhite] + keyWidth - (wBlack/2);
+        svgContent += `<rect x="${xPos}" y="0" width="${wBlack}" height="${hBlack}" class="${cls}" />`;
+      }
+    }
+  }
+
+  return `<svg width="40" height="24" viewBox="0 0 40 24" xmlns="http://www.w3.org/2000/svg">${svgContent}</svg>`;
+}
+
+/* APP LOGIC */
 const menu = document.getElementById('menu');
 const content = document.getElementById('lyrics');
 const coverBg = document.getElementById('cover-bg');
+const coverFlipContainer = document.getElementById('cover-flip-container');
 const coverLarge = document.getElementById('cover-large');
+const coverBackContent = document.getElementById('cover-back-content');
 const metaYear = document.getElementById('meta-year');
 const metaArtist = document.getElementById('meta-artist');
 const metaTitle = document.getElementById('meta-title');
 
+coverFlipContainer.addEventListener('click', function() {
+  this.classList.toggle('flipped');
+});
+
 function makeEntry(song, idx){
   const div = document.createElement('div');
   div.className = 'song-entry';
-  // image element
   const img = document.createElement('img');
   if(song.image){
     img.src = song.image;
@@ -361,33 +361,24 @@ function makeEntry(song, idx){
     img.classList.add('no-img');
     img.alt = 'kein Cover';
   }
-
   const meta = document.createElement('div');
   meta.className = 'meta';
-  
-  // Menü-Logik: .artist (fett) bekommt Titel
   const mainLine = document.createElement('div');
   mainLine.className = 'artist'; 
   mainLine.textContent = song.title || '';
-  
-  // Menü-Logik: .title (fein) bekommt Künstler
   const subLine = document.createElement('div');
   subLine.className = 'title';
   subLine.textContent = song.artist || '';
-  
   meta.appendChild(mainLine);
   meta.appendChild(subLine);
-
   div.appendChild(img);
   div.appendChild(meta);
-
-  // click -> show
   div.addEventListener('click', () => showSong(song));
   return div;
 }
 
 function showSong(song){
-  // set blurred background (cover-bg)
+  coverFlipContainer.classList.remove('flipped');
   if(song.image){
     coverBg.style.backgroundImage = `url("${song.image}")`;
     coverBg.style.opacity = "var(--bg-opacity)";
@@ -395,49 +386,56 @@ function showSong(song){
     coverBg.style.backgroundImage = '';
     coverBg.style.opacity = "0";
   }
-
-  // Content HTML: Nur Songtitel in H2
   let h = `<h2>${escapeHtml(song.title)}</h2>`;
-  
   if(song.copyright){
     h += `<span class="song-copyright">${escapeHtml(song.copyright)}</span>`;
   }
+  content.innerHTML = h + `<pre>${escapeHtml(song.text)}</pre>`;
 
-  const p = `<pre>${escapeHtml(song.text)}</pre>`;
-  content.innerHTML = h + p;
-
-  // set right cover
-  // Cover-Bereich bleibt original: Artist oben, Titel unten
   if(song.image){
     coverLarge.src = song.image;
     coverLarge.alt = `${song.artist} - ${song.title}`;
     coverLarge.classList.remove('no-img');
-    coverLarge.onerror = () => { coverLarge.classList.add('no-img'); coverLarge.removeAttribute('src'); coverLarge.alt='kein Cover'; };
   } else {
     coverLarge.removeAttribute('src');
     coverLarge.classList.add('no-img');
-    coverLarge.alt = 'kein Cover';
   }
 
-  // set meta
+  coverBackContent.innerHTML = "";
+  if(song.chords){
+    let html = "";
+    const renderSection = (label, chordNames) => {
+      let sectionHtml = `<div class="chord-section"><div class="chord-part-label">${label}</div><div class="chord-grid">`;
+      chordNames.forEach(cName => {
+        let keys = CHORD_MAP[cName] || [];
+        let svg = createPianoSVG(keys);
+        sectionHtml += `<div class="piano-box"><div class="piano-name">${cName}</div>${svg}</div>`;
+      });
+      sectionHtml += `</div></div>`;
+      return sectionHtml;
+    };
+    if(song.chords.verse) html += renderSection("Text Teil", song.chords.verse);
+    if(song.chords.chorus) html += renderSection("Refrain Teil", song.chords.chorus);
+    coverBackContent.innerHTML = html;
+  } else {
+    coverBackContent.innerHTML = '<span class="chord-placeholder">Klick mich für Akkorde...</span>';
+  }
+
   metaYear.textContent = song.year || '';
   metaArtist.textContent = song.artist || '';
   metaTitle.textContent = song.title || '';
 }
 
-/* escape text for HTML */
 function escapeHtml(str){
   if(!str) return '';
   return str.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
 }
 
-/* build menu entries */
 songs.forEach((s,i) => {
   const entry = makeEntry(s,i);
   menu.appendChild(entry);
 });
 
-/* show first song by default */
 if(songs.length) showSong(songs[0]);
 
 </script>
