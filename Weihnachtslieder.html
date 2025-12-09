@@ -53,13 +53,13 @@
   .meta{
     display:flex; flex-direction:column; min-width:0;
   }
-  /* .primary-text ist die obere, fette Zeile im Menü (jetzt Titel) */
-  .primary-text{
+  
+  /* HIER SIND DIE ORIGINAL CSS KLASSEN */
+  .artist{
     font-weight:700; font-size:15px; line-height:1; color:#fff;
     white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
   }
-  /* .secondary-text ist die untere, kursive Zeile im Menü (jetzt Artist) */
-  .secondary-text{
+  .title{
     font-style:italic; font-size:13px; color:#ddd; margin-top:4px;
     white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
   }
@@ -90,6 +90,7 @@
     margin:0 0 2px 0; 
     font-style:normal; font-size:22px; color:#111;
   }
+  /* Das Copyright Styling */
   .song-copyright {
     font-family: Inter, sans-serif;
     font-style: normal;
@@ -341,15 +342,16 @@ function makeEntry(song, idx){
   const meta = document.createElement('div');
   meta.className = 'meta';
   
-  // HIER IST DIE ÄNDERUNG FÜR DAS MENÜ:
-  // Primary Text (Fett/Weiß) ist jetzt der Titel
+  // HIER IST DIE LOGIK-ÄNDERUNG (Aber Styling bleibt ORIGINAL):
+  
+  // Wir nutzen die CSS-Klasse ".artist" (weiß/fett), aber füllen sie mit dem Song-Titel
   const mainLine = document.createElement('div');
-  mainLine.className = 'primary-text'; 
+  mainLine.className = 'artist'; 
   mainLine.textContent = song.title || '';
   
-  // Secondary Text (Kursiv/Grau) ist jetzt der Artist
+  // Wir nutzen die CSS-Klasse ".title" (hellgrau/kursiv), aber füllen sie mit dem Künstler
   const subLine = document.createElement('div');
-  subLine.className = 'secondary-text';
+  subLine.className = 'title';
   subLine.textContent = song.artist || '';
   
   meta.appendChild(mainLine);
