@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Weihnachtsfeier 12.12.2025</title>
+<title>Weihnachtslieder</title>
 <style>
   :root{
     --menu-w:320px;
@@ -36,7 +36,7 @@
     font-weight:600;color:var(--accent);
   }
 
-  /* VERSTECKTER LINK ZUR HAUPTÜBERSICHT */
+  /* LINK ZURÜCK ZUM HUB */
   #menu h1 a {
     color: inherit;
     text-decoration: none;
@@ -69,11 +69,12 @@
     display:flex; flex-direction:column; min-width:0;
   }
   
-  /* ORIGINAL STYLES */
+  /* DESIGN: Artist Klasse (Fett/Weiß) -> Wird für Titel genutzt */
   .artist{
     font-weight:700; font-size:15px; line-height:1; color:#fff;
     white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
   }
+  /* DESIGN: Title Klasse (Fein/Grau) -> Wird für Artist genutzt */
   .title{
     font-style:italic; font-size:13px; color:#ddd; margin-top:4px;
     white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
@@ -102,11 +103,10 @@
     font-style:italic; font-size:18px; line-height:1.6; color:var(--text-color);
   }
   
-  /* HIER IST DIE ÄNDERUNG FÜR DIE ÜBERSCHRIFT (H2) */
+  /* Einzeilige Überschrift */
   .lyrics h2{
     margin:0 0 2px 0; 
     font-style:normal; font-size:22px; color:#111;
-    /* Zwingt den Text in eine Zeile: */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -186,259 +186,196 @@
   </section>
 
 <script>
-/* ---------- SONGDATA (Auftritt 12.12.2025) ---------- */
+/* ---------- SONGDATA (Weihnachtslieder) ---------- */
 const songs = [
-  /* 1. Wir */
+  /* 1. Als Wenn Ein Engel.. */
   {
-    artist: "One Day in Rome",
-    title: "Wir",
-    year: "2025",
+    artist: "Sweet Velvet",
+    title: "Als Wenn Ein Engel..",
+    year: "2012",
     copyright: "© Xander Fox",
-    image: "Facetune_27-11-2025-22-42-01.jpeg", 
-    text: `Es ist gar nicht so leicht
-Dieses Leben zu verstehen
-Manchmal darum vielleicht
-Auch so schwer, einfach weiterzugehen
+    image: "IMG_1824.jpeg",
+    text: `Die Zeit Ist Nah
+So Lang Schon Hab Ich
+Es Herbei Gesehnt
 
-Wenn du denkst, durchzudrehen
-Weil du noch etwas spürst in dir
-Lass uns nicht lange reden
-Es gibt viel zu viel zu verlieren
+Wie Jedes Jahr
+Ein Lichterglanz Sich
+Auf Uns Niederlegt
 
-Wenn die Welt untergeht
-Bin ich bei dir
-Du bist alles, was zählt
-Was ich fühl in mir
-Darum lass uns nicht warten
-Warum sollen wir leiden, wofür?
-Das ist unsere Wahrheit
-Alles was wir noch haben, sind wir
+Dein Zauber Fällt Herab
+In Eine Welt Aus Sternenstaub
+In Diese Stille Heilige Nacht
+So Tief berührt die Liebe
+Die Mein Herz In Atem Hält
+Als Wenn Ein Engel
+Über Mir Wacht..
 
-Wir sind groß
-Wir sind schön, unerreicht
-Schwer zu greifen
-Denn wir schweben federleicht
+Starr Ruht Der See
+Und Alles Scheint Nun
+Wieder Still Zu Stehn
 
-Auch wenn sie uns versuchen
-zu verführen
-Keine Chance
-Wir sind viel zu wir dafür
+Hier Wo Ich Geh
+Klingt Leis Ein Lied
+Will Mir Von Dir Erzähln
 
-Wenn die Welt untergeht
-Bin ich bei dir
-Du bist alles, was zählt
-Was ich fühl in mir
-Darum lass uns nicht warten
-Warum sollen wir leiden, wofür?
-Das ist unsere Wahrheit
-Alles was wir noch haben, sind wir`
+Und Dort
+Am Waldesrand Ein Licht
+Es Scheint
+Als Ob Es Zu Mir Spricht
+Komm Laß
+Das Alte Leid Verwehn
+Auf Das
+Wir Bald Uns Wieder Sehn
+
+Dein Zauber Fällt Herab
+In Eine Welt Aus Sternenstaub
+In Diese Stille Heilige Nacht
+So Tief berührt die Liebe
+Die Mein Herz In Atem Hält
+Als Wenn Ein Engel
+Über Mir Wacht..
+
+Dein Zauber Fällt Herab
+In Eine Welt Aus Sternenstaub
+In Diese Stille Heilige Nacht
+So Tief berührt die Liebe
+Die Mein Herz In Atem Hält
+Als Wenn Ein Engel
+
+Über Mir Wacht..`
   },
 
-  /* 2. Kein Mensch */
+  /* 2. As Close As You Can Come */
   {
     artist: "One Day in Rome",
-    title: "Kein Mensch",
-    year: "2025",
+    title: "As Close As You Can Come",
+    year: "2017",
     copyright: "© Xander Fox",
-    image: "Snapshot 11-02-2024 02:00.jpeg",
-    text: `Es ist Nacht
-hier
-in deinen Armen
-Nimm meine Hand
-Denn du weißt genau
-dass ich auch
-nicht mehr anders kann
-Du musst nichts verstehen
-Ich bin schon lang in deinem Bann
-Darum bleib bei mir
-Komm und sieh mich
-nur noch einmal
-so an
+    image: "Facetune_14-12-2024-17-46-57.jpeg",
+    text: `When the Stars appear so near
+Seem to shine only for you
+Through the Trees so silently
+Give me company
+Come on, walk with me
 
-So als würden wir
-unsere Seelen inhalieren
-Ich will dich mit mir
-bis die Sterne explodieren
-Selbst wenn wir
-gemeinsam fallen
-Wer kommt mich heilen?
-Und ich weiß
-kein Mensch
-Würde
-So wie du mit mir sein
+Fill My Eyes
+with all the magic love and light
 
-Ich lieg wach
-hier
-in deinen Armen
-bin ich dir nah
-Grad hab ich noch
-von dir geträumt
-Und schon bist du wahr
-Und so wunderschön
-Das ist alles
-nicht mehr normal
-Halt dich bei mir fest
-Denn wir haben
-eh keine andere
-Wahl
+Give my heart
+the joy of Christmas for this night
 
-So als würden wir
-unsere Seelen inhalieren
-Ich will dich mit mir
-bis die Sterne explodieren
-Selbst wenn wir
-gemeinsam fallen
-Wer kommt mich heilen?
-Und ich weiß
-kein Mensch
-Würde
-So wie du mit mir sein`
+Hold on tight
+Because I want you to be close
+
+Within my arms
+As close as you can come
+
+Eyes illuminate from candle shine
+Share the holy tide with me
+On your heartbeat I can hear
+carol melodies
+Let it talk to me
+
+Fill My Eyes
+with all the magic love and light
+
+Give my heart
+the joy of Christmas for this night
+
+Hold on tight
+Because I want you to be close
+
+Within my arms
+As close as you can come`
   },
 
-  /* 3. Ein Leben Lang */
+  /* 3. Ohne Deine Liebe (KORRIGIERT) */
   {
     artist: "One Day in Rome",
-    title: "Ein Leben Lang",
+    title: "Ohne Deine Liebe",
     year: "2025",
     copyright: "© Xander Fox",
-    image: "Snapshot 11-02-2024 02:00.jpeg",
-    text: `So lang du denkst
-Wie schön es wär
-Lebst du dem Traum
-Nur hinterher
+    image: "Facetune_14-12-2024-17-46-57.jpeg",
+    text: `Kannst du mir erklären
+Was geschehen ist
+Musst du denn zerstören
+Was du mir noch bist
 
-Mit allen Wolken
-Willst du ziehen
-Deinem Gefühl
-Nie mehr widerstehen
+Warum bin ich einsam
+Du nicht mehr bei mir
+Wollten wir gemeinsam
+Nicht die Welt regieren
 
-Und wenn du fällst
-Nimm meine Hand
-Ich will mit dir gemeinsam gehen
-Ein Leben lang
-Durch diese Welt
-Hab keine Angst
-Hör auf dein Herz
-Und wir verlieren den Verstand
+Warum bin ich hier
+Wie lang muss ich bleiben
+Ohne deine Liebe
+Die mich still entführt
 
-Die Sehnsucht brennt
-Der Weg ist weit
-Bis in das Licht
-Trägt uns die Zeit
+Mein Herz ruft nach dir
+Kann dich nicht verschweigen
+Du wirst immer bleiben
+Irgendwo in mir
 
-Und irgendwann
-Wird um uns ein
-Himmel so hoch
-Und endlos sein
+Warum bist du so
+Fern und unerreichbar
+Da wohin du gehen willst
+Kann ich dich nicht sehen
 
-Und wenn du fällst
-Nimm meine Hand
-Ich will mit dir gemeinsam gehen
-Ein Leben lang
-Durch diese Welt
-Hab keine Angst
-Hör auf dein Herz
-Und wir verlieren den Verstand`
+Was hält uns am Leben
+Worin liegt der Sinn
+Sag mir doch weswegen
+Wir verloren sind
+
+Warum bin ich hier
+Wie lang muss ich bleiben
+Ohne deine Liebe
+Die mich still entführt
+
+Mein Herz ruft nach dir
+Kann dich nicht verschweigen
+Du wirst immer bleiben
+Irgendwo in mir`
   },
 
-  /* 4. Meine Heiligkeit (Einzeilig erzwungen via CSS) */
+  /* 4. So schön ist die Weihnacht */
   {
     artist: "One Day in Rome",
-    title: "Meine Heiligkeit (What If..?)",
+    title: "So schön ist die Weihnacht",
     year: "2025",
     copyright: "© Xander Fox",
-    image: "Snapshot 11-02-2024 02:00.jpeg",
-    text: `Wenn mein Herz sich nach dir sehnt
-So heiß, wie ein Feuer brennt
-Trag mich bis zu dir hinauf
-Weil ich an deine Liebe glaub
+    image: "Facetune_27-11-2025-22-54-43.jpeg",
+    text: `Wie aus einem Bild
+Nichts gleich dem Gefühl
+So still steht die Zeit hier
+Siehst du mich nur an
+Bin ich wie gebannt
+Fühl dich so nah bei mir
 
-Meine Heiligkeit bist du
-Hörst du, wie mein Herz dich ruft?
-Du bist alles, was es sucht
-Wenn ich fall, fängst du mich auf
-Du und ich, fühlst du es auch?
-Jetzt wird alles wieder gut
+Komm, mach dich bereit
+Es ist an der Zeit
+So schön ist die Weihnacht
+So wie jedes Jahr
+Wie es immer war
+Will ich es noch einmal
 
-Denn ich lieb dich unentwegt
-Wie ein Gefühl, das nie vergeht
-Wenn mich niemand mehr versteht
-Hilft deine Hand mir auf den Weg
+Wenn du mich nur hältst
+Versinkt diese Welt
+In friedliches Schweigen
+Dein Licht strahlt so hell
+Küss mich, denn es soll
+Für immer so bleiben
 
-Meine Heiligkeit bist du
-Hörst du, wie mein Herz dich ruft?
-Du bist alles, was es sucht
-Wenn ich fall, fängst du mich auf
-Du und ich, fühlst du es auch?
-Jetzt wird alles wieder gut`
-  },
+Komm, mach dich bereit
+Es ist an der Zeit
+So schön ist die Weihnacht
+So wie jedes Jahr
+Wie es immer war
+Will ich es noch einmal
 
-  /* 5. Words Of Love */
-  {
-    artist: "One Day in Rome",
-    title: "Words Of Love",
-    year: "2025",
-    copyright: "© Xander Fox",
-    image: "Snapshot 11-02-2024 02:00.jpeg",
-    text: `Tell Me Little Angel
-Won't You Kiss My Sensual Lips
-Close The Golden Gates Behind
-Come Move In Closer
-On A Mystic Trip
-We Feel So High
-
-Let's Call It Love
-Let's Fake It All
-Let It Seem
-Everything
-You Never Dream Of
-A Little Closer
-Until I Cut Your Wings
-Now You're Trapped In
-
-Say Do You Believe My Words Of Love
-I Am The Devil In Disguise
-Nothing Here Is Real
-You Just Forgot
-The Shock Will Make You Feel
-And Let You Fall
-
-Say Do You Receive My Words Of Hope
-Melodramatic Eyes Reply
-We Don't Really Need
-To Talk About
-Once You Sign And Seal It
-There Is No Way Out
-
-Tell Me Pretty Angel
-Won't You Take It By Surprise
-T-T- The Time Is Over
-Break Up The Shell And
-Mirror Me Inside
-Let All The Secrets Fly
-
-We Call It Love
-We Waste It All
-And We Want
-Everything
-We Hate To Deal With
-You Can't Conceal How Sweet
-The Sirens Sing
-The Beat Drops In....
-
-Say Do You Believe My Words Of Love
-I Am The Devil In Disguise
-Nothing Here Is Real
-You Just Forgot
-The Shock Will Make You Feel
-And Let You Fall
-
-Say Do You Receive My Words Of Hope
-Melodramatic Eyes Reply
-We Don't Really Need
-To Talk About
-Once You Sign And Seal It
-There Is No Way Out`
+So schön ist die Weihnacht..
+So schön ist die Weihnacht..
+So schön ist die Weihnacht..`
   }
 ];
 
