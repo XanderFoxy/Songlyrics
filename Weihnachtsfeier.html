@@ -127,7 +127,7 @@
 
   .chord-part-label {
     font-family: Inter, sans-serif; font-size: 10px; text-transform: uppercase;
-    color: #666; margin: 0 0 4px 0; letter-spacing: 1px; width:100%; text-align:left; border-bottom:1px solid #333;
+    color: #666; margin: 0 0 6px 0; letter-spacing: 1px; width:100%; text-align:left; border-bottom:1px solid #333;
   }
   .chord-grid {
     display: flex; 
@@ -206,7 +206,7 @@
   </section>
 
 <script>
-/* CHORD MAP */
+/* CHORD MAP - Die Zahlen sind Halbtöne ab einem tiefen C */
 const CHORD_MAP = {
   "C":  [0, 4, 7],      // C-Dur (Grundstellung)
   "Am": [9, 12, 16],    // A-Moll (Linear)
@@ -257,43 +257,70 @@ songs.sort((a,b) => {
   if(T1 < T2) return -1; if(T1 > T2) return 1; return 0;
 });
 
-/* HELPER: PIANO SVG - BLOCK ANKER LOGIK */
+/* HELPER: PIANO SVG - QUANTISIERUNG AUF BLOCK-ANFANG (C oder F) */
 function createPianoSVG(activeKeys) {
   let minKey = Math.min(...activeKeys);
   let maxKey = Math.max(...activeKeys);
   
-  // 1. Suche ANKER links: Das nächste C (2er Block Start) oder F (3er Block Start)
-  // Das garantiert, dass wir immer am Anfang einer Gruppe starten.
-  let startKey = minKey;
-  while(true) {
-    let noteInOctave = (startKey % 12 + 12) % 12;
-    if (noteInOctave === 0 || noteInOctave === 5) break; // 0=C, 5=F
-    startKey--;
+  /* QUANTISIERUNG (SNAP TO GRID):
+     Wir suchen den Beginn des Blocks, in dem die tiefste Note liegt.
+     Block 1 (2 Schwarze): C, D, E  (Indizes 0, 2, 4)
+     Block 2 (3 Schwarze): F, G, A, H (Indizes 5, 7, 9, 11)
+     
+     Logik:
+     Note % 12 ergibt die Position in der Oktave (0-11).
+     Ist es 0..4 (C..E) -> Snap auf 0 (C)
+     Ist es 5..11 (F..H) -> Snap auf 5 (F)
+  */
+  
+  let baseOctave = Math.floor(minKey / 12) * 12;
+  let noteInOctave = minKey % 12;
+  
+  let startKey;
+  if (noteInOctave <= 4) {
+    // Wir sind im Bereich C-E (2er Block) -> Starte bei C
+    startKey = baseOctave + 0;
+  } else {
+    // Wir sind im Bereich F-H (3er Block) -> Starte bei F
+    startKey = baseOctave + 5;
   }
   
-  // 2. Suche ENDE rechts:
-  // Wir schneiden direkt nach dem höchsten Ton ab (maxKey).
-  // Sonderfall: Wenn maxKey eine schwarze Taste ist, nehmen wir die weiße Taste danach mit,
-  // damit die schwarze Taste nicht am Rand "klebt", sondern ihren Platz hat.
+  /*
+     LÄNGE BESTIMMEN:
+     Wir zeichnen ab startKey solange weiße Tasten, bis wir:
+     1. Den höchsten Ton (maxKey) abgedeckt haben.
+     2. UND mindestens 7 weiße Tasten gezeichnet haben (damit man immer beide Blöcke sieht).
+  */
   
   const isWhite = (k) => [0,2,4,5,7,9,11].includes((k % 12 + 12) % 12);
   
-  let endKey = maxKey;
-  // Wenn maxKey schwarz ist, geh eins weiter zur nächsten weißen Taste.
-  if(!isWhite(endKey)) {
-    endKey++; 
-  }
-  
-  // Zähle weiße Tasten im Bereich (für die Breite)
+  let currentKey = startKey;
   let whiteCount = 0;
-  for(let k=startKey; k<=endKey; k++) {
-    if(isWhite(k)) whiteCount++;
+  
+  // Mindestens 7 weiße Tasten zeichnen
+  while (whiteCount < 7) {
+    if (isWhite(currentKey)) whiteCount++;
+    currentKey++;
   }
   
-  // Layout Maße (40px Breite fix)
-  // Falls sehr wenige Tasten (weniger als 3 weiße), erzwingen wir min 3 für die Optik?
-  // Nein, die Anker-Logik sorgt meist schon für genug Breite.
-  const keyWidth = 40 / Math.max(whiteCount, 3); 
+  // Wenn der Akkord weiter geht als diese 7 Tasten, erweitern wir
+  while (currentKey <= maxKey) {
+    if (isWhite(currentKey)) whiteCount++;
+    currentKey++;
+  }
+  
+  // Falls wir mitten in einem Block stehengeblieben sind (z.B. bei G#),
+  // runden wir auf die nächste weiße Taste auf, damit es sauber aussieht.
+  if (!isWhite(currentKey - 1)) { // Wenn letzte geprüfte Taste schwarz war
+     currentKey++; // Nimm die weiße danach dazu
+     whiteCount++;
+  }
+  
+  let endKey = currentKey - 1; // currentKey ist eins zu weit gelaufen
+  
+  
+  // LAYOUT
+  const keyWidth = 40 / whiteCount; 
   const hWhite = 24;
   const wBlack = keyWidth * 0.65;
   const hBlack = 14;
@@ -317,7 +344,6 @@ function createPianoSVG(activeKeys) {
   for(let k=startKey; k<=endKey; k++) {
     if(!isWhite(k)) {
       let prevWhite = k - 1;
-      // Nur zeichnen, wenn die weiße Taste davor auch im Bild ist
       if(whitePositions[prevWhite] !== undefined) {
         let isActive = activeKeys.includes(k);
         let cls = isActive ? "key-black key-active" : "key-black";
