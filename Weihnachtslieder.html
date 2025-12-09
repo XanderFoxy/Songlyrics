@@ -53,11 +53,13 @@
   .meta{
     display:flex; flex-direction:column; min-width:0;
   }
-  .artist{
+  /* .primary-text ist die obere, fette Zeile im Menü (jetzt Titel) */
+  .primary-text{
     font-weight:700; font-size:15px; line-height:1; color:#fff;
     white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
   }
-  .title{
+  /* .secondary-text ist die untere, kursive Zeile im Menü (jetzt Artist) */
+  .secondary-text{
     font-style:italic; font-size:13px; color:#ddd; margin-top:4px;
     white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
   }
@@ -85,10 +87,9 @@
     font-style:italic; font-size:18px; line-height:1.6; color:var(--text-color);
   }
   .lyrics h2{
-    margin:0 0 2px 0; /* Weniger Abstand nach unten für Copyright */
+    margin:0 0 2px 0; 
     font-style:normal; font-size:22px; color:#111;
   }
-  /* Neue Klasse für das Copyright im Textbereich */
   .song-copyright {
     font-family: Inter, sans-serif;
     font-style: normal;
@@ -165,82 +166,7 @@
 <script>
 /* ---------- SONGDATA ---------- */
 const songs = [
-  /* Song 1: As Close As You Can Come */
-  {
-    artist: "One Day in Rome",
-    title: "As Close As You Can Come",
-    year: "2017",
-    copyright: "© Xander Fox",
-    image: "Facetune_14-12-2024-17-46-57.jpeg",
-    text: `When the Stars appear so near
-Seem to shine only for you
-Through the Trees so silently
-Give me company
-Come on, walk with me
-
-Fill My Eyes
-with all the magic
-love and light
-
-Give my heart
-the joy of Christmas
-for this night
-
-Hold on tight
-Because I want you
-to be close
-
-Within my arms
-As close as you can come
-
-Eyes illuminate from candle shine
-Share the holy tide with me
-On your heartbeat I can hear
-carol melodies
-Let it talk to me`
-  },
-
-  /* Song 2: So schön ist die Weihnacht */
-  {
-    artist: "One Day in Rome",
-    title: "So schön ist die Weihnacht",
-    year: "2025",
-    copyright: "© Xander Fox",
-    image: "Facetune_27-11-2025-22-54-43.jpeg",
-    text: `Wie aus einem Bild
-Nichts gleich dem Gefühl
-So still steht die Zeit hier
-Siehst du mich nur an
-Bin ich wie gebannt
-Fühl dich so nah bei mir
-
-Komm, mach dich bereit
-Es ist an der Zeit
-So schön ist die Weihnacht
-So wie jedes Jahr
-Wie es immer war
-Will ich es noch einmal
-
-Wenn du mich nur hältst
-Versinkt diese Welt
-In friedliches Schweigen
-Dein Licht strahlt so hell
-Küss mich, denn es soll
-Für immer so bleiben
-
-Komm, mach dich bereit
-Es ist an der Zeit
-So schön ist die Weihnacht
-So wie jedes Jahr
-Wie es immer war
-Will ich es noch einmal
-
-So schön ist die Weihnacht..
-So schön ist die Weihnacht..
-So schön ist die Weihnacht..`
-  },
-
-  /* Song 3: Als Wenn Ein Engel.. (Sweet Velvet) */
+  /* Song 1 */
   {
     artist: "Sweet Velvet",
     title: "Als Wenn Ein Engel..",
@@ -296,19 +222,96 @@ Die Mein Herz In Atem Hält
 Als Wenn Ein Engel
 
 Über Mir Wacht..`
+  },
+
+  /* Song 2 */
+  {
+    artist: "One Day in Rome",
+    title: "As Close As You Can Come",
+    year: "2017",
+    copyright: "© Xander Fox",
+    image: "Facetune_14-12-2024-17-46-57.jpeg",
+    text: `When the Stars appear so near
+Seem to shine only for you
+Through the Trees so silently
+Give me company
+Come on, walk with me
+
+Fill My Eyes
+with all the magic
+love and light
+
+Give my heart
+the joy of Christmas
+for this night
+
+Hold on tight
+Because I want you
+to be close
+
+Within my arms
+As close as you can come
+
+Eyes illuminate from candle shine
+Share the holy tide with me
+On your heartbeat I can hear
+carol melodies
+Let it talk to me`
+  },
+
+  /* Song 3 */
+  {
+    artist: "One Day in Rome",
+    title: "So schön ist die Weihnacht",
+    year: "2025",
+    copyright: "© Xander Fox",
+    image: "Facetune_27-11-2025-22-54-43.jpeg",
+    text: `Wie aus einem Bild
+Nichts gleich dem Gefühl
+So still steht die Zeit hier
+Siehst du mich nur an
+Bin ich wie gebannt
+Fühl dich so nah bei mir
+
+Komm, mach dich bereit
+Es ist an der Zeit
+So schön ist die Weihnacht
+So wie jedes Jahr
+Wie es immer war
+Will ich es noch einmal
+
+Wenn du mich nur hältst
+Versinkt diese Welt
+In friedliches Schweigen
+Dein Licht strahlt so hell
+Küss mich, denn es soll
+Für immer so bleiben
+
+Komm, mach dich bereit
+Es ist an der Zeit
+So schön ist die Weihnacht
+So wie jedes Jahr
+Wie es immer war
+Will ich es noch einmal
+
+So schön ist die Weihnacht..
+So schön ist die Weihnacht..
+So schön ist die Weihnacht..`
   }
 ];
 
-/* ---------- SORT alphabetisch nach Artist, dann Title ---------- */
+/* ---------- SORT alphabetisch nach TITLE, dann Artist ---------- */
 songs.sort((a,b) => {
-  const A = (a.artist || "").toLowerCase();
-  const B = (b.artist || "").toLowerCase();
-  if(A < B) return -1;
-  if(A > B) return 1;
   const T1 = (a.title || "").toLowerCase();
   const T2 = (b.title || "").toLowerCase();
   if(T1 < T2) return -1;
   if(T1 > T2) return 1;
+  
+  const A = (a.artist || "").toLowerCase();
+  const B = (b.artist || "").toLowerCase();
+  if(A < B) return -1;
+  if(A > B) return 1;
+  
   return 0;
 });
 
@@ -337,14 +340,20 @@ function makeEntry(song, idx){
 
   const meta = document.createElement('div');
   meta.className = 'meta';
-  const artist = document.createElement('div');
-  artist.className = 'artist';
-  artist.textContent = song.artist || '';
-  const title = document.createElement('div');
-  title.className = 'title';
-  title.textContent = song.title || '';
-  meta.appendChild(artist);
-  meta.appendChild(title);
+  
+  // HIER IST DIE ÄNDERUNG FÜR DAS MENÜ:
+  // Primary Text (Fett/Weiß) ist jetzt der Titel
+  const mainLine = document.createElement('div');
+  mainLine.className = 'primary-text'; 
+  mainLine.textContent = song.title || '';
+  
+  // Secondary Text (Kursiv/Grau) ist jetzt der Artist
+  const subLine = document.createElement('div');
+  subLine.className = 'secondary-text';
+  subLine.textContent = song.artist || '';
+  
+  meta.appendChild(mainLine);
+  meta.appendChild(subLine);
 
   div.appendChild(img);
   div.appendChild(meta);
@@ -365,9 +374,9 @@ function showSong(song){
   }
 
   // Build the content HTML
+  // Im Lyric-Bereich bleibt es: Artist - Title
   let h = `<h2>${escapeHtml(song.artist)} — ${escapeHtml(song.title)}</h2>`;
   
-  // Wenn ein Copyright-Eintrag existiert, füge ihn direkt unter der Überschrift ein
   if(song.copyright){
     h += `<span class="song-copyright">${escapeHtml(song.copyright)}</span>`;
   }
@@ -376,6 +385,7 @@ function showSong(song){
   content.innerHTML = h + p;
 
   // set right cover
+  // Im Cover-Bereich bleibt es: Artist oben, Titel unten
   if(song.image){
     coverLarge.src = song.image;
     coverLarge.alt = `${song.artist} - ${song.title}`;
