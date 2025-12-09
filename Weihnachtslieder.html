@@ -11,9 +11,9 @@
     --cover-side:260px;
     --bg-opacity:0.08;
     --bg-blur:6px;
-    --accent:#4a90e2; 
-    --menu-bg:#003366; 
-    --menu-hover:#004080;
+    --accent:#f3c64a; /* GOLD */
+    --menu-bg:#111; /* SCHWARZ */
+    --menu-hover:#2b2b2b;
     --text-color:#222;
   }
 
@@ -218,7 +218,7 @@ const CHORD_MAP = {
   "Gm": [7, 10, 14],
 };
 
-/* HELPER: INTELLIGENTES PIANO SVG - BLOCK ANKER LOGIK (Funktionen für das Klavier) */
+/* HELPER: INTELLIGENTES PIANO SVG - BLOCK ANKER LOGIK */
 function createPianoSVG(activeKeys) {
   let minKey = activeKeys.length > 0 ? Math.min(...activeKeys) : 0;
   let maxKey = activeKeys.length > 0 ? Math.max(...activeKeys) : 0;
