@@ -11,8 +11,8 @@
     --cover-side:260px;
     --bg-opacity:0.08;
     --bg-blur:6px;
-    --accent:#4a90e2;
-    --menu-bg:#003366;
+    --accent:#4a90e2; 
+    --menu-bg:#003366; 
     --menu-hover:#004080;
     --text-color:#222;
   }
@@ -218,7 +218,7 @@ const CHORD_MAP = {
   "Gm": [7, 10, 14],
 };
 
-/* HELPER: INTELLIGENTES PIANO SVG - BLOCK ANKER LOGIK */
+/* HELPER: INTELLIGENTES PIANO SVG - BLOCK ANKER LOGIK (Funktionen für das Klavier) */
 function createPianoSVG(activeKeys) {
   let minKey = activeKeys.length > 0 ? Math.min(...activeKeys) : 0;
   let maxKey = activeKeys.length > 0 ? Math.max(...activeKeys) : 0;
@@ -331,14 +331,109 @@ songs.sort((a,b) => {
   if(T1 < T2) return -1; if(T1 > T2) return 1; return 0;
 });
 
-/* APP LOGIC - REST BLEIBT GLEICH */
 
-songs.forEach((s,i) => {
-  const entry = makeEntry(s,i);
-  menu.appendChild(entry);
-});
+function showSong(song){
+  const coverBg = document.getElementById('cover-bg');
+  const coverFlipContainer = document.getElementById('cover-flip-container');
+  const coverLarge = document.getElementById('cover-large');
+  const content = document.getElementById('lyrics');
+  const metaYear = document.getElementById('meta-year');
+  const metaArtist = document.getElementById('meta-artist');
+  const metaTitle = document.getElementById('meta-title');
+  const coverBackContent = document.getElementById('cover-back-content');
 
-if(songs.length) showSong(songs[0]);
+  coverFlipContainer.classList.remove('flipped');
+  if(song.image){
+    coverBg.style.backgroundImage = `url("${song.image}")`;
+    coverBg.style.opacity = "var(--bg-opacity)";
+  } else {
+    coverBg.style.backgroundImage = '';
+    coverBg.style.opacity = "0";
+  }
+  let h = `<h2>${escapeHtml(song.title)}</h2>`;
+  if(song.copyright){
+    h += `<span class="song-copyright">${escapeHtml(song.copyright)}</span>`;
+  }
+  content.innerHTML = h + `<pre>${escapeHtml(song.text)}</pre>`;
+
+  if(song.image){
+    coverLarge.src = song.image;
+    coverLarge.alt = `${song.artist} - ${song.title}`;
+    coverLarge.classList.remove('no-img');
+  } else {
+    coverLarge.removeAttribute('src');
+    coverLarge.classList.add('no-img');
+  }
+
+  coverBackContent.innerHTML = "";
+  if(song.chords){
+    let html = "";
+    const renderSection = (label, chordNames) => {
+      let sectionHtml = `<div class="chord-section"><div class="chord-part-label">${label}</div><div class="chord-grid">`;
+      chordNames.forEach(cName => {
+        let keys = CHORD_MAP[cName] || [];
+        let svg = createPianoSVG(keys);
+        sectionHtml += `<div class="piano-box"><div class="piano-name">${cName}</div>${svg}</div>`;
+      });
+      sectionHtml += `</div></div>`;
+      return sectionHtml;
+    };
+    if(song.chords.verse) html += renderSection("Text Teil", song.chords.verse);
+    if(song.chords.chorus) html += renderSection("Refrain Teil", song.chords.chorus);
+    coverBackContent.innerHTML = html;
+  } else {
+    coverBackContent.innerHTML = '<span class="chord-placeholder">Akkorde nicht verfügbar</span>';
+  }
+
+  metaYear.textContent = song.year || '';
+  metaArtist.textContent = song.artist || '';
+  metaTitle.textContent = song.title || '';
+}
+
+function makeEntry(song, idx){
+  const div = document.createElement('div');
+  div.className = 'song-entry';
+  const img = document.createElement('img');
+  if(song.image){
+    img.src = song.image;
+    img.alt = `${song.artist} - ${song.title}`;
+    img.onerror = () => { img.classList.add('no-img'); img.removeAttribute('src'); img.alt = 'kein Cover'; img.textContent = 'NO IMG'; };
+  } else {
+    img.classList.add('no-img');
+    img.alt = 'kein Cover';
+  }
+  const meta = document.createElement('div');
+  meta.className = 'meta';
+  const mainLine = document.createElement('div');
+  mainLine.className = 'artist'; 
+  mainLine.textContent = song.title || '';
+  const subLine = document.createElement('div');
+  subLine.className = 'title';
+  subLine.textContent = song.artist || '';
+  meta.appendChild(mainLine);
+  meta.appendChild(subLine);
+  div.appendChild(img);
+  div.appendChild(meta);
+  div.addEventListener('click', () => showSong(song));
+  return div;
+}
+
+function escapeHtml(str){
+  if(!str) return '';
+  return str.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
+}
+
+// Wrapping script logic in window.onload to fix display issues
+window.onload = function() {
+  const menu = document.getElementById('menu');
+
+  songs.forEach((s,i) => {
+    const entry = makeEntry(s,i);
+    menu.appendChild(entry);
+  });
+
+  if(songs.length) showSong(songs[0]);
+};
 
 </script>
 
