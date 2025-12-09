@@ -124,15 +124,72 @@
     font-style:italic; font-size:17px; color:#222;
   }
 
-  /* cover aside */
+  /* cover aside & FLIP ANIMATION STYLES */
   .cover-aside{
     width:var(--cover-side); flex:0 0 var(--cover-side); display:flex; flex-direction:column; gap:12px;
     align-items:center;
   }
-  .cover-aside img{
-    width:220px; height:220px; object-fit:cover; border-radius:8px; background:#ddd;
+  
+  /* Der 3D-Container */
+  .flip-container {
+    perspective: 1000px;
+    width: 220px;
+    height: 220px;
+    cursor: pointer;
+  }
+  /* Das bewegliche Element */
+  .flipper {
+    transition: 0.6s;
+    transform-style: preserve-3d;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius:8px;
     box-shadow:0 8px 30px rgba(0,0,0,0.12);
   }
+  /* Wenn die Klasse "flipped" hinzugefügt wird, drehe dich */
+  .flip-container.flipped .flipper {
+    transform: rotateY(180deg);
+  }
+  /* Vorder- und Rückseite */
+  .front, .back {
+    backface-visibility: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius:8px;
+    overflow: hidden;
+  }
+  /* Vorderseite (das Bild) */
+  .front {
+    z-index: 2;
+    transform: rotateY(0deg);
+  }
+  .front img {
+    width: 100%; height: 100%; object-fit: cover; background:#ddd;
+  }
+  /* Rückseite (die Akkorde) */
+  .back {
+    transform: rotateY(180deg);
+    background: var(--menu-bg); /* Dunkler Hintergrund wie das Menü */
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+    text-align: center;
+  }
+  /* Styling für den Akkord-Inhalt */
+  .chord-section { margin-bottom: 15px; }
+  .chord-label { color: var(--accent); font-weight: 600; font-size: 14px; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px;}
+  .chord-list { font-family: Inter, sans-serif; font-size: 18px; font-weight: 700;}
+  .chord-placeholder { color: #999; font-style: italic; }
+
+
   .meta-right{
     width:100%; text-align:center; color:#333; font-family:Inter, Arial, sans-serif;
   }
@@ -144,7 +201,7 @@
   @media (max-width:900px){
     :root{--menu-w:240px; --cover-side:180px;}
     .lyrics{font-size:16px;}
-    .cover-aside img{width:160px;height:160px;}
+    .flip-container{width:160px;height:160px;}
   }
   @media (max-width:700px){
     body{flex-direction:column;}
@@ -174,7 +231,18 @@
       </article>
 
       <aside class="cover-aside" id="cover-aside" aria-hidden="true">
-        <img id="cover-large" alt="Cover" class="no-img" />
+        
+        <div class="flip-container" id="cover-flip-container">
+          <div class="flipper">
+            <div class="front">
+              <img id="cover-large" alt="Cover" class="no-img" />
+            </div>
+            <div class="back" id="cover-back-content">
+              <span class="chord-placeholder">Akkorde folgen...</span>
+            </div>
+          </div>
+        </div>
+
         <div class="meta-right">
           <div class="year" id="meta-year"></div>
           <div class="artist" id="meta-artist"></div>
@@ -187,50 +255,51 @@
 <script>
 /* ---------- SONGDATA (Auftritt 12.12.2025) ---------- */
 const songs = [
-  /* 1. Wir */
+  /* 1. Ein Leben Lang */
   {
     artist: "One Day in Rome",
-    title: "Wir",
+    title: "Ein Leben Lang",
     year: "2025",
     copyright: "© Xander Fox",
-    image: "Facetune_27-11-2025-22-42-01.jpeg", 
-    text: `Es ist gar nicht so leicht
-Dieses Leben zu verstehen
-Manchmal darum vielleicht
-Auch so schwer, einfach weiterzugehen
+    image: "Snapshot 11-02-2024 02:00.jpeg",
+    /* Noch keine Akkorde hier */
+    text: `So lang du denkst
+Wie schön es wär
+Lebst du dem Traum
+Nur hinterher
 
-Wenn du denkst, durchzudrehen
-Weil du noch etwas spürst in dir
-Lass uns nicht lange reden
-Es gibt viel zu viel zu verlieren
+Mit allen Wolken
+Willst du ziehen
+Deinem Gefühl
+Nie mehr widerstehen
 
-Wenn die Welt untergeht
-Bin ich bei dir
-Du bist alles, was zählt
-Was ich fühl in mir
-Darum lass uns nicht warten
-Warum sollen wir leiden, wofür?
-Das ist unsere Wahrheit
-Alles was wir noch haben, sind wir
+Und wenn du fällst
+Nimm meine Hand
+Ich will mit dir gemeinsam gehen
+Ein Leben lang
+Durch diese Welt
+Hab keine Angst
+Hör auf dein Herz
+Und wir verlieren den Verstand
 
-Wir sind groß
-Wir sind schön, unerreicht
-Schwer zu greifen
-Denn wir schweben federleicht
+Die Sehnsucht brennt
+Der Weg ist weit
+Bis in das Licht
+Trägt uns die Zeit
 
-Auch wenn sie uns versuchen
-zu verführen
-Keine Chance
-Wir sind viel zu wir dafür
+Und irgendwann
+Wird um uns ein
+Himmel so hoch
+Und endlos sein
 
-Wenn die Welt untergeht
-Bin ich bei dir
-Du bist alles, was zählt
-Was ich fühl in mir
-Darum lass uns nicht warten
-Warum sollen wir leiden, wofür?
-Das ist unsere Wahrheit
-Alles was wir noch haben, sind wir`
+Und wenn du fällst
+Nimm meine Hand
+Ich will mit dir gemeinsam gehen
+Ein Leben lang
+Durch diese Welt
+Hab keine Angst
+Hör auf dein Herz
+Und wir verlieren den Verstand`
   },
 
   /* 2. Kein Mensch */
@@ -294,53 +363,7 @@ Würde
 So wie du mit mir sein`
   },
 
-  /* 3. Ein Leben Lang */
-  {
-    artist: "One Day in Rome",
-    title: "Ein Leben Lang",
-    year: "2025",
-    copyright: "© Xander Fox",
-    image: "Snapshot 11-02-2024 02:00.jpeg",
-    text: `So lang du denkst
-Wie schön es wär
-Lebst du dem Traum
-Nur hinterher
-
-Mit allen Wolken
-Willst du ziehen
-Deinem Gefühl
-Nie mehr widerstehen
-
-Und wenn du fällst
-Nimm meine Hand
-Ich will mit dir gemeinsam gehen
-Ein Leben lang
-Durch diese Welt
-Hab keine Angst
-Hör auf dein Herz
-Und wir verlieren den Verstand
-
-Die Sehnsucht brennt
-Der Weg ist weit
-Bis in das Licht
-Trägt uns die Zeit
-
-Und irgendwann
-Wird um uns ein
-Himmel so hoch
-Und endlos sein
-
-Und wenn du fällst
-Nimm meine Hand
-Ich will mit dir gemeinsam gehen
-Ein Leben lang
-Durch diese Welt
-Hab keine Angst
-Hör auf dein Herz
-Und wir verlieren den Verstand`
-  },
-
-  /* 4. Meine Heiligkeit (What If..?) */
+  /* 3. Meine Heiligkeit (What If..?) */
   {
     artist: "One Day in Rome",
     title: "Meine Heiligkeit (What If..?)",
@@ -372,13 +395,18 @@ Du und ich, fühlst du es auch?
 Jetzt wird alles wieder gut`
   },
 
-  /* 5. Ohne Deine Liebe (NEU HINZUGEFÜGT) */
+  /* 4. Ohne Deine Liebe (MIT AKKORDEN) */
   {
     artist: "One Day in Rome",
     title: "Ohne Deine Liebe",
     year: "2025",
     copyright: "© Xander Fox",
-    image: "Facetune_14-12-2024-17-46-57.jpeg", /* Aus Weihnachtslieder übernommen */
+    image: "Facetune_14-12-2024-17-46-57.jpeg",
+    /* HIER SIND DIE NEUEN AKKORD-DATEN */
+    chords: {
+      verse: "C — Am — F — G",
+      chorus: "Am — F — C — G"
+    },
     text: `Kannst du mir erklären
 Was geschehen ist
 Musst du denn zerstören
@@ -418,6 +446,52 @@ Mein Herz ruft nach dir
 Kann dich nicht verschweigen
 Du wirst immer bleiben
 Irgendwo in mir`
+  },
+
+  /* 5. Wir */
+  {
+    artist: "One Day in Rome",
+    title: "Wir",
+    year: "2025",
+    copyright: "© Xander Fox",
+    image: "Facetune_27-11-2025-22-42-01.jpeg", 
+    text: `Es ist gar nicht so leicht
+Dieses Leben zu verstehen
+Manchmal darum vielleicht
+Auch so schwer, einfach weiterzugehen
+
+Wenn du denkst, durchzudrehen
+Weil du noch etwas spürst in dir
+Lass uns nicht lange reden
+Es gibt viel zu viel zu verlieren
+
+Wenn die Welt untergeht
+Bin ich bei dir
+Du bist alles, was zählt
+Was ich fühl in mir
+Darum lass uns nicht warten
+Warum sollen wir leiden, wofür?
+Das ist unsere Wahrheit
+Alles was wir noch haben, sind wir
+
+Wir sind groß
+Wir sind schön, unerreicht
+Schwer zu greifen
+Denn wir schweben federleicht
+
+Auch wenn sie uns versuchen
+zu verführen
+Keine Chance
+Wir sind viel zu wir dafür
+
+Wenn die Welt untergeht
+Bin ich bei dir
+Du bist alles, was zählt
+Was ich fühl in mir
+Darum lass uns nicht warten
+Warum sollen wir leiden, wofür?
+Das ist unsere Wahrheit
+Alles was wir noch haben, sind wir`
   },
 
   /* 6. Words Of Love */
@@ -508,15 +582,24 @@ songs.sort((a,b) => {
 const menu = document.getElementById('menu');
 const content = document.getElementById('lyrics');
 const coverBg = document.getElementById('cover-bg');
+// Neue Referenzen für die Flip-Struktur
+const coverFlipContainer = document.getElementById('cover-flip-container');
 const coverLarge = document.getElementById('cover-large');
+const coverBackContent = document.getElementById('cover-back-content');
+// Meta Referenzen
 const metaYear = document.getElementById('meta-year');
 const metaArtist = document.getElementById('meta-artist');
 const metaTitle = document.getElementById('meta-title');
 
+/* EVENT LISTENER FÜR DEN FLIP */
+coverFlipContainer.addEventListener('click', function() {
+  this.classList.toggle('flipped');
+});
+
+
 function makeEntry(song, idx){
   const div = document.createElement('div');
   div.className = 'song-entry';
-  // image element
   const img = document.createElement('img');
   if(song.image){
     img.src = song.image;
@@ -529,30 +612,27 @@ function makeEntry(song, idx){
 
   const meta = document.createElement('div');
   meta.className = 'meta';
-  
-  // Menü-Logik: .artist (fett) = TITEL
   const mainLine = document.createElement('div');
   mainLine.className = 'artist'; 
   mainLine.textContent = song.title || '';
-  
-  // Menü-Logik: .title (fein) = KÜNSTLER
   const subLine = document.createElement('div');
   subLine.className = 'title';
   subLine.textContent = song.artist || '';
   
   meta.appendChild(mainLine);
   meta.appendChild(subLine);
-
   div.appendChild(img);
   div.appendChild(meta);
 
-  // click -> show
   div.addEventListener('click', () => showSong(song));
   return div;
 }
 
 function showSong(song){
-  // set blurred background (cover-bg)
+  // 1. Reset Flip State (immer erst Vorderseite zeigen beim Songwechsel)
+  coverFlipContainer.classList.remove('flipped');
+
+  // 2. Background & Lyrics (wie bisher)
   if(song.image){
     coverBg.style.backgroundImage = `url("${song.image}")`;
     coverBg.style.opacity = "var(--bg-opacity)";
@@ -560,19 +640,14 @@ function showSong(song){
     coverBg.style.backgroundImage = '';
     coverBg.style.opacity = "0";
   }
-
-  // Content HTML: Nur Songtitel in H2
   let h = `<h2>${escapeHtml(song.title)}</h2>`;
-  
   if(song.copyright){
     h += `<span class="song-copyright">${escapeHtml(song.copyright)}</span>`;
   }
-
   const p = `<pre>${escapeHtml(song.text)}</pre>`;
   content.innerHTML = h + p;
 
-  // set right cover
-  // Cover-Bereich bleibt original: Artist oben, Titel unten
+  // 3. Cover Image (Vorderseite)
   if(song.image){
     coverLarge.src = song.image;
     coverLarge.alt = `${song.artist} - ${song.title}`;
@@ -584,25 +659,40 @@ function showSong(song){
     coverLarge.alt = 'kein Cover';
   }
 
-  // set meta
+  // 4. Cover Backside (Akkorde füllen)
+  if(song.chords){
+    // Wenn Akkorde vorhanden sind (wie bei "Ohne Deine Liebe")
+    coverBackContent.innerHTML = `
+      <div class="chord-section">
+        <div class="chord-label">Text Teil</div>
+        <div class="chord-list">${song.chords.verse}</div>
+      </div>
+      <div class="chord-section">
+        <div class="chord-label">Refrain Teil</div>
+        <div class="chord-list">${song.chords.chorus}</div>
+      </div>
+    `;
+  } else {
+    // Platzhalter für andere Songs
+    coverBackContent.innerHTML = '<span class="chord-placeholder">Akkorde folgen...</span>';
+  }
+
+  // 5. Meta Info
   metaYear.textContent = song.year || '';
   metaArtist.textContent = song.artist || '';
   metaTitle.textContent = song.title || '';
 }
 
-/* escape text for HTML */
 function escapeHtml(str){
   if(!str) return '';
   return str.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
 }
 
-/* build menu entries */
 songs.forEach((s,i) => {
   const entry = makeEntry(s,i);
   menu.appendChild(entry);
 });
 
-/* show first song by default */
 if(songs.length) showSong(songs[0]);
 
 </script>
