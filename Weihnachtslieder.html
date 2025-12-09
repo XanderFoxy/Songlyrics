@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Songtexte</title>
+<style>
+  :root{
+    --menu-w:320px;
+    --thumb-size:56px;
+    --cover-side:260px;
+    --bg-opacity:0.08;
+    --bg-blur:6px;
+    --accent:#f3c64a;
+    --menu-bg:#111;
+    --menu-hover:#2b2b2b;
+    --text-color:#222;
+  }
+
+  html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;}
+  body{display:flex;background:#efefef;color:var(--text-color);height:100vh;overflow:hidden;}
+
+  /* LEFT MENU */
+  #menu{
+    width:var(--menu-w);
+    background:var(--menu-bg);
+    color:#fff;
+    box-sizing:border-box;
+    padding:14px;
+    overflow:auto;
+    border-right:1px solid rgba(255,255,255,0.03);
+  }
+  #menu h1{
+    margin:0 0 10px 0;font-size:18px;letter-spacing:0.3px;
+    font-weight:600;color:var(--accent);
+  }
+  .song-entry{
+    display:flex;
+    gap:10px;
+    align-items:center;
+    padding:8px;
+    border-radius:8px;
+    margin-bottom:8px;
+    cursor:pointer;
+    transition:background .15s, transform .06s;
+  }
+  .song-entry:hover{ background:var(--menu-hover); transform:translateY(-1px); }
+  .song-entry img{
+    width:var(--thumb-size); height:var(--thumb-size);
+    object-fit:cover; border-radius:6px; background:#666;
+    flex:0 0 auto;
+  }
+  .meta{
+    display:flex; flex-direction:column; min-width:0;
+  }
+  .artist{
+    font-weight:700; font-size:15px; line-height:1; color:#fff;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .title{
+    font-style:italic; font-size:13px; color:#ddd; margin-top:4px;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+
+  /* CONTENT AREA */
+  #content-wrap{flex:1;position:relative;display:flex;overflow:hidden;}
+  /* background cover (blurred + faint) */
+  #cover-bg{
+    position:absolute;inset:0;z-index:0;pointer-events:none;
+    background-size:cover;background-position:center;
+    opacity:var(--bg-opacity);filter:blur(var(--bg-blur));
+    transition:background-image .25s ease, opacity .2s ease;
+  }
+  /* content panel */
+  #content{
+    position:relative; z-index:1; padding:28px; overflow:auto; display:flex;
+    gap:22px; align-items:flex-start; box-sizing:border-box; width:100%;
+  }
+  .lyrics{
+    flex:1 1 auto; max-width:calc(100% - var(--cover-side) - 40px);
+    background:rgba(255,255,255,0.8); padding:22px; border-radius:10px;
+    box-shadow:0 6px 20px rgba(0,0,0,0.08);
+    backdrop-filter: blur(2px);
+    font-family: "Cormorant Garamond", "Georgia", serif;
+    font-style:italic; font-size:18px; line-height:1.6; color:var(--text-color);
+  }
+  .lyrics h2{
+    margin:0 0 10px 0; font-style:normal; font-size:22px; color:#111;
+  }
+  .lyrics pre{
+    margin:0; white-space:pre-wrap; word-break:break-word; font-family:inherit;
+    font-style:italic; font-size:17px; color:#222;
+  }
+
+  /* cover aside */
+  .cover-aside{
+    width:var(--cover-side); flex:0 0 var(--cover-side); display:flex; flex-direction:column; gap:12px;
+    align-items:center;
+  }
+  .cover-aside img{
+    width:220px; height:220px; object-fit:cover; border-radius:8px; background:#ddd;
+    box-shadow:0 8px 30px rgba(0,0,0,0.12);
+  }
+  .meta-right{
+    width:100%; text-align:center; color:#333; font-family:Inter, Arial, sans-serif;
+  }
+  .meta-right .year{font-weight:600;color:#111;}
+  .meta-right .artist{font-weight:700;font-size:16px;color:#111;}
+  .meta-right .title{font-style:italic;color:#333;font-size:15px;margin-top:4px;}
+
+  /* responsive */
+  @media (max-width:900px){
+    :root{--menu-w:240px; --cover-side:180px;}
+    .lyrics{font-size:16px;}
+    .cover-aside img{width:160px;height:160px;}
+  }
+  @media (max-width:700px){
+    body{flex-direction:column;}
+    #menu{width:100%; height:220px; border-right:none; border-bottom:1px solid rgba(0,0,0,0.06);}
+    #content-wrap{height:calc(100vh - 220px);}
+    .lyrics{max-width:100%;}
+    .cover-aside{display:none;}
+  }
+
+  /* small helper for missing image (transparent placeholder) */
+  .no-img{background:linear-gradient(135deg,#ddd,#eee);display:flex;align-items:center;justify-content:center;color:#999;font-weight:600;font-size:12px;}
+</style>
+</head>
+<body>
+
+  <nav id="menu" aria-label="Songliste">
+    <h1>Songtexte</h1>
+    </nav>
+
+  <section id="content-wrap">
+    <div id="cover-bg" aria-hidden="true"></div>
+
+    <main id="content">
+      <article class="lyrics" id="lyrics">
+        <h2>Wähle einen Song</h2>
+        <pre>Wähle links im Menü ein Lied aus — der Text erscheint hier, mit dem Cover leicht als Hintergrund und groß rechts daneben.</pre>
+      </article>
+
+      <aside class="cover-aside" id="cover-aside" aria-hidden="true">
+        <img id="cover-large" alt="Cover" class="no-img" />
+        <div class="meta-right">
+          <div class="year" id="meta-year"></div>
+          <div class="artist" id="meta-artist"></div>
+          <div class="title" id="meta-title"></div>
+        </div>
+      </aside>
+    </main>
+  </section>
+
+<script>
+/* ---------- SONGDATA ---------- */
+const songs = [
+  /* Song 1: As Close As You Can Come */
+  {
+    artist: "Meine Songs",
+    title: "As Close As You Can Come",
+    year: "2024",
+    /* Das CSS (object-fit:cover) schneidet das Bild automatisch quadratisch zu */
+    image: "Facetune_14-12-2024-17-46-57.jpeg",
+    text: `When the Stars appear so near
+Seem to shine only for you
+Through the Trees so silently
+Give me company
+Come on, walk with me
+
+Fill My Eyes
+with all the magic
+love and light
+
+Give my heart
+the joy of Christmas
+for this night
+
+Hold on tight
+Because I want you
+to be close
+
+Within my arms
+As close as you can come
+
+Eyes illuminate from candle shine
+Share the holy tide with me
+On your heartbeat I can hear
+carol melodies
+Let it talk to me`
+  },
+
+  /* Song 2: So schön ist die Weihnacht */
+  {
+    artist: "Meine Songs",
+    title: "So schön ist die Weihnacht",
+    year: "2025",
+    image: "Facetune_27-11-2025-22-54-43.jpeg",
+    text: `So schön ist die Weihnacht..
+Wie aus einem Bild
+Nichts gleicht dem Gefühl
+So still steht die Zeit
+
+Hier siehst du mich nur an
+Bin ich wie gebannt
+Fühl dich so nah bei mir
+
+Komm, mach dich bereit
+Es ist an der Zeit
+So schön ist die Weihnacht
+So wie jedes Jahr
+Wie es immer war
+Will ich es noch einmal
+
+Wenn du mich nur hältst
+Versinkt diese Welt
+In friedliches Schweigen
+Dein Licht strahlt so hell
+Küss mich, denn es soll
+Für immer so bleiben
+
+Komm, mach dich bereit
+Es ist an der Zeit
+So schön ist die Weihnacht
+So wie jedes Jahr
+Wie es immer war
+Will ich es noch einmal
+
+So schön ist die Weihnacht..
+So schön ist die Weihnacht..
+So schön ist die Weihnacht..`
+  }
+];
+
+/* ---------- SORT alphabetisch nach Artist, dann Title ---------- */
+songs.sort((a,b) => {
+  const A = (a.artist || "").toLowerCase();
+  const B = (b.artist || "").toLowerCase();
+  if(A < B) return -1;
+  if(A > B) return 1;
+  const T1 = (a.title || "").toLowerCase();
+  const T2 = (b.title || "").toLowerCase();
+  if(T1 < T2) return -1;
+  if(T1 > T2) return 1;
+  return 0;
+});
+
+/* ---------- build menu ---------- */
+const menu = document.getElementById('menu');
+const content = document.getElementById('lyrics');
+const coverBg = document.getElementById('cover-bg');
+const coverLarge = document.getElementById('cover-large');
+const metaYear = document.getElementById('meta-year');
+const metaArtist = document.getElementById('meta-artist');
+const metaTitle = document.getElementById('meta-title');
+
+function makeEntry(song, idx){
+  const div = document.createElement('div');
+  div.className = 'song-entry';
+  // image element
+  const img = document.createElement('img');
+  if(song.image){
+    img.src = song.image;
+    img.alt = `${song.artist} - ${song.title}`;
+    img.onerror = () => { img.classList.add('no-img'); img.removeAttribute('src'); img.alt = 'kein Cover'; img.textContent = 'NO IMG'; };
+  } else {
+    img.classList.add('no-img');
+    img.alt = 'kein Cover';
+  }
+
+  const meta = document.createElement('div');
+  meta.className = 'meta';
+  const artist = document.createElement('div');
+  artist.className = 'artist';
+  artist.textContent = song.artist || '';
+  const title = document.createElement('div');
+  title.className = 'title';
+  title.textContent = song.title || '';
+  meta.appendChild(artist);
+  meta.appendChild(title);
+
+  div.appendChild(img);
+  div.appendChild(meta);
+
+  // click -> show
+  div.addEventListener('click', () => showSong(song));
+  return div;
+}
+
+function showSong(song){
+  // set blurred background (cover-bg)
+  if(song.image){
+    coverBg.style.backgroundImage = `url("${song.image}")`;
+    coverBg.style.opacity = "var(--bg-opacity)";
+  } else {
+    coverBg.style.backgroundImage = '';
+    coverBg.style.opacity = "0";
+  }
+
+  // fill lyrics area
+  const h = `<h2>${escapeHtml(song.artist)} — ${escapeHtml(song.title)}</h2>`;
+  const p = `<pre>${escapeHtml(song.text)}</pre>`;
+  content.innerHTML = h + p;
+
+  // set right cover
+  if(song.image){
+    coverLarge.src = song.image;
+    coverLarge.alt = `${song.artist} - ${song.title}`;
+    coverLarge.classList.remove('no-img');
+    coverLarge.onerror = () => { coverLarge.classList.add('no-img'); coverLarge.removeAttribute('src'); coverLarge.alt='kein Cover'; };
+  } else {
+    coverLarge.removeAttribute('src');
+    coverLarge.classList.add('no-img');
+    coverLarge.alt = 'kein Cover';
+  }
+
+  // set meta
+  metaYear.textContent = song.year || '';
+  metaArtist.textContent = song.artist || '';
+  metaTitle.textContent = song.title || '';
+}
+
+/* escape text for HTML */
+function escapeHtml(str){
+  if(!str) return '';
+  return str.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
+}
+
+/* build menu entries */
+songs.forEach((s,i) => {
+  const entry = makeEntry(s,i);
+  menu.appendChild(entry);
+});
+
+/* show first song by default */
+if(songs.length) showSong(songs[0]);
+
+</script>
+
+</body>
+</html>
