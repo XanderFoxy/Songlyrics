@@ -109,38 +109,43 @@
   .front { z-index: 2; transform: rotateY(0deg); }
   .front img { width: 100%; height: 100%; object-fit: cover; background:#ddd; }
   
-  /* RÜCKSEITE STYLE (PIANO) */
+  /* RÜCKSEITE STYLE (PIANO MINIATUREN) */
   .back {
     transform: rotateY(180deg);
-    background: #1a1a1a; /* Dunkelgrau für guten Kontrast */
+    background: #1a1a1a;
     color: #fff;
     display: flex; flex-direction: column; 
-    overflow-y: auto; /* Falls es viele Akkorde sind */
+    /* Wir zentrieren den Inhalt vertikal, damit die zwei Zeilen schön mittig sind */
+    justify-content: center; 
+    align-items: center;
     padding: 10px; box-sizing: border-box; text-align: center;
   }
   
-  /* Scrollbar verstecken für cleaner Look */
-  .back::-webkit-scrollbar { width: 4px; }
-  .back::-webkit-scrollbar-thumb { background: #444; border-radius: 2px; }
-
+  .chord-section { 
+    width: 100%; margin-bottom: 12px; 
+  }
   .chord-part-label {
-    font-family: Inter, sans-serif; font-size: 12px; text-transform: uppercase;
-    color: #888; margin: 10px 0 5px 0; letter-spacing: 1px; width:100%; text-align:left; border-bottom:1px solid #333;
+    font-family: Inter, sans-serif; font-size: 10px; text-transform: uppercase;
+    color: #666; margin: 0 0 4px 0; letter-spacing: 1px; width:100%; text-align:left; border-bottom:1px solid #333;
   }
   .chord-grid {
-    display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+    display: flex; 
+    flex-flow: row nowrap; /* Zwingt alles in eine Zeile */
+    justify-content: space-between; /* Verteilt den Platz gleichmäßig */
+    align-items: flex-end;
+    gap: 2px;
   }
   .piano-box {
     display: flex; flex-direction: column; align-items: center;
-    background: #2a2a2a; padding: 5px; border-radius: 6px;
+    /* Kein Background mehr nötig bei Miniaturen, sieht cleaner aus */
   }
   .piano-name {
-    font-family: Inter, sans-serif; font-weight: 700; font-size: 14px;
-    color: var(--accent); margin-bottom: 3px;
+    font-family: Inter, sans-serif; font-weight: 700; font-size: 10px; /* Sehr kleine Schrift */
+    color: var(--accent); margin-bottom: 2px; line-height: 1;
   }
   /* SVG Styles */
-  .key-white { fill: #fff; stroke: #ccc; stroke-width: 1px; }
-  .key-black { fill: #000; stroke: #000; stroke-width: 1px; }
+  .key-white { fill: #fff; stroke: #ccc; stroke-width: 0.5px; } /* Dünnere Linien */
+  .key-black { fill: #000; stroke: #000; stroke-width: 0.5px; }
   .key-active { fill: var(--accent) !important; }
 
   .chord-placeholder { color: #666; font-style: italic; margin-top: auto; margin-bottom: auto;}
@@ -202,87 +207,41 @@
   </section>
 
 <script>
-/* CHORD DEFINITIONS (Indizes für C-Dur Tonleiter auf 1 Oktave + ein paar Tasten)
-   0=C, 1=C#, 2=D, 3=D#, 4=E, 5=F, 6=F#, 7=G, 8=G#, 9=A, 10=A#, 11=B
-*/
+/* CHORD MAP */
 const CHORD_MAP = {
   "C":  [0, 4, 7],      // C-E-G
-  "Am": [9, 0, 4],      // A-C-E (Inversion/Wrap visually simple)
-  "F":  [5, 9, 0],      // F-A-C
-  "G":  [7, 11, 2]      // G-H-D
+  "Am": [9, 0, 4],      // A-C-E (Wrapped)
+  "F":  [5, 9, 0],      // F-A-C (Wrapped)
+  "G":  [7, 11, 2]      // G-H-D (Wrapped)
 };
 
 /* ---------- SONGDATA (Auftritt 12.12.2025) ---------- */
 const songs = [
-  /* 1. Wir */
   {
-    artist: "One Day in Rome",
-    title: "Wir",
-    year: "2025",
-    copyright: "© Xander Fox",
-    image: "Facetune_27-11-2025-22-42-01.jpeg", 
-    text: `Es ist gar nicht so leicht... (gekürzt für Übersicht im Code, wird voll angezeigt)` // Den vollen Text hast du ja
+    artist: "One Day in Rome", title: "Wir", year: "2025", copyright: "© Xander Fox", image: "Facetune_27-11-2025-22-42-01.jpeg",
+    text: `Es ist gar nicht so leicht... (gekürzt)` // Voller Text ist im System
   },
-  /* ... Ich füge hier der Kürze halber nur den relevanten Song mit Akkorden ein und deine anderen Songs ... */
-  
-  /* 4. Ohne Deine Liebe */
+  /* Ohne Deine Liebe - MIT MINITATUREN */
   {
     artist: "One Day in Rome",
     title: "Ohne Deine Liebe",
     year: "2025",
     copyright: "© Xander Fox",
     image: "Facetune_14-12-2024-17-46-57.jpeg",
-    // HIER SIND DIE AKKORDE ZUM GENERIEREN
     chords: {
       verse: ["C", "Am", "F", "G"],
       chorus: ["Am", "F", "C", "G"]
     },
-    text: `Kannst du mir erklären
-Was geschehen ist
-Musst du denn zerstören
-Was du mir noch bist
-
-Warum bin ich einsam
-Du nicht mehr bei mir
-Wollten wir gemeinsam
-Nicht die Welt regieren
-
-Warum bin ich hier
-Wie lang muss ich bleiben
-Ohne deine Liebe
-Die mich still entführt
-
-Mein Herz ruft nach dir
-Kann dich nicht verschweigen
-Du wirst immer bleiben
-Irgendwo in mir
-
-Warum bist du so
-Fern und unerreichbar
-Da wohin du gehen willst
-Kann ich dich nicht sehen
-
-Was hält uns am Leben
-Worin liegt der Sinn
-Sag mir doch weswegen
-Wir verloren sind
-
-Warum bin ich hier
-Wie lang muss ich bleiben
-Ohne deine Liebe
-Die mich still entführt
-
-Mein Herz ruft nach dir
-Kann dich nicht verschweigen
-Du wirst immer bleiben
-Irgendwo in mir`
+    text: `Kannst du mir erklären...` // Voller Text ist im System
   }
 ];
 
-/* Fülle die Songs-Liste mit den restlichen Songs aus deinem vorherigen Update auf */
-/* Ich füge sie hier der Vollständigkeit halber wieder ein, damit du copy-pasten kannst: */
+/* DER REST DER SONGS WIRD HIER WIEDER AUFGEFÜLLT (Damit du Copy-Pasten kannst) */
+// Ich packe hier die vollständige Liste rein, damit du keine Lücken hast:
 
-songs.unshift(
+songs.length = 0; // Reset für sauberen Aufbau
+
+songs.push(
   {
     artist: "One Day in Rome", title: "Wir", year: "2025", copyright: "© Xander Fox", image: "Facetune_27-11-2025-22-42-01.jpeg",
     text: `Es ist gar nicht so leicht\nDieses Leben zu verstehen\nManchmal darum vielleicht\nAuch so schwer, einfach weiterzugehen\n\nWenn du denkst, durchzudrehen\nWeil du noch etwas spürst in dir\nLass uns nicht lange reden\nEs gibt viel zu viel zu verlieren\n\nWenn die Welt untergeht\nBin ich bei dir\nDu bist alles, was zählt\nWas ich fühl in mir\nDarum lass uns nicht warten\nWarum sollen wir leiden, wofür?\nDas ist unsere Wahrheit\nAlles was wir noch haben, sind wir\n\nWir sind groß\nWir sind schön, unerreicht\nSchwer zu greifen\nDenn wir schweben federleicht\n\nAuch wenn sie uns versuchen\nzu verführen\nKeine Chance\nWir sind viel zu wir dafür\n\nWenn die Welt untergeht\nBin ich bei dir\nDu bist alles, was zählt\nWas ich fühl in mir\nDarum lass uns nicht warten\nWarum sollen wir leiden, wofür?\nDas ist unsere Wahrheit\nAlles was wir noch haben, sind wir`
@@ -299,61 +258,51 @@ songs.unshift(
     artist: "One Day in Rome", title: "Meine Heiligkeit (What If..?)", year: "2025", copyright: "© Xander Fox", image: "Snapshot 11-02-2024 02:00.jpeg",
     text: `Wenn mein Herz sich nach dir sehnt\nSo heiß, wie ein Feuer brennt\nTrag mich bis zu dir hinauf\nWeil ich an deine Liebe glaub\n\nMeine Heiligkeit bist du\nHörst du, wie mein Herz dich ruft?\nDu bist alles, was es sucht\nWenn ich fall, fängst du mich auf\nDu und ich, fühlst du es auch?\nJetzt wird alles wieder gut\n\nDenn ich lieb dich unentwegt\nWie ein Gefühl, das nie vergeht\nWenn mich niemand mehr versteht\nHilft deine Hand mir auf den Weg\n\nMeine Heiligkeit bist du\nHörst du, wie mein Herz dich ruft?\nDu bist alles, was es sucht\nWenn ich fall, fängst du mich auf\nDu und ich, fühlst du es auch?\nJetzt wird alles wieder gut`
   },
-  /* Ohne Deine Liebe ist oben schon definiert, ich muss aufpassen, es nicht doppelt zu machen. 
-     Daher nehme ich den Block von oben und schiebe ihn in der Sortierung richtig. */
+  {
+    artist: "One Day in Rome", title: "Ohne Deine Liebe", year: "2025", copyright: "© Xander Fox", image: "Facetune_14-12-2024-17-46-57.jpeg",
+    chords: {
+      verse: ["C", "Am", "F", "G"],
+      chorus: ["Am", "F", "C", "G"]
+    },
+    text: `Kannst du mir erklären\nWas geschehen ist\nMusst du denn zerstören\nWas du mir noch bist\n\nWarum bin ich einsam\nDu nicht mehr bei mir\nWollten wir gemeinsam\nNicht die Welt regieren\n\nWarum bin ich hier\nWie lang muss ich bleiben\nOhne deine Liebe\nDie mich still entführt\n\nMein Herz ruft nach dir\nKann dich nicht verschweigen\nDu wirst immer bleiben\nIrgendwo in mir\n\nWarum bist du so\nFern und unerreichbar\nDa wohin du gehen willst\nKann ich dich nicht sehen\n\nWas hält uns am Leben\nWorin liegt der Sinn\nSag mir doch weswegen\nWir verloren sind\n\nWarum bin ich hier\nWie lang muss ich bleiben\nOhne deine Liebe\nDie mich still entführt\n\nMein Herz ruft nach dir\nKann dich nicht verschweigen\nDu wirst immer bleiben\nIrgendwo in mir`
+  },
   {
     artist: "One Day in Rome", title: "Words Of Love", year: "2025", copyright: "© Xander Fox", image: "Snapshot 11-02-2024 02:00.jpeg",
     text: `Tell Me Little Angel\nWon't You Kiss My Sensual Lips\nClose The Golden Gates Behind\nCome Move In Closer\nOn A Mystic Trip\nWe Feel So High\n\nLet's Call It Love\nLet's Fake It All\nLet It Seem\nEverything\nYou Never Dream Of\nA Little Closer\nUntil I Cut Your Wings\nNow You're Trapped In\n\nSay Do You Believe My Words Of Love\nI Am The Devil In Disguise\nNothing Here Is Real\nYou Just Forgot\nThe Shock Will Make You Feel\nAnd Let You Fall\n\nSay Do You Receive My Words Of Hope\nMelodramatic Eyes Reply\nWe Don't Really Need\nTo Talk About\nOnce You Sign And Seal It\nThere Is No Way Out\n\nTell Me Pretty Angel\nWon't You Take It By Surprise\nT-T- The Time Is Over\nBreak Up The Shell And\nMirror Me Inside\nLet All The Secrets Fly\n\nWe Call It Love\nWe Waste It All\nAnd We Want\nEverything\nWe Hate To Deal With\nYou Can't Conceal How Sweet\nThe Sirens Sing\nThe Beat Drops In....\n\nSay Do You Believe My Words Of Love\nI Am The Devil In Disguise\nNothing Here Is Real\nYou Just Forgot\nThe Shock Will Make You Feel\nAnd Let You Fall\n\nSay Do You Receive My Words Of Hope\nMelodramatic Eyes Reply\nWe Don't Really Need\nTo Talk About\nOnce You Sign And Seal It\nThere Is No Way Out`
   }
 );
 
-// Array aufräumen (Ohne Deine Liebe war oben separat, wir müssen sortieren)
-// Das Array `songs` enthält jetzt alle.
-
-/* SORTIERUNG */
 songs.sort((a,b) => {
-  const T1 = (a.title || "").toLowerCase();
-  const T2 = (b.title || "").toLowerCase();
-  if(T1 < T2) return -1; if(T1 > T2) return 1;
-  return 0;
+  const T1 = (a.title || "").toLowerCase(); const T2 = (b.title || "").toLowerCase();
+  if(T1 < T2) return -1; if(T1 > T2) return 1; return 0;
 });
 
-/* ---------- HELPER: DRAW PIANO SVG ---------- */
+/* HELPER: PIANO SVG MINIATURES */
 function createPianoSVG(activeKeys) {
-  // Wir zeichnen 14 weiße Tasten (C bis H, C bis H). 
-  // Das reicht für einfache Akkorde.
-  // 0=C, 2=D, 4=E, 5=F, 7=G, 9=A, 11=H
-  // Black keys sind dazwischen.
+  // Miniatur Größe: 48 x 28
+  const wWhite = 48/7; // ca 6.8px
+  const hWhite = 28;
+  const wBlack = 4;
+  const hBlack = 16;
   
-  const wWhite = 14; 
-  const hWhite = 60;
-  const wBlack = 10;
-  const hBlack = 35;
+  const whiteMap = [0,1,2,3,4,5,6]; // einfache Sequenz x-pos
   
-  // Mapping Index (0-11) -> x Position (ungefähr)
-  // Whites: 0, 2, 4, 5, 7, 9, 11 (Indices) -> 0, 1, 2, 3, 4, 5, 6 (Positionen)
-  const whiteMap = {0:0, 2:1, 4:2, 5:3, 7:4, 9:5, 11:6};
+  let svg = `<svg width="48" height="28" viewBox="0 0 48 28" xmlns="http://www.w3.org/2000/svg">`;
   
-  let svg = `<svg width="100" height="60" viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg">`;
-  
-  // 1. Draw White Keys (7 keys)
-  for (let i=0; i<7; i++) {
-    // Check if this white key is active.
-    // Reverse lookup: which note index is this position?
-    // 0->0(C), 1->2(D), 2->4(E), 3->5(F), 4->7(G), 5->9(A), 6->11(B)
-    let noteIdx = [0,2,4,5,7,9,11][i];
-    let isActive = activeKeys.includes(noteIdx) || activeKeys.includes(noteIdx+12); // +12 für wrapped chords
+  // Whites: 0,2,4,5,7,9,11
+  const whiteIndices = [0,2,4,5,7,9,11];
+  whiteIndices.forEach((n, i) => {
+    let isActive = activeKeys.includes(n) || activeKeys.includes(n+12);
     let cls = isActive ? "key-white key-active" : "key-white";
     svg += `<rect x="${i*wWhite}" y="0" width="${wWhite}" height="${hWhite}" class="${cls}" />`;
-  }
+  });
   
-  // 2. Draw Black Keys (Offsets)
-  // C#(1) at x~10, D#(3) at x~24, F#(6) at x~52, G#(8) at x~66, A#(10) at x~80
+  // Blacks: 1,3,6,8,10 -> Pos approx relative to whites
+  // offsets: between 0-1, 1-2, 3-4, 4-5, 5-6
   const blackPos = [
-    {idx: 1, x: 9}, {idx: 3, x: 23}, // C#, D#
-    {idx: 6, x: 51}, {idx: 8, x: 65}, {idx: 10, x: 79} // F#, G#, A#
+    {idx:1, x:wWhite*0.7}, {idx:3, x:wWhite*1.7},
+    {idx:6, x:wWhite*3.7}, {idx:8, x:wWhite*4.7}, {idx:10, x:wWhite*5.7}
   ];
-  
   blackPos.forEach(k => {
     let isActive = activeKeys.includes(k.idx) || activeKeys.includes(k.idx+12);
     let cls = isActive ? "key-black key-active" : "key-black";
@@ -364,8 +313,7 @@ function createPianoSVG(activeKeys) {
   return svg;
 }
 
-
-/* ---------- APP LOGIC ---------- */
+/* APP LOGIC */
 const menu = document.getElementById('menu');
 const content = document.getElementById('lyrics');
 const coverBg = document.getElementById('cover-bg');
@@ -376,7 +324,6 @@ const metaYear = document.getElementById('meta-year');
 const metaArtist = document.getElementById('meta-artist');
 const metaTitle = document.getElementById('meta-title');
 
-// FLIP Listener
 coverFlipContainer.addEventListener('click', function() {
   this.classList.toggle('flipped');
 });
@@ -410,10 +357,7 @@ function makeEntry(song, idx){
 }
 
 function showSong(song){
-  // Reset Flip
   coverFlipContainer.classList.remove('flipped');
-
-  // Background
   if(song.image){
     coverBg.style.backgroundImage = `url("${song.image}")`;
     coverBg.style.opacity = "var(--bg-opacity)";
@@ -421,15 +365,12 @@ function showSong(song){
     coverBg.style.backgroundImage = '';
     coverBg.style.opacity = "0";
   }
-
-  // Text
   let h = `<h2>${escapeHtml(song.title)}</h2>`;
   if(song.copyright){
     h += `<span class="song-copyright">${escapeHtml(song.copyright)}</span>`;
   }
   content.innerHTML = h + `<pre>${escapeHtml(song.text)}</pre>`;
 
-  // Front Image
   if(song.image){
     coverLarge.src = song.image;
     coverLarge.alt = `${song.artist} - ${song.title}`;
@@ -439,44 +380,26 @@ function showSong(song){
     coverLarge.classList.add('no-img');
   }
 
-  // Back Content (Chords?)
-  coverBackContent.innerHTML = ""; // Clear old content
-  
+  coverBackContent.innerHTML = "";
   if(song.chords){
-    // GENERIERE PIANO GRIFFBILDER
     let html = "";
-    
-    // Helper für eine Section (Verse oder Chorus)
     const renderSection = (label, chordNames) => {
-      let sectionHtml = `<div class="chord-part-label">${label}</div><div class="chord-grid">`;
-      
+      let sectionHtml = `<div class="chord-section"><div class="chord-part-label">${label}</div><div class="chord-grid">`;
       chordNames.forEach(cName => {
-        // Welcher Tasten-Array?
         let keys = CHORD_MAP[cName] || [];
-        // SVG bauen
         let svg = createPianoSVG(keys);
-        
-        sectionHtml += `
-          <div class="piano-box">
-            <div class="piano-name">${cName}</div>
-            ${svg}
-          </div>
-        `;
+        sectionHtml += `<div class="piano-box"><div class="piano-name">${cName}</div>${svg}</div>`;
       });
-      sectionHtml += `</div>`;
+      sectionHtml += `</div></div>`;
       return sectionHtml;
     };
-
     if(song.chords.verse) html += renderSection("Text Teil", song.chords.verse);
     if(song.chords.chorus) html += renderSection("Refrain Teil", song.chords.chorus);
-    
     coverBackContent.innerHTML = html;
-    
   } else {
-    coverBackContent.innerHTML = '<span class="chord-placeholder">Akkorde folgen...</span>';
+    coverBackContent.innerHTML = '<span class="chord-placeholder">Klick mich für Akkorde...</span>';
   }
 
-  // Meta
   metaYear.textContent = song.year || '';
   metaArtist.textContent = song.artist || '';
   metaTitle.textContent = song.title || '';
