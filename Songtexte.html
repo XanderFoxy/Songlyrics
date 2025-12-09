@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Meine Playlisten</title>
+<style>
+  :root{
+    --menu-w:320px;
+    --thumb-size:56px;
+    --cover-side:260px;
+    --bg-opacity:0.08;
+    --bg-blur:6px;
+    --accent:#f3c64a;
+    --menu-bg:#111;
+    --menu-hover:#2b2b2b;
+    --text-color:#222;
+  }
+
+  html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;}
+  body{display:flex;background:#efefef;color:var(--text-color);height:100vh;overflow:hidden;}
+
+  /* LEFT MENU */
+  #menu{
+    width:var(--menu-w);
+    background:var(--menu-bg);
+    color:#fff;
+    box-sizing:border-box;
+    padding:14px;
+    overflow:auto;
+    border-right:1px solid rgba(255,255,255,0.03);
+  }
+  
+  #menu h1{
+    margin:0 0 10px 0;font-size:18px;letter-spacing:0.3px;
+    font-weight:600;color:var(--accent);
+  }
+
+  .song-entry{
+    display:flex;
+    gap:10px;
+    align-items:center;
+    padding:8px;
+    border-radius:8px;
+    margin-bottom:8px;
+    cursor:pointer;
+    transition:background .15s, transform .06s;
+  }
+  .song-entry:hover{ background:var(--menu-hover); transform:translateY(-1px); }
+  .song-entry img{
+    width:var(--thumb-size); height:var(--thumb-size);
+    object-fit:cover; border-radius:6px; background:#666;
+    flex:0 0 auto;
+  }
+  .meta{
+    display:flex; flex-direction:column; min-width:0;
+  }
+  
+  /* STYLES FÜR PLAYLISTEN (angepasst an Artist/Title Logic) */
+  .playlist-title{
+    font-weight:700; font-size:15px; line-height:1; color:#fff;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .playlist-desc{
+    font-style:italic; font-size:13px; color:#ddd; margin-top:4px;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+
+  /* CONTENT AREA */
+  #content-wrap{flex:1;position:relative;display:flex;overflow:hidden;}
+  /* background cover (blurred + faint) */
+  #cover-bg{
+    position:absolute;inset:0;z-index:0;pointer-events:none;
+    background-size:cover;background-position:center;
+    opacity:var(--bg-opacity);filter:blur(var(--bg-blur));
+    transition:background-image .25s ease, opacity .2s ease;
+  }
+  /* content panel */
+  #content{
+    position:relative; z-index:1; padding:28px; overflow:auto; display:flex;
+    gap:22px; align-items:flex-start; box-sizing:border-box; width:100%;
+  }
+  
+  /* Container für die Beschreibung */
+  .info-box{
+    flex:1 1 auto; max-width:calc(100% - var(--cover-side) - 40px);
+    background:rgba(255,255,255,0.8); padding:30px; border-radius:10px;
+    box-shadow:0 6px 20px rgba(0,0,0,0.08);
+    backdrop-filter: blur(2px);
+    display:flex; flex-direction:column; gap:20px; align-items:flex-start;
+  }
+
+  .info-box h2{
+    margin:0; font-family: Inter, sans-serif; font-weight:700; font-size:28px; color:#111;
+  }
+  .info-box p{
+    margin:0; font-family: "Cormorant Garamond", serif; font-style:italic; 
+    font-size:20px; line-height:1.5; color:#444;
+  }
+
+  /* Der Button zum Öffnen der Liste */
+  .open-btn {
+    display:inline-block;
+    background: var(--menu-bg);
+    color: var(--accent);
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 16px;
+    transition: transform 0.1s, background 0.2s;
+    margin-top:10px;
+  }
+  .open-btn:hover {
+    background: #000;
+    transform: translateY(-2px);
+  }
+
+  /* cover aside */
+  .cover-aside{
+    width:var(--cover-side); flex:0 0 var(--cover-side); display:flex; flex-direction:column; gap:12px;
+    align-items:center;
+  }
+  .cover-aside img{
+    width:220px; height:220px; object-fit:cover; border-radius:8px; background:#ddd;
+    box-shadow:0 8px 30px rgba(0,0,0,0.12);
+  }
+  
+  /* responsive */
+  @media (max-width:900px){
+    :root{--menu-w:240px; --cover-side:180px;}
+    .cover-aside img{width:160px;height:160px;}
+  }
+  @media (max-width:700px){
+    body{flex-direction:column;}
+    #menu{width:100%; height:220px; border-right:none; border-bottom:1px solid rgba(0,0,0,0.06);}
+    #content-wrap{height:calc(100vh - 220px);}
+    .info-box{max-width:100%;}
+    .cover-aside{display:none;}
+  }
+
+  .no-img{background:linear-gradient(135deg,#ddd,#eee);display:flex;align-items:center;justify-content:center;color:#999;font-weight:600;font-size:12px;}
+</style>
+</head>
+<body>
+
+  <nav id="menu" aria-label="Playlisten">
+    <h1>Playlisten</h1>
+    </nav>
+
+  <section id="content-wrap">
+    <div id="cover-bg" aria-hidden="true"></div>
+
+    <main id="content">
+      
+      <article class="info-box" id="info-box">
+        <h2>Wähle eine Sammlung</h2>
+        <p>Wähle links im Menü eine Kategorie aus, um zu den entsprechenden Songtexten zu gelangen.</p>
+      </article>
+
+      <aside class="cover-aside" id="cover-aside" aria-hidden="true">
+        <img id="cover-large" alt="Cover" class="no-img" />
+      </aside>
+    </main>
+  </section>
+
+<script>
+/* ---------- DATA: DEINE KATEGORIEN ---------- */
+const playlists = [
+  {
+    title: "TikTok live Songtexte",
+    subtitle: "Hauptübersicht",
+    desc: "Die komplette Sammlung aller Songs für meine TikTok Live-Streams. Hier findest du die Klassiker von Al Bano bis Yungblud.",
+    link: "index.html", 
+    /* Ich nutze hier ein Bild aus deiner alten Liste als Platzhalter für den Mix */
+    image: "IMG_7278.jpeg" 
+  },
+  {
+    title: "Weihnachtslieder",
+    subtitle: "X-Mas Special",
+    desc: "Meine eigenen Weihnachtssongs und besinnliche Texte für die Feiertage. One Day in Rome & Sweet Velvet.",
+    link: "Weihnachtslieder",
+    /* Das Bild vom Weihnachtssong */
+    image: "Facetune_14-12-2024-17-46-57.jpeg"
+  }
+];
+
+/* ---------- BUILD MENU ---------- */
+const menu = document.getElementById('menu');
+const infoBox = document.getElementById('info-box');
+const coverBg = document.getElementById('cover-bg');
+const coverLarge = document.getElementById('cover-large');
+
+function makeEntry(item){
+  const div = document.createElement('div');
+  div.className = 'song-entry';
+  
+  // Image Thumbnail
+  const img = document.createElement('img');
+  if(item.image){
+    img.src = item.image;
+    img.alt = item.title;
+    img.onerror = () => { img.classList.add('no-img'); img.removeAttribute('src'); };
+  } else {
+    img.classList.add('no-img');
+  }
+
+  const meta = document.createElement('div');
+  meta.className = 'meta';
+  
+  const titleLine = document.createElement('div');
+  titleLine.className = 'playlist-title'; 
+  titleLine.textContent = item.title;
+  
+  const subLine = document.createElement('div');
+  subLine.className = 'playlist-desc';
+  subLine.textContent = item.subtitle;
+  
+  meta.appendChild(titleLine);
+  meta.appendChild(subLine);
+
+  div.appendChild(img);
+  div.appendChild(meta);
+
+  // click -> show details
+  div.addEventListener('click', () => showDetails(item));
+  return div;
+}
+
+function showDetails(item){
+  // 1. Hintergrund setzen
+  if(item.image){
+    coverBg.style.backgroundImage = `url("${item.image}")`;
+    coverBg.style.opacity = "var(--bg-opacity)";
+  } else {
+    coverBg.style.backgroundImage = '';
+    coverBg.style.opacity = "0";
+  }
+
+  // 2. Inhalt füllen (Titel, Text, Button)
+  infoBox.innerHTML = `
+    <h2>${escapeHtml(item.title)}</h2>
+    <p>${escapeHtml(item.desc)}</p>
+    <a href="${item.link}" class="open-btn">Sammlung öffnen</a>
+  `;
+
+  // 3. Cover rechts setzen
+  if(item.image){
+    coverLarge.src = item.image;
+    coverLarge.alt = item.title;
+    coverLarge.classList.remove('no-img');
+  } else {
+    coverLarge.removeAttribute('src');
+    coverLarge.classList.add('no-img');
+  }
+}
+
+function escapeHtml(str){
+  if(!str) return '';
+  return str.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
+}
+
+/* Init */
+playlists.forEach(pl => {
+  menu.appendChild(makeEntry(pl));
+});
+
+/* Wähle standardmäßig den ersten Eintrag aus */
+if(playlists.length > 0) showDetails(playlists[0]);
+
+</script>
+
+</body>
+</html>
