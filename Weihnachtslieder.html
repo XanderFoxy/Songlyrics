@@ -238,16 +238,13 @@ Give me company
 Come on, walk with me
 
 Fill My Eyes
-with all the magic
-love and light
+with all the magic love and light
 
 Give my heart
-the joy of Christmas
-for this night
+the joy of Christmas for this night
 
 Hold on tight
-Because I want you
-to be close
+Because I want you to be close
 
 Within my arms
 As close as you can come
@@ -256,7 +253,19 @@ Eyes illuminate from candle shine
 Share the holy tide with me
 On your heartbeat I can hear
 carol melodies
-Let it talk to me`
+Let it talk to me
+
+Fill My Eyes
+with all the magic love and light
+
+Give my heart
+the joy of Christmas for this night
+
+Hold on tight
+Because I want you to be close
+
+Within my arms
+As close as you can come`
   },
 
   /* Song 3 */
@@ -341,13 +350,12 @@ function makeEntry(song, idx){
   const meta = document.createElement('div');
   meta.className = 'meta';
   
-  // Menü-Logik:
-  // .artist (weiß/fett) = TITEL
+  // Menü-Logik: .artist (fett) bekommt Titel
   const mainLine = document.createElement('div');
   mainLine.className = 'artist'; 
   mainLine.textContent = song.title || '';
   
-  // .title (hellgrau/kursiv) = KÜNSTLER
+  // Menü-Logik: .title (fein) bekommt Künstler
   const subLine = document.createElement('div');
   subLine.className = 'title';
   subLine.textContent = song.artist || '';
@@ -373,8 +381,7 @@ function showSong(song){
     coverBg.style.opacity = "0";
   }
 
-  // Build the content HTML
-  // HIER IST DIE ÄNDERUNG: NUR NOCH SONGTITEL IN H2
+  // Content HTML: Nur Songtitel in H2
   let h = `<h2>${escapeHtml(song.title)}</h2>`;
   
   if(song.copyright){
