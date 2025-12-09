@@ -121,19 +121,19 @@
   }
   
   .chord-section { 
-    width: 100%; margin-bottom: 12px; 
+    width: 100%; margin-bottom: 15px; 
   }
   .chord-section:last-child { margin-bottom: 0; }
 
   .chord-part-label {
     font-family: Inter, sans-serif; font-size: 10px; text-transform: uppercase;
-    color: #666; margin: 0 0 4px 0; letter-spacing: 1px; width:100%; text-align:left; border-bottom:1px solid #333;
+    color: #666; margin: 0 0 6px 0; letter-spacing: 1px; width:100%; text-align:left; border-bottom:1px solid #333;
   }
   .chord-grid {
     display: flex; 
     flex-flow: row nowrap; 
-    justify-content: center; /* Zentriert */
-    gap: 8px; /* Abstand zwischen den Griffbildern */
+    justify-content: center; 
+    gap: 10px; 
   }
   .piano-box {
     display: flex; flex-direction: column; align-items: center;
@@ -214,7 +214,7 @@ const CHORD_MAP = {
   "G":  [7, 11, 14]     // G-Dur (Linear)
 };
 
-/* ---------- SONGDATA (Auftritt 12.12.2025) ---------- */
+/* ---------- SONGDATA ---------- */
 const songs = [
   /* 1. Wir */
   {
@@ -257,13 +257,12 @@ songs.sort((a,b) => {
   if(T1 < T2) return -1; if(T1 > T2) return 1; return 0;
 });
 
-/* HELPER: INTELLIGENTES PIANO SVG (Anker-Logik: Start bei C oder F) */
+/* HELPER: INTELLIGENTES PIANO SVG - TIGHT FIT MIT ANKER */
 function createPianoSVG(activeKeys) {
   let minKey = Math.min(...activeKeys);
   let maxKey = Math.max(...activeKeys);
   
-  // 1. Suche Start-Anker: Das nächste C oder F LINKS vom Akkord.
-  // Wir gehen von minKey rückwärts, bis wir C (Rest 0) oder F (Rest 5) finden.
+  // 1. Start-Anker (Links): Suche C oder F
   let startKey = minKey;
   while(true) {
     let noteInOctave = (startKey % 12 + 12) % 12;
@@ -271,31 +270,23 @@ function createPianoSVG(activeKeys) {
     startKey--;
   }
   
-  // 2. Suche End-Punkt: Wir wollen vom Start-Anker bis zur höchsten Note + Puffer.
-  // User Wunsch: "Nur zwei Ganztöne zusätzlich".
-  // Wir nehmen maxKey und fügen Puffer hinzu (z.B. +3 Halbtöne).
-  let preliminaryEnd = maxKey + 3;
+  // 2. End-Punkt (Rechts): Tight Fit
+  // Wenn maxKey weiß ist: Stopp.
+  // Wenn maxKey schwarz ist: Nimm die weiße Taste rechts davon mit.
+  const isWhite = (k) => [0,2,4,5,7,9,11].includes((k % 12 + 12) % 12);
   
-  // Wir runden das Ende sauber ab auf eine "Lücken-Taste" (E oder H), 
-  // damit der Block nicht zerschnitten wirkt.
-  // E = 4, H = 11.
-  let endKey = preliminaryEnd;
-  while(true) {
-    let noteInOctave = (endKey % 12 + 12) % 12;
-    // Wenn wir auf E (4) oder H (11) landen, ist es ein perfekter Abschluss.
-    if(noteInOctave === 4 || noteInOctave === 11) break;
-    endKey++;
+  let endKey = maxKey;
+  if(!isWhite(endKey)) {
+    endKey = endKey + 1; 
   }
   
-  // Zähle weiße Tasten im Bereich
-  const isWhite = (k) => [0,2,4,5,7,9,11].includes((k % 12 + 12) % 12);
+  // Zähle weiße Tasten im Bereich (für die Breite)
   let whiteCount = 0;
   for(let k=startKey; k<=endKey; k++) {
     if(isWhite(k)) whiteCount++;
   }
   
-  // Layout
-  // Wir nutzen die volle Breite (40px) und teilen sie durch die Anzahl der weißen Tasten.
+  // Layout Maße (40px Breite fix)
   const keyWidth = 40 / whiteCount; 
   const hWhite = 24;
   const wBlack = keyWidth * 0.65;
