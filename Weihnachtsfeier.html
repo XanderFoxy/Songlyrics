@@ -206,13 +206,20 @@
   </section>
 
 <script>
-/* CHORD MAP */
+/* CHORD MAP (Neue Akkorde für Ein Leben Lang hinzugefügt) */
 const CHORD_MAP = {
-  "C":  [0, 4, 7],      // C-Dur (Grundstellung)
-  "Am": [9, 12, 16],    // A-Moll (Linear)
-  "F":  [5, 9, 12],     // F-Dur (Linear)
-  "G":  [7, 11, 14],    // G-Dur (Linear)
-  "Dm": [2, 5, 9]       // D-Moll (Linear)
+  "C":  [0, 4, 7],      // C-Dur
+  "Am": [9, 12, 16],    // A-Moll
+  "F":  [5, 9, 12],     // F-Dur
+  "G":  [7, 11, 14],    // G-Dur
+  "Dm": [2, 5, 9],      // D-Moll
+  
+  // NEUE AKKORDE
+  "Cm": [0, 3, 7],      // C-Moll (C, Eb, G)
+  "Gm": [7, 10, 14],    // G-Moll (G, Bb, D - D in nächster Oktave)
+  "Ab": [8, 12, 15],    // Ab-Dur (Ab, C, Eb)
+  "Eb": [3, 7, 10],    // Eb-Dur (Eb, G, Bb)
+  "Bb": [10, 14, 17]    // Bb-Dur (Bb, D, F)
 };
 
 /* ---------- SONGDATA ---------- */
@@ -226,9 +233,13 @@ const songs = [
     },
     text: `Bis zum Morgen\nLass uns bleiben\nLass mich deine Blicke spüren\nJede Seite neu beschreiben\n\nOhne Wärme, ohne Liebe\nWürden wir nicht existieren\nIn der kalten Atmosphäre\nHoffnungslos erfrieren\n\nReiß dich los, lass uns treiben\nEinmal um die ganze Welt\nBis zum Mond und immer weiter\n\nDir allein nur will ich zeigen\nWas den höchsten Stern erhellt\nLass uns lieben, lass uns schweigen\n\nNur für eine Ewigkeit\nWill ich in deinen Armen sein\nSteh mir bei, sei mein Begleiter\nLass mich nicht allein\n\nReiß dich los, lass uns treiben\nEinmal um die ganze Welt\nBis zum Mond und immer weiter\n\nLass uns fliegen, übersteig\nWas sich in deinen Schatten stellt\nBis zum Mond und immer weiter\n\nUnd immer weiter...`
   },
-  /* 2. Ein Leben Lang */
+  /* 2. Ein Leben Lang (MIT AKKORDEN) */
   {
     artist: "One Day in Rome", title: "Ein Leben Lang", year: "2025", copyright: "© Xander Fox", image: "Snapshot 11-02-2024 02:00.jpeg",
+    chords: {
+      verse: ["Cm", "Gm", "Ab", "Eb"],
+      chorus: ["Cm", "Ab", "Eb", "Bb"]
+    },
     text: `So lang du denkst\nWie schön es wär\nLebst du dem Traum\nNur hinterher\n\nMit allen Wolken\nWillst du ziehen\nDeinem Gefühl\nNie mehr widerstehen\n\nUnd wenn du fällst\nNimm meine Hand\nIch will mit dir gemeinsam gehen\nEin Leben lang\nDurch diese Welt\nHab keine Angst\nHör auf dein Herz\nUnd wir verlieren den Verstand\n\nDie Sehnsucht brennt\nDer Weg ist weit\nBis in das Licht\nTrägt uns die Zeit\n\nUnd irgendwann\nWird um uns ein\nHimmel so hoch\nUnd endlos sein\n\nUnd wenn du fällst\nNimm meine Hand\nIch will mit dir gemeinsam gehen\nEin Leben lang\nDurch diese Welt\nHab keine Angst\nHör auf dein Herz\nUnd wir verlieren den Verstand`
   },
   /* 3. Kein Mensch */
@@ -246,7 +257,7 @@ const songs = [
     artist: "One Day in Rome", title: "Meine Heiligkeit (What If..?)", year: "2025", copyright: "© Xander Fox", image: "Snapshot 11-02-2024 02:00.jpeg",
     text: `Wenn mein Herz sich nach dir sehnt\nSo heiß, wie ein Feuer brennt\nTrag mich bis zu dir hinauf\nWeil ich an deine Liebe glaub\n\nMeine Heiligkeit bist du\nHörst du, wie mein Herz dich ruft?\nDu bist alles, was es sucht\nWenn ich fall, fängst du mich auf\nDu und ich, fühlst du es auch?\nJetzt wird alles wieder gut\n\nDenn ich lieb dich unentwegt\nWie ein Gefühl, das nie vergeht\nWenn mich niemand mehr versteht\nHilft deine Hand mir auf den Weg\n\nMeine Heiligkeit bist du\nHörst du, wie mein Herz dich ruft?\nDu bist alles, was es sucht\nWenn ich fall, fängst du mich auf\nDu und ich, fühlst du es auch?\nJetzt wird alles wieder gut`
   },
-  /* 6. Ohne Deine Liebe - PLATZHALTER BILD */
+  /* 6. Ohne Deine Liebe */
   {
     artist: "One Day in Rome", title: "Ohne Deine Liebe", year: "2025", copyright: "© Xander Fox", image: "Snapshot 11-02-2024 02:00.jpeg",
     chords: {
