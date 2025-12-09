@@ -118,33 +118,45 @@
     justify-content: center; 
     align-items: center;
     padding: 10px; box-sizing: border-box; text-align: center;
-    overflow-y: auto; 
+    overflow-y: auto;
   }
   
-  /* WIEDERHERGESTELLTE GROSSZÜGIGE ABSTÄNDE */
+  /* STANDARD SPACING (Luftig) - für wenige Akkorde */
   .chord-section { 
-    width: 100%; 
-    margin-bottom: 12px; /* Wieder luftig wie früher */
+    width: 100%; margin-bottom: 12px; 
   }
   .chord-section:last-child { margin-bottom: 0; }
 
   .chord-part-label {
     font-family: Inter, sans-serif; font-size: 10px; text-transform: uppercase;
-    color: #666; margin: 0 0 4px 0; /* Wieder 4px */
+    color: #666; margin: 0 0 4px 0; 
     letter-spacing: 1px; width:100%; text-align:left; border-bottom:1px solid #333;
   }
   
-  /* DYNAMIK: flex-wrap erlaubt Umbruch, gap ist wieder groß */
   .chord-grid {
     display: flex; 
-    flex-flow: row wrap; /* Das ist die "Dynamik": Umbruch wenn nötig */
+    flex-flow: row wrap; /* Umbruch möglich */
     justify-content: center; 
-    gap: 12px; /* Schöner, großer Abstand */
-    row-gap: 12px; /* Abstand zwischen den Zeilen beim Umbruch */
+    gap: 12px; /* Großer Standard-Abstand */
+    row-gap: 12px;
   }
   .piano-box {
     display: flex; flex-direction: column; align-items: center;
+    margin-bottom: 4px;
   }
+
+  /* DYNAMISCHES SPACING (KOMPAKT) - wird per JS bei >4 Akkorden gesetzt */
+  .chord-section.dense {
+    margin-bottom: 6px;
+  }
+  .chord-grid.dense {
+    gap: 6px; 
+    row-gap: 6px;
+  }
+  .chord-grid.dense .piano-box {
+    margin-bottom: 2px;
+  }
+
   .piano-name {
     font-family: Inter, sans-serif; font-weight: 700; font-size: 10px; 
     color: var(--accent); margin-bottom: 2px; line-height: 1;
@@ -240,11 +252,11 @@ const songs = [
     },
     text: `Bis zum Morgen\nLass uns bleiben\nLass mich deine Blicke spüren\nJede Seite neu beschreiben\n\nOhne Wärme, ohne Liebe\nWürden wir nicht existieren\nIn der kalten Atmosphäre\nHoffnungslos erfrieren\n\nReiß dich los, lass uns treiben\nEinmal um die ganze Welt\nBis zum Mond und immer weiter\n\nDir allein nur will ich zeigen\nWas den höchsten Stern erhellt\nLass uns lieben, lass uns schweigen\n\nNur für eine Ewigkeit\nWill ich in deinen Armen sein\nSteh mir bei, sei mein Begleiter\nLass mich nicht allein\n\nReiß dich los, lass uns treiben\nEinmal um die ganze Welt\nBis zum Mond und immer weiter\n\nLass uns fliegen, übersteig\nWas sich in deinen Schatten stellt\nBis zum Mond und immer weiter\n\nUnd immer weiter...`
   },
-  /* 2. Ein Leben Lang */
+  /* 2. Ein Leben Lang (C-Moll Version) */
   {
     artist: "One Day in Rome", title: "Ein Leben Lang", year: "2025", copyright: "© Xander Fox", image: "IMG_0166.jpeg",
     chords: { 
-      verse: ["Cm", "Gm", "Ab", "Eb"], // Cm-Moll Basis (Original)
+      verse: ["Cm", "Gm", "Ab", "Eb"],
       chorus: ["Cm", "Ab", "Eb", "Bb"] 
     },
     text: `So lang du denkst\nWie schön es wär\nLebst du dem Traum\nNur hinterher\n\nMit allen Wolken\nWillst du ziehen\nDeinem Gefühl\nNie mehr widerstehen\n\nUnd wenn du fällst\nNimm meine Hand\nIch will mit dir gemeinsam gehen\nEin Leben lang\nDurch diese Welt\nHab keine Angst\nHör auf dein Herz\nUnd wir verlieren den Verstand\n\nDie Sehnsucht brennt\nDer Weg ist weit\nBis in das Licht\nTrägt uns die Zeit\n\nUnd irgendwann\nWird um uns ein\nHimmel so hoch\nUnd endlos sein\n\nUnd wenn du fällst\nNimm meine Hand\nIch will mit dir gemeinsam gehen\nEin Leben lang\nDurch diese Welt\nHab keine Angst\nHör auf dein Herz\nUnd wir verlieren den Verstand`
@@ -255,7 +267,7 @@ const songs = [
     title: "Halt mich!", 
     year: "2025", copyright: "© Xander Fox", image: "fQ5C8n5z.jpeg",
     chords: {
-      verse: ["Cm", "Eb", "Ab", "Eb", "Gm", "Ab", "Eb", "Bb"],
+      verse: ["Cm", "Eb", "Ab", "Eb", "Gm", "Ab", "Eb", "Bb"], // 8 Akkorde -> WIRD KOMPAKT
       chorus: ["Ab", "Eb", "Cm", "Bb"]
     },
     text: `Sag mir nur noch einmal was es heißt, dass wir uns so tief berühren.\nDeine Nähe die mich fast zerreißt, kann ich nicht mehr ignorieren.\n\nGib mir ein Herz, in das ich mich verlieren kann\nHalt mich und sieh mich an, wie du mich siehst.\nNimm meinen Schmerz von mir, dass ich dich fühlen kann,\nWie du mit deiner Hand mich reparierst.\n\nDeine Augen reflektieren ein unbeschreiblich schönes Bild.\nLass mich wieder deine Liebe spüren alles was ich fühl.\n\nGib mir ein Herz, in das ich mich verlieren kann,\nHalt mich und sieh mich an, wie du mich siehst.\nNimm meinen Schmerz von mir, dass ich dich fühlen kann,\nWie du mit deiner Hand mich reparierst\n\nGib mir ein Herz, gib mir ein Herz,\nHalt mich und sieh mich an, wie du mich siehst.\nNimm meinen Schmerz nimm meinen Schmerz.\nWie du mit deiner Hand mich reparierst`
@@ -306,12 +318,11 @@ songs.sort((a,b) => {
   if(T1 < T2) return -1; if(T1 > T2) return 1; return 0;
 });
 
-/* HELPER: INTELLIGENTES PIANO SVG */
+/* HELPER: INTELLIGENTES PIANO SVG - BLOCK ANKER LOGIK */
 function createPianoSVG(activeKeys) {
   let minKey = Math.min(...activeKeys);
   let maxKey = Math.max(...activeKeys);
   
-  // 1. Start-Anker (Links): Suche C oder F
   let startKey = minKey;
   while(true) {
     let noteInOctave = (startKey % 12 + 12) % 12;
@@ -319,16 +330,12 @@ function createPianoSVG(activeKeys) {
     startKey--;
   }
   
-  // 2. End-Punkt (Rechts): Tight Fit mit Abschluss
   const isWhite = (k) => [0,2,4,5,7,9,11].includes((k % 12 + 12) % 12);
-  
   let endKey = maxKey;
   if(!isWhite(endKey)) endKey++; 
   
-  // Stelle sicher, dass wir mind. 7 weiße Tasten haben
   let whiteCount = 0;
   let k = startKey;
-  // Vorlauf
   while(true) {
     if(isWhite(k)) whiteCount++;
     if(k >= endKey && whiteCount >= 7) {
@@ -338,7 +345,6 @@ function createPianoSVG(activeKeys) {
     k++;
   }
   
-  // Layout Maße (40px Breite fix)
   const keyWidth = 40 / whiteCount; 
   const hWhite = 24;
   const wBlack = keyWidth * 0.65;
@@ -348,7 +354,6 @@ function createPianoSVG(activeKeys) {
   let currentX = 0;
   let whitePositions = {}; 
   
-  // 1. Whites
   for(let k=startKey; k<=endKey; k++) {
     if(isWhite(k)) {
       let isActive = activeKeys.includes(k);
@@ -359,7 +364,6 @@ function createPianoSVG(activeKeys) {
     }
   }
   
-  // 2. Blacks
   for(let k=startKey; k<=endKey; k++) {
     if(!isWhite(k)) {
       let prevWhite = k - 1;
@@ -386,7 +390,7 @@ const metaYear = document.getElementById('meta-year');
 const metaArtist = document.getElementById('meta-artist');
 const metaTitle = document.getElementById('meta-title');
 
-// FLIP EVENT LISTENER (WAR VORHER KORREKT DRIN, JETZT AUCH SICHER)
+// FLIP EVENT LISTENER
 coverFlipContainer.addEventListener('click', function() {
   this.classList.toggle('flipped');
 });
@@ -447,7 +451,12 @@ function showSong(song){
   if(song.chords){
     let html = "";
     const renderSection = (label, chordNames) => {
-      let sectionHtml = `<div class="chord-section"><div class="chord-part-label">${label}</div><div class="chord-grid">`;
+      // LOGIK: DYNAMISCHES SPACING
+      const isDense = chordNames.length > 4;
+      const sectionClass = isDense ? "chord-section dense" : "chord-section";
+      const gridClass = isDense ? "chord-grid dense" : "chord-grid";
+
+      let sectionHtml = `<div class="${sectionClass}"><div class="chord-part-label">${label}</div><div class="${gridClass}">`;
       chordNames.forEach(cName => {
         let keys = CHORD_MAP[cName] || [];
         let svg = createPianoSVG(keys);
@@ -475,7 +484,6 @@ function escapeHtml(str){
 
 window.onload = function() {
   const menu = document.getElementById('menu');
-  // Wichtig: Songs rendern, wenn Seite geladen ist
   songs.forEach((s,i) => {
     const entry = makeEntry(s,i);
     menu.appendChild(entry);
