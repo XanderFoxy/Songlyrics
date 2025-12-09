@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Weihnachtsfeier 12.12.2025</title>
+<style>
+  :root{
+    --menu-w:320px;
+    --thumb-size:56px;
+    --cover-side:260px;
+    --bg-opacity:0.08;
+    --bg-blur:6px;
+    --accent:#f3c64a;
+    --menu-bg:#111;
+    --menu-hover:#2b2b2b;
+    --text-color:#222;
+  }
+
+  html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;}
+  body{display:flex;background:#efefef;color:var(--text-color);height:100vh;overflow:hidden;}
+
+  /* LEFT MENU */
+  #menu{
+    width:var(--menu-w);
+    background:var(--menu-bg);
+    color:#fff;
+    box-sizing:border-box;
+    padding:14px;
+    overflow:auto;
+    border-right:1px solid rgba(255,255,255,0.03);
+  }
+  
+  #menu h1{
+    margin:0 0 10px 0;font-size:18px;letter-spacing:0.3px;
+    font-weight:600;color:var(--accent);
+  }
+
+  /* VERSTECKTER LINK ZUR HAUPTÜBERSICHT */
+  #menu h1 a {
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  #menu h1 a:hover, 
+  #menu h1 a:visited, 
+  #menu h1 a:active {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .song-entry{
+    display:flex;
+    gap:10px;
+    align-items:center;
+    padding:8px;
+    border-radius:8px;
+    margin-bottom:8px;
+    cursor:pointer;
+    transition:background .15s, transform .06s;
+  }
+  .song-entry:hover{ background:var(--menu-hover); transform:translateY(-1px); }
+  .song-entry img{
+    width:var(--thumb-size); height:var(--thumb-size);
+    object-fit:cover; border-radius:6px; background:#666;
+    flex:0 0 auto;
+  }
+  .meta{
+    display:flex; flex-direction:column; min-width:0;
+  }
+  
+  /* ORIGINAL STYLES */
+  .artist{
+    font-weight:700; font-size:15px; line-height:1; color:#fff;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .title{
+    font-style:italic; font-size:13px; color:#ddd; margin-top:4px;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+
+  /* CONTENT AREA */
+  #content-wrap{flex:1;position:relative;display:flex;overflow:hidden;}
+  /* background cover (blurred + faint) */
+  #cover-bg{
+    position:absolute;inset:0;z-index:0;pointer-events:none;
+    background-size:cover;background-position:center;
+    opacity:var(--bg-opacity);filter:blur(var(--bg-blur));
+    transition:background-image .25s ease, opacity .2s ease;
+  }
+  /* content panel */
+  #content{
+    position:relative; z-index:1; padding:28px; overflow:auto; display:flex;
+    gap:22px; align-items:flex-start; box-sizing:border-box; width:100%;
+  }
+  .lyrics{
+    flex:1 1 auto; max-width:calc(100% - var(--cover-side) - 40px);
+    background:rgba(255,255,255,0.8); padding:22px; border-radius:10px;
+    box-shadow:0 6px 20px rgba(0,0,0,0.08);
+    backdrop-filter: blur(2px);
+    font-family: "Cormorant Garamond", "Georgia", serif;
+    font-style:italic; font-size:18px; line-height:1.6; color:var(--text-color);
+  }
+  .lyrics h2{
+    margin:0 0 2px 0; 
+    font-style:normal; font-size:22px; color:#111;
+  }
+  .song-copyright {
+    font-family: Inter, sans-serif;
+    font-style: normal;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 20px;
+    display: block;
+  }
+  .lyrics pre{
+    margin:0; white-space:pre-wrap; word-break:break-word; font-family:inherit;
+    font-style:italic; font-size:17px; color:#222;
+  }
+
+  /* cover aside */
+  .cover-aside{
+    width:var(--cover-side); flex:0 0 var(--cover-side); display:flex; flex-direction:column; gap:12px;
+    align-items:center;
+  }
+  .cover-aside img{
+    width:220px; height:220px; object-fit:cover; border-radius:8px; background:#ddd;
+    box-shadow:0 8px 30px rgba(0,0,0,0.12);
+  }
+  .meta-right{
+    width:100%; text-align:center; color:#333; font-family:Inter, Arial, sans-serif;
+  }
+  .meta-right .year{font-weight:600;color:#111;}
+  .meta-right .artist{font-weight:700;font-size:16px;color:#111;}
+  .meta-right .title{font-style:italic;color:#333;font-size:15px;margin-top:4px;}
+
+  /* responsive */
+  @media (max-width:900px){
+    :root{--menu-w:240px; --cover-side:180px;}
+    .lyrics{font-size:16px;}
+    .cover-aside img{width:160px;height:160px;}
+  }
+  @media (max-width:700px){
+    body{flex-direction:column;}
+    #menu{width:100%; height:220px; border-right:none; border-bottom:1px solid rgba(0,0,0,0.06);}
+    #content-wrap{height:calc(100vh - 220px);}
+    .lyrics{max-width:100%;}
+    .cover-aside{display:none;}
+  }
+
+  /* small helper for missing image (transparent placeholder) */
+  .no-img{background:linear-gradient(135deg,#ddd,#eee);display:flex;align-items:center;justify-content:center;color:#999;font-weight:600;font-size:12px;}
+</style>
+</head>
+<body>
+
+  <nav id="menu" aria-label="Songliste">
+    <h1><a href="Songtexte.html">Songtexte</a></h1>
+    </nav>
+
+  <section id="content-wrap">
+    <div id="cover-bg" aria-hidden="true"></div>
+
+    <main id="content">
+      <article class="lyrics" id="lyrics">
+        <h2>Wähle einen Song</h2>
+        <pre>Wähle links im Menü ein Lied aus — der Text erscheint hier, mit dem Cover leicht als Hintergrund und groß rechts daneben.</pre>
+      </article>
+
+      <aside class="cover-aside" id="cover-aside" aria-hidden="true">
+        <img id="cover-large" alt="Cover" class="no-img" />
+        <div class="meta-right">
+          <div class="year" id="meta-year"></div>
+          <div class="artist" id="meta-artist"></div>
+          <div class="title" id="meta-title"></div>
+        </div>
+      </aside>
+    </main>
+  </section>
+
+<script>
+/* ---------- SONGDATA (Auftritt 12.12.2025) ---------- */
+const songs = [
+  /* 1. Wir */
+  {
+    artist: "One Day in Rome",
+    title: "Wir",
+    year: "2025",
+    copyright: "© Xander Fox",
+    image: "Facetune_27-11-2025-22-42-01.jpeg", /* Bild eingetragen */
+    text: `Es ist gar nicht so leicht
+Dieses Leben zu verstehen
+Manchmal darum vielleicht
+Auch so schwer, einfach weiterzugehen
+
+Wenn du denkst, durchzudrehen
+Weil du noch etwas spürst in dir
+Lass uns nicht lange reden
+Es gibt viel zu viel zu verlieren
+
+Wenn die Welt untergeht
+Bin ich bei dir
+Du bist alles, was zählt
+Was ich fühl in mir
+Darum lass uns nicht warten
+Warum sollen wir leiden, wofür?
+Das ist unsere Wahrheit
+Alles was wir noch haben, sind wir
+
+Wir sind groß
+Wir sind schön, unerreicht
+Schwer zu greifen
+Denn wir schweben federleicht
+
+Auch wenn sie uns versuchen
+zu verführen
+Keine Chance
+Wir sind viel zu wir dafür
+
+Wenn die Welt untergeht
+Bin ich bei dir
+Du bist alles, was zählt
+Was ich fühl in mir
+Darum lass uns nicht warten
+Warum sollen wir leiden, wofür?
+Das ist unsere Wahrheit
+Alles was wir noch haben, sind wir`
+  },
+
+  /* 2. Kein Mensch */
+  {
+    artist: "One Day in Rome",
+    title: "Kein Mensch",
+    year: "2025",
+    copyright: "© Xander Fox",
+    image: "", /* Bitte hier Bildnamen einfügen */
+    text: `Es ist Nacht
+hier
+in deinen Armen
+Nimm meine Hand
+Denn du weißt genau
+dass ich auch
+nicht mehr anders kann
+Du musst nichts verstehen
+Ich bin schon lang in deinem Bann
+Darum bleib bei mir
+Komm und sieh mich
+nur noch einmal
+so an
+
+So als würden wir
+unsere Seelen inhalieren
+Ich will dich mit mir
+bis die Sterne explodieren
+Selbst wenn wir
+gemeinsam fallen
+Wer kommt mich heilen?
+Und ich weiß
+kein Mensch
+Würde
+So wie du mit mir sein
+
+Ich lieg wach
+hier
+in deinen Armen
+bin ich dir nah
+Grad hab ich noch
+von dir geträumt
+Und schon bist du wahr
+Und so wunderschön
+Das ist alles
+nicht mehr normal
+Halt dich bei mir fest
+Denn wir haben
+eh keine andere
+Wahl
+
+So als würden wir
+unsere Seelen inhalieren
+Ich will dich mit mir
+bis die Sterne explodieren
+Selbst wenn wir
+gemeinsam fallen
+Wer kommt mich heilen?
+Und ich weiß
+kein Mensch
+Würde
+So wie du mit mir sein`
+  },
+
+  /* 3. Ein Leben Lang */
+  {
+    artist: "One Day in Rome",
+    title: "Ein Leben Lang",
+    year: "2025",
+    copyright: "© Xander Fox",
+    image: "", /* Bitte hier Bildnamen einfügen */
+    text: `So lang du denkst
+Wie schön es wär
+Lebst du dem Traum
+Nur hinterher
+
+Mit allen Wolken
+Willst du ziehen
+Deinem Gefühl
+Nie mehr widerstehen
+
+Und wenn du fällst
+Nimm meine Hand
+Ich will mit dir gemeinsam gehen
+Ein Leben lang
+Durch diese Welt
+Hab keine Angst
+Hör auf dein Herz
+Und wir verlieren den Verstand
+
+Die Sehnsucht brennt
+Der Weg ist weit
+Bis in das Licht
+Trägt uns die Zeit
+
+Und irgendwann
+Wird um uns ein
+Himmel so hoch
+Und endlos sein
+
+Und wenn du fällst
+Nimm meine Hand
+Ich will mit dir gemeinsam gehen
+Ein Leben lang
+Durch diese Welt
+Hab keine Angst
+Hör auf dein Herz
+Und wir verlieren den Verstand`
+  },
+
+  /* 4. Meine Heiligkeit bist du */
+  {
+    artist: "One Day in Rome",
+    title: "Meine Heiligkeit bist du",
+    year: "2025",
+    copyright: "© Xander Fox",
+    image: "", /* Bitte hier Bildnamen einfügen */
+    text: `Wenn mein Herz sich nach dir sehnt
+So heiß, wie ein Feuer brennt
+Trag mich bis zu dir hinauf
+Weil ich an deine Liebe glaub
+
+Meine Heiligkeit bist du
+Hörst du, wie mein Herz dich ruft?
+Du bist alles, was es sucht
+Wenn ich fall, fängst du mich auf
+Du und ich, fühlst du es auch?
+Jetzt wird alles wieder gut
+
+Denn ich lieb dich unentwegt
+Wie ein Gefühl, das nie vergeht
+Wenn mich niemand mehr versteht
+Hilft deine Hand mir auf den Weg
+
+Meine Heiligkeit bist du
+Hörst du, wie mein Herz dich ruft?
+Du bist alles, was es sucht
+Wenn ich fall, fängst du mich auf
+Du und ich, fühlst du es auch?
+Jetzt wird alles wieder gut`
+  },
+
+  /* 5. Words Of Love */
+  {
+    artist: "Sweet Velvet",
+    title: "Words Of Love",
+    year: "2025",
+    copyright: "© Xander Fox",
+    image: "", /* Bitte hier Bildnamen einfügen */
+    text: `Tell Me Little Angel
+Won't You Kiss My Sensual Lips
+Close The Golden Gates Behind
+Come Move In Closer
+On A Mystic Trip
+We Feel So High
+
+Let's Call It Love
+Let's Fake It All
+Let It Seem
+Everything
+You Never Dream Of
+A Little Closer
+Until I Cut Your Wings
+Now You're Trapped In
+
+Say Do You Believe My Words Of Love
+I Am The Devil In Disguise
+Nothing Here Is Real
+You Just Forgot
+The Shock Will Make You Feel
+And Let You Fall
+
+Say Do You Receive My Words Of Hope
+Melodramatic Eyes Reply
+We Don't Really Need
+To Talk About
+Once You Sign And Seal It
+There Is No Way Out
+
+Tell Me Pretty Angel
+Won't You Take It By Surprise
+T-T- The Time Is Over
+Break Up The Shell And
+Mirror Me Inside
+Let All The Secrets Fly
+
+We Call It Love
+We Waste It All
+And We Want
+Everything
+We Hate To Deal With
+You Can't Conceal How Sweet
+The Sirens Sing
+The Beat Drops In....
+
+Say Do You Believe My Words Of Love
+I Am The Devil In Disguise
+Nothing Here Is Real
+You Just Forgot
+The Shock Will Make You Feel
+And Let You Fall
+
+Say Do You Receive My Words Of Hope
+Melodramatic Eyes Reply
+We Don't Really Need
+To Talk About
+Once You Sign And Seal It
+There Is No Way Out`
+  }
+];
+
+/* ---------- SORT alphabetisch nach TITLE, dann Artist ---------- */
+songs.sort((a,b) => {
+  const T1 = (a.title || "").toLowerCase();
+  const T2 = (b.title || "").toLowerCase();
+  if(T1 < T2) return -1;
+  if(T1 > T2) return 1;
+  
+  const A = (a.artist || "").toLowerCase();
+  const B = (b.artist || "").toLowerCase();
+  if(A < B) return -1;
+  if(A > B) return 1;
+  
+  return 0;
+});
+
+/* ---------- build menu ---------- */
+const menu = document.getElementById('menu');
+const content = document.getElementById('lyrics');
+const coverBg = document.getElementById('cover-bg');
+const coverLarge = document.getElementById('cover-large');
+const metaYear = document.getElementById('meta-year');
+const metaArtist = document.getElementById('meta-artist');
+const metaTitle = document.getElementById('meta-title');
+
+function makeEntry(song, idx){
+  const div = document.createElement('div');
+  div.className = 'song-entry';
+  // image element
+  const img = document.createElement('img');
+  if(song.image){
+    img.src = song.image;
+    img.alt = `${song.artist} - ${song.title}`;
+    img.onerror = () => { img.classList.add('no-img'); img.removeAttribute('src'); img.alt = 'kein Cover'; img.textContent = 'NO IMG'; };
+  } else {
+    img.classList.add('no-img');
+    img.alt = 'kein Cover';
+  }
+
+  const meta = document.createElement('div');
+  meta.className = 'meta';
+  
+  // Menü-Logik: .artist (fett) = TITEL
+  const mainLine = document.createElement('div');
+  mainLine.className = 'artist'; 
+  mainLine.textContent = song.title || '';
+  
+  // Menü-Logik: .title (fein) = KÜNSTLER
+  const subLine = document.createElement('div');
+  subLine.className = 'title';
+  subLine.textContent = song.artist || '';
+  
+  meta.appendChild(mainLine);
+  meta.appendChild(subLine);
+
+  div.appendChild(img);
+  div.appendChild(meta);
+
+  // click -> show
+  div.addEventListener('click', () => showSong(song));
+  return div;
+}
+
+function showSong(song){
+  // set blurred background (cover-bg)
+  if(song.image){
+    coverBg.style.backgroundImage = `url("${song.image}")`;
+    coverBg.style.opacity = "var(--bg-opacity)";
+  } else {
+    coverBg.style.backgroundImage = '';
+    coverBg.style.opacity = "0";
+  }
+
+  // Content HTML: Nur Songtitel in H2
+  let h = `<h2>${escapeHtml(song.title)}</h2>`;
+  
+  if(song.copyright){
+    h += `<span class="song-copyright">${escapeHtml(song.copyright)}</span>`;
+  }
+
+  const p = `<pre>${escapeHtml(song.text)}</pre>`;
+  content.innerHTML = h + p;
+
+  // set right cover
+  // Cover-Bereich bleibt original: Artist oben, Titel unten
+  if(song.image){
+    coverLarge.src = song.image;
+    coverLarge.alt = `${song.artist} - ${song.title}`;
+    coverLarge.classList.remove('no-img');
+    coverLarge.onerror = () => { coverLarge.classList.add('no-img'); coverLarge.removeAttribute('src'); coverLarge.alt='kein Cover'; };
+  } else {
+    coverLarge.removeAttribute('src');
+    coverLarge.classList.add('no-img');
+    coverLarge.alt = 'kein Cover';
+  }
+
+  // set meta
+  metaYear.textContent = song.year || '';
+  metaArtist.textContent = song.artist || '';
+  metaTitle.textContent = song.title || '';
+}
+
+/* escape text for HTML */
+function escapeHtml(str){
+  if(!str) return '';
+  return str.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
+}
+
+/* build menu entries */
+songs.forEach((s,i) => {
+  const entry = makeEntry(s,i);
+  menu.appendChild(entry);
+});
+
+/* show first song by default */
+if(songs.length) showSong(songs[0]);
+
+</script>
+
+</body>
+</html>
