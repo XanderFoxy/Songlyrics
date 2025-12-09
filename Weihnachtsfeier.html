@@ -127,7 +127,7 @@
 
   .chord-part-label {
     font-family: Inter, sans-serif; font-size: 10px; text-transform: uppercase;
-    color: #666; margin: 0 0 6px 0; letter-spacing: 1px; width:100%; text-align:left; border-bottom:1px solid #333;
+    color: #666; margin: 0 0 4px 0; letter-spacing: 1px; width:100%; text-align:left; border-bottom:1px solid #333;
   }
   .chord-grid {
     display: flex; 
@@ -206,7 +206,7 @@
   </section>
 
 <script>
-/* CHORD MAP - Die Zahlen sind Halbtöne ab einem tiefen C */
+/* CHORD MAP */
 const CHORD_MAP = {
   "C":  [0, 4, 7],      // C-Dur (Grundstellung)
   "Am": [9, 12, 16],    // A-Moll (Linear)
@@ -247,7 +247,7 @@ const songs = [
   },
   /* 6. Words Of Love */
   {
-    artist: "One Day in Rome", title: "Words Of Love", year: "2025", copyright: "© Xander Fox", image: "Snapshot 11-02-2024 02:00.jpeg",
+    artist: "One Day in Rome", title: "Words Of Love", year: "2025", copyright: "© Xander Fox", image: "IMG_0105.jpeg",
     text: `Tell Me Little Angel\nWon't You Kiss My Sensual Lips\nClose The Golden Gates Behind\nCome Move In Closer\nOn A Mystic Trip\nWe Feel So High\n\nLet's Call It Love\nLet's Fake It All\nLet It Seem\nEverything\nYou Never Dream Of\nA Little Closer\nUntil I Cut Your Wings\nNow You're Trapped In\n\nSay Do You Believe My Words Of Love\nI Am The Devil In Disguise\nNothing Here Is Real\nYou Just Forgot\nThe Shock Will Make You Feel\nAnd Let You Fall\n\nSay Do You Receive My Words Of Hope\nMelodramatic Eyes Reply\nWe Don't Really Need\nTo Talk About\nOnce You Sign And Seal It\nThere Is No Way Out\n\nTell Me Pretty Angel\nWon't You Take It By Surprise\nT-T- The Time Is Over\nBreak Up The Shell And\nMirror Me Inside\nLet All The Secrets Fly\n\nWe Call It Love\nWe Waste It All\nAnd We Want\nEverything\nWe Hate To Deal With\nYou Can't Conceal How Sweet\nThe Sirens Sing\nThe Beat Drops In....\n\nSay Do You Believe My Words Of Love\nI Am The Devil In Disguise\nNothing Here Is Real\nYou Just Forgot\nThe Shock Will Make You Feel\nAnd Let You Fall\n\nSay Do You Receive My Words Of Hope\nMelodramatic Eyes Reply\nWe Don't Really Need\nTo Talk About\nOnce You Sign And Seal It\nThere Is No Way Out`
   }
 ];
@@ -257,69 +257,36 @@ songs.sort((a,b) => {
   if(T1 < T2) return -1; if(T1 > T2) return 1; return 0;
 });
 
-/* HELPER: PIANO SVG - QUANTISIERUNG AUF BLOCK-ANFANG (C oder F) */
+/* HELPER: INTELLIGENTES PIANO SVG - TIGHT FIT MIT ANKER */
 function createPianoSVG(activeKeys) {
   let minKey = Math.min(...activeKeys);
   let maxKey = Math.max(...activeKeys);
   
-  /* QUANTISIERUNG (SNAP TO GRID):
-     Wir suchen den Beginn des Blocks, in dem die tiefste Note liegt.
-     Block 1 (2 Schwarze): C, D, E  (Indizes 0, 2, 4)
-     Block 2 (3 Schwarze): F, G, A, H (Indizes 5, 7, 9, 11)
-     
-     Logik:
-     Note % 12 ergibt die Position in der Oktave (0-11).
-     Ist es 0..4 (C..E) -> Snap auf 0 (C)
-     Ist es 5..11 (F..H) -> Snap auf 5 (F)
-  */
-  
-  let baseOctave = Math.floor(minKey / 12) * 12;
-  let noteInOctave = minKey % 12;
-  
-  let startKey;
-  if (noteInOctave <= 4) {
-    // Wir sind im Bereich C-E (2er Block) -> Starte bei C
-    startKey = baseOctave + 0;
-  } else {
-    // Wir sind im Bereich F-H (3er Block) -> Starte bei F
-    startKey = baseOctave + 5;
+  // 1. Start-Anker (Links): Suche C oder F
+  let startKey = minKey;
+  while(true) {
+    let noteInOctave = (startKey % 12 + 12) % 12;
+    if (noteInOctave === 0 || noteInOctave === 5) break;
+    startKey--;
   }
   
-  /*
-     LÄNGE BESTIMMEN:
-     Wir zeichnen ab startKey solange weiße Tasten, bis wir:
-     1. Den höchsten Ton (maxKey) abgedeckt haben.
-     2. UND mindestens 7 weiße Tasten gezeichnet haben (damit man immer beide Blöcke sieht).
-  */
-  
+  // 2. End-Punkt (Rechts): Tight Fit
+  // Wenn maxKey weiß ist: Stopp.
+  // Wenn maxKey schwarz ist: Nimm die weiße Taste rechts davon mit.
   const isWhite = (k) => [0,2,4,5,7,9,11].includes((k % 12 + 12) % 12);
   
-  let currentKey = startKey;
+  let endKey = maxKey;
+  if(!isWhite(endKey)) {
+    endKey = endKey + 1; 
+  }
+  
+  // Zähle weiße Tasten im Bereich (für die Breite)
   let whiteCount = 0;
-  
-  // Mindestens 7 weiße Tasten zeichnen
-  while (whiteCount < 7) {
-    if (isWhite(currentKey)) whiteCount++;
-    currentKey++;
+  for(let k=startKey; k<=endKey; k++) {
+    if(isWhite(k)) whiteCount++;
   }
   
-  // Wenn der Akkord weiter geht als diese 7 Tasten, erweitern wir
-  while (currentKey <= maxKey) {
-    if (isWhite(currentKey)) whiteCount++;
-    currentKey++;
-  }
-  
-  // Falls wir mitten in einem Block stehengeblieben sind (z.B. bei G#),
-  // runden wir auf die nächste weiße Taste auf, damit es sauber aussieht.
-  if (!isWhite(currentKey - 1)) { // Wenn letzte geprüfte Taste schwarz war
-     currentKey++; // Nimm die weiße danach dazu
-     whiteCount++;
-  }
-  
-  let endKey = currentKey - 1; // currentKey ist eins zu weit gelaufen
-  
-  
-  // LAYOUT
+  // Layout Maße (40px Breite fix)
   const keyWidth = 40 / whiteCount; 
   const hWhite = 24;
   const wBlack = keyWidth * 0.65;
