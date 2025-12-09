@@ -109,42 +109,45 @@
   .front { z-index: 2; transform: rotateY(0deg); }
   .front img { width: 100%; height: 100%; object-fit: cover; background:#ddd; }
   
-  /* RÜCKSEITE STYLE (PIANO MINIATUREN) */
+  /* RÜCKSEITE STYLE (OPTIMIERTES SPACING) */
   .back {
     transform: rotateY(180deg);
     background: #1a1a1a;
     color: #fff;
     display: flex; flex-direction: column; 
-    /* Wir zentrieren den Inhalt vertikal, damit die zwei Zeilen schön mittig sind */
     justify-content: center; 
     align-items: center;
-    padding: 10px; box-sizing: border-box; text-align: center;
+    padding: 15px; box-sizing: border-box; text-align: center;
   }
   
   .chord-section { 
-    width: 100%; margin-bottom: 12px; 
+    width: 100%; margin-bottom: 15px; 
   }
+  /* Letzte Section braucht keinen Rand unten */
+  .chord-section:last-child { margin-bottom: 0; }
+
   .chord-part-label {
     font-family: Inter, sans-serif; font-size: 10px; text-transform: uppercase;
-    color: #666; margin: 0 0 4px 0; letter-spacing: 1px; width:100%; text-align:left; border-bottom:1px solid #333;
+    color: #666; margin: 0 0 6px 0; letter-spacing: 1px; width:100%; text-align:left; border-bottom:1px solid #333;
   }
+  
+  /* HIER IST DAS NEUE SPACING */
   .chord-grid {
     display: flex; 
-    flex-flow: row nowrap; /* Zwingt alles in eine Zeile */
-    justify-content: space-between; /* Verteilt den Platz gleichmäßig */
-    align-items: flex-end;
-    gap: 2px;
+    flex-flow: row nowrap; 
+    justify-content: center; /* Zentriert die Gruppe */
+    gap: 8px; /* Mehr Platz zwischen den Akkorden */
   }
+  
   .piano-box {
     display: flex; flex-direction: column; align-items: center;
-    /* Kein Background mehr nötig bei Miniaturen, sieht cleaner aus */
   }
   .piano-name {
-    font-family: Inter, sans-serif; font-weight: 700; font-size: 10px; /* Sehr kleine Schrift */
-    color: var(--accent); margin-bottom: 2px; line-height: 1;
+    font-family: Inter, sans-serif; font-weight: 700; font-size: 10px; 
+    color: var(--accent); margin-bottom: 3px; line-height: 1;
   }
   /* SVG Styles */
-  .key-white { fill: #fff; stroke: #ccc; stroke-width: 0.5px; } /* Dünnere Linien */
+  .key-white { fill: #fff; stroke: #ccc; stroke-width: 0.5px; } 
   .key-black { fill: #000; stroke: #000; stroke-width: 0.5px; }
   .key-active { fill: var(--accent) !important; }
 
@@ -207,65 +210,50 @@
   </section>
 
 <script>
-/* CHORD MAP */
+/* UNIVERSALER CODE BLOCK FÜR AKKORDE
+   Hier musst du nie etwas ändern.
+*/
 const CHORD_MAP = {
   "C":  [0, 4, 7],      // C-E-G
   "Am": [9, 0, 4],      // A-C-E (Wrapped)
   "F":  [5, 9, 0],      // F-A-C (Wrapped)
   "G":  [7, 11, 2]      // G-H-D (Wrapped)
+  // Hier kannst du später D, Em, etc. ergänzen, wenn du sie brauchst.
 };
 
 /* ---------- SONGDATA (Auftritt 12.12.2025) ---------- */
 const songs = [
-  {
-    artist: "One Day in Rome", title: "Wir", year: "2025", copyright: "© Xander Fox", image: "Facetune_27-11-2025-22-42-01.jpeg",
-    text: `Es ist gar nicht so leicht... (gekürzt)` // Voller Text ist im System
-  },
-  /* Ohne Deine Liebe - MIT MINITATUREN */
-  {
-    artist: "One Day in Rome",
-    title: "Ohne Deine Liebe",
-    year: "2025",
-    copyright: "© Xander Fox",
-    image: "Facetune_14-12-2024-17-46-57.jpeg",
-    chords: {
-      verse: ["C", "Am", "F", "G"],
-      chorus: ["Am", "F", "C", "G"]
-    },
-    text: `Kannst du mir erklären...` // Voller Text ist im System
-  }
-];
-
-/* DER REST DER SONGS WIRD HIER WIEDER AUFGEFÜLLT (Damit du Copy-Pasten kannst) */
-// Ich packe hier die vollständige Liste rein, damit du keine Lücken hast:
-
-songs.length = 0; // Reset für sauberen Aufbau
-
-songs.push(
-  {
-    artist: "One Day in Rome", title: "Wir", year: "2025", copyright: "© Xander Fox", image: "Facetune_27-11-2025-22-42-01.jpeg",
-    text: `Es ist gar nicht so leicht\nDieses Leben zu verstehen\nManchmal darum vielleicht\nAuch so schwer, einfach weiterzugehen\n\nWenn du denkst, durchzudrehen\nWeil du noch etwas spürst in dir\nLass uns nicht lange reden\nEs gibt viel zu viel zu verlieren\n\nWenn die Welt untergeht\nBin ich bei dir\nDu bist alles, was zählt\nWas ich fühl in mir\nDarum lass uns nicht warten\nWarum sollen wir leiden, wofür?\nDas ist unsere Wahrheit\nAlles was wir noch haben, sind wir\n\nWir sind groß\nWir sind schön, unerreicht\nSchwer zu greifen\nDenn wir schweben federleicht\n\nAuch wenn sie uns versuchen\nzu verführen\nKeine Chance\nWir sind viel zu wir dafür\n\nWenn die Welt untergeht\nBin ich bei dir\nDu bist alles, was zählt\nWas ich fühl in mir\nDarum lass uns nicht warten\nWarum sollen wir leiden, wofür?\nDas ist unsere Wahrheit\nAlles was wir noch haben, sind wir`
-  },
-  {
-    artist: "One Day in Rome", title: "Kein Mensch", year: "2025", copyright: "© Xander Fox", image: "Snapshot 11-02-2024 02:00.jpeg",
-    text: `Es ist Nacht\nhier\nin deinen Armen\nNimm meine Hand\nDenn du weißt genau\ndass ich auch\nnicht mehr anders kann\nDu musst nichts verstehen\nIch bin schon lang in deinem Bann\nDarum bleib bei mir\nKomm und sieh mich\nnur noch einmal\nso an\n\nSo als würden wir\nunsere Seelen inhalieren\nIch will dich mit mir\nbis die Sterne explodieren\nSelbst wenn wir\ngemeinsam fallen\nWer kommt mich heilen?\nUnd ich weiß\nkein Mensch\nWürde\nSo wie du mit mir sein\n\nIch lieg wach\nhier\nin deinen Armen\nbin ich dir nah\nGrad hab ich noch\nvon dir geträumt\nUnd schon bist du wahr\nUnd so wunderschön\nDas ist alles\nnicht mehr normal\nHalt dich bei mir fest\nDenn wir haben\neh keine andere\nWahl\n\nSo als würden wir\nunsere Seelen inhalieren\nIch will dich mit mir\nbis die Sterne explodieren\nSelbst wenn wir\ngemeinsam fallen\nWer kommt mich heilen?\nUnd ich weiß\nkein Mensch\nWürde\nSo wie du mit mir sein`
-  },
+  /* 1. Ein Leben Lang */
   {
     artist: "One Day in Rome", title: "Ein Leben Lang", year: "2025", copyright: "© Xander Fox", image: "Snapshot 11-02-2024 02:00.jpeg",
     text: `So lang du denkst\nWie schön es wär\nLebst du dem Traum\nNur hinterher\n\nMit allen Wolken\nWillst du ziehen\nDeinem Gefühl\nNie mehr widerstehen\n\nUnd wenn du fällst\nNimm meine Hand\nIch will mit dir gemeinsam gehen\nEin Leben lang\nDurch diese Welt\nHab keine Angst\nHör auf dein Herz\nUnd wir verlieren den Verstand\n\nDie Sehnsucht brennt\nDer Weg ist weit\nBis in das Licht\nTrägt uns die Zeit\n\nUnd irgendwann\nWird um uns ein\nHimmel so hoch\nUnd endlos sein\n\nUnd wenn du fällst\nNimm meine Hand\nIch will mit dir gemeinsam gehen\nEin Leben lang\nDurch diese Welt\nHab keine Angst\nHör auf dein Herz\nUnd wir verlieren den Verstand`
   },
+  /* 2. Kein Mensch */
+  {
+    artist: "One Day in Rome", title: "Kein Mensch", year: "2025", copyright: "© Xander Fox", image: "Snapshot 11-02-2024 02:00.jpeg",
+    text: `Es ist Nacht\nhier\nin deinen Armen\nNimm meine Hand\nDenn du weißt genau\ndass ich auch\nnicht mehr anders kann\nDu musst nichts verstehen\nIch bin schon lang in deinem Bann\nDarum bleib bei mir\nKomm und sieh mich\nnur noch einmal\nso an\n\nSo als würden wir\nunsere Seelen inhalieren\nIch will dich mit mir\nbis die Sterne explodieren\nSelbst wenn wir\ngemeinsam fallen\nWer kommt mich heilen?\nUnd ich weiß\nkein Mensch\nWürde\nSo wie du mit mir sein\n\nIch lieg wach\nhier\nin deinen Armen\nbin ich dir nah\nGrad hab ich noch\nvon dir geträumt\nUnd schon bist du wahr\nUnd so wunderschön\nDas ist alles\nnicht mehr normal\nHalt dich bei mir fest\nDenn wir haben\neh keine andere\nWahl\n\nSo als würden wir\nunsere Seelen inhalieren\nIch will dich mit mir\nbis die Sterne explodieren\nSelbst wenn wir\ngemeinsam fallen\nWer kommt mich heilen?\nUnd ich weiß\nkein Mensch\nWürde\nSo wie du mit mir sein`
+  },
+  /* 3. Meine Heiligkeit (What If..?) */
   {
     artist: "One Day in Rome", title: "Meine Heiligkeit (What If..?)", year: "2025", copyright: "© Xander Fox", image: "Snapshot 11-02-2024 02:00.jpeg",
     text: `Wenn mein Herz sich nach dir sehnt\nSo heiß, wie ein Feuer brennt\nTrag mich bis zu dir hinauf\nWeil ich an deine Liebe glaub\n\nMeine Heiligkeit bist du\nHörst du, wie mein Herz dich ruft?\nDu bist alles, was es sucht\nWenn ich fall, fängst du mich auf\nDu und ich, fühlst du es auch?\nJetzt wird alles wieder gut\n\nDenn ich lieb dich unentwegt\nWie ein Gefühl, das nie vergeht\nWenn mich niemand mehr versteht\nHilft deine Hand mir auf den Weg\n\nMeine Heiligkeit bist du\nHörst du, wie mein Herz dich ruft?\nDu bist alles, was es sucht\nWenn ich fall, fängst du mich auf\nDu und ich, fühlst du es auch?\nJetzt wird alles wieder gut`
   },
+  /* 4. Ohne Deine Liebe - MIT AKKORDEN */
   {
     artist: "One Day in Rome", title: "Ohne Deine Liebe", year: "2025", copyright: "© Xander Fox", image: "Facetune_14-12-2024-17-46-57.jpeg",
+    // HIER FÜGST DU SPÄTER EINFACH DIE AKKORDE HINZU
     chords: {
       verse: ["C", "Am", "F", "G"],
       chorus: ["Am", "F", "C", "G"]
     },
     text: `Kannst du mir erklären\nWas geschehen ist\nMusst du denn zerstören\nWas du mir noch bist\n\nWarum bin ich einsam\nDu nicht mehr bei mir\nWollten wir gemeinsam\nNicht die Welt regieren\n\nWarum bin ich hier\nWie lang muss ich bleiben\nOhne deine Liebe\nDie mich still entführt\n\nMein Herz ruft nach dir\nKann dich nicht verschweigen\nDu wirst immer bleiben\nIrgendwo in mir\n\nWarum bist du so\nFern und unerreichbar\nDa wohin du gehen willst\nKann ich dich nicht sehen\n\nWas hält uns am Leben\nWorin liegt der Sinn\nSag mir doch weswegen\nWir verloren sind\n\nWarum bin ich hier\nWie lang muss ich bleiben\nOhne deine Liebe\nDie mich still entführt\n\nMein Herz ruft nach dir\nKann dich nicht verschweigen\nDu wirst immer bleiben\nIrgendwo in mir`
   },
+  /* 5. Wir */
+  {
+    artist: "One Day in Rome", title: "Wir", year: "2025", copyright: "© Xander Fox", image: "Facetune_27-11-2025-22-42-01.jpeg",
+    text: `Es ist gar nicht so leicht\nDieses Leben zu verstehen\nManchmal darum vielleicht\nAuch so schwer, einfach weiterzugehen\n\nWenn du denkst, durchzudrehen\nWeil du noch etwas spürst in dir\nLass uns nicht lange reden\nEs gibt viel zu viel zu verlieren\n\nWenn die Welt untergeht\nBin ich bei dir\nDu bist alles, was zählt\nWas ich fühl in mir\nDarum lass uns nicht warten\nWarum sollen wir leiden, wofür?\nDas ist unsere Wahrheit\nAlles was wir noch haben, sind wir\n\nWir sind groß\nWir sind schön, unerreicht\nSchwer zu greifen\nDenn wir schweben federleicht\n\nAuch wenn sie uns versuchen\nzu verführen\nKeine Chance\nWir sind viel zu wir dafür\n\nWenn die Welt untergeht\nBin ich bei dir\nDu bist alles, was zählt\nWas ich fühl in mir\nDarum lass uns nicht warten\nWarum sollen wir leiden, wofür?\nDas ist unsere Wahrheit\nAlles was wir noch haben, sind wir`
+  },
+  /* 6. Words Of Love */
   {
     artist: "One Day in Rome", title: "Words Of Love", year: "2025", copyright: "© Xander Fox", image: "Snapshot 11-02-2024 02:00.jpeg",
     text: `Tell Me Little Angel\nWon't You Kiss My Sensual Lips\nClose The Golden Gates Behind\nCome Move In Closer\nOn A Mystic Trip\nWe Feel So High\n\nLet's Call It Love\nLet's Fake It All\nLet It Seem\nEverything\nYou Never Dream Of\nA Little Closer\nUntil I Cut Your Wings\nNow You're Trapped In\n\nSay Do You Believe My Words Of Love\nI Am The Devil In Disguise\nNothing Here Is Real\nYou Just Forgot\nThe Shock Will Make You Feel\nAnd Let You Fall\n\nSay Do You Receive My Words Of Hope\nMelodramatic Eyes Reply\nWe Don't Really Need\nTo Talk About\nOnce You Sign And Seal It\nThere Is No Way Out\n\nTell Me Pretty Angel\nWon't You Take It By Surprise\nT-T- The Time Is Over\nBreak Up The Shell And\nMirror Me Inside\nLet All The Secrets Fly\n\nWe Call It Love\nWe Waste It All\nAnd We Want\nEverything\nWe Hate To Deal With\nYou Can't Conceal How Sweet\nThe Sirens Sing\nThe Beat Drops In....\n\nSay Do You Believe My Words Of Love\nI Am The Devil In Disguise\nNothing Here Is Real\nYou Just Forgot\nThe Shock Will Make You Feel\nAnd Let You Fall\n\nSay Do You Receive My Words Of Hope\nMelodramatic Eyes Reply\nWe Don't Really Need\nTo Talk About\nOnce You Sign And Seal It\nThere Is No Way Out`
@@ -279,15 +267,13 @@ songs.sort((a,b) => {
 
 /* HELPER: PIANO SVG MINIATURES */
 function createPianoSVG(activeKeys) {
-  // Miniatur Größe: 48 x 28
-  const wWhite = 48/7; // ca 6.8px
-  const hWhite = 28;
-  const wBlack = 4;
-  const hBlack = 16;
+  // Miniatur Größe: 40 x 24 (etwas kleiner für mehr Abstand)
+  const wWhite = 40/7; // ca 5.7px
+  const hWhite = 24;
+  const wBlack = 3.5;
+  const hBlack = 14;
   
-  const whiteMap = [0,1,2,3,4,5,6]; // einfache Sequenz x-pos
-  
-  let svg = `<svg width="48" height="28" viewBox="0 0 48 28" xmlns="http://www.w3.org/2000/svg">`;
+  let svg = `<svg width="40" height="24" viewBox="0 0 40 24" xmlns="http://www.w3.org/2000/svg">`;
   
   // Whites: 0,2,4,5,7,9,11
   const whiteIndices = [0,2,4,5,7,9,11];
@@ -297,11 +283,10 @@ function createPianoSVG(activeKeys) {
     svg += `<rect x="${i*wWhite}" y="0" width="${wWhite}" height="${hWhite}" class="${cls}" />`;
   });
   
-  // Blacks: 1,3,6,8,10 -> Pos approx relative to whites
-  // offsets: between 0-1, 1-2, 3-4, 4-5, 5-6
+  // Blacks: 1,3,6,8,10
   const blackPos = [
-    {idx:1, x:wWhite*0.7}, {idx:3, x:wWhite*1.7},
-    {idx:6, x:wWhite*3.7}, {idx:8, x:wWhite*4.7}, {idx:10, x:wWhite*5.7}
+    {idx:1, x:wWhite*0.65}, {idx:3, x:wWhite*1.65},
+    {idx:6, x:wWhite*3.65}, {idx:8, x:wWhite*4.65}, {idx:10, x:wWhite*5.65}
   ];
   blackPos.forEach(k => {
     let isActive = activeKeys.includes(k.idx) || activeKeys.includes(k.idx+12);
