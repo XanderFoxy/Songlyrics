@@ -172,7 +172,7 @@
 <body>
 
   <nav id="menu" aria-label="Songliste">
-    <h1><a href="Weihnachtslieder.html">Weihnachtslieder</a></h1>
+    <h1><a href="Songtexte.html">Songtexte</a></h1>
   </nav>
 
   <section id="content-wrap">
@@ -218,7 +218,7 @@ const CHORD_MAP = {
   "Gm": [7, 10, 14],
 };
 
-/* HELPER: INTELLIGENTES PIANO SVG - BLOCK ANKER LOGIK (Funktion ist definiert, wird aber in dieser Datei nicht verwendet, da keine Akkorde hinterlegt sind) */
+/* HELPER: INTELLIGENTES PIANO SVG - BLOCK ANKER LOGIK */
 function createPianoSVG(activeKeys) {
   let minKey = activeKeys.length > 0 ? Math.min(...activeKeys) : 0;
   let maxKey = activeKeys.length > 0 ? Math.max(...activeKeys) : 0;
