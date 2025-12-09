@@ -30,10 +30,25 @@
     overflow:auto;
     border-right:1px solid rgba(255,255,255,0.03);
   }
+  
   #menu h1{
     margin:0 0 10px 0;font-size:18px;letter-spacing:0.3px;
     font-weight:600;color:var(--accent);
   }
+
+  /* HIER IST DIE ÄNDERUNG FÜR DEN VERSTECKTEN LINK */
+  /* Der Link sieht aus wie normaler Text (erbt die Farbe vom h1) */
+  #menu h1 a {
+    color: inherit; 
+    text-decoration: none;
+    cursor: pointer; /* Zeigt die Hand an, damit du weißt, dass es klickbar ist */
+  }
+  /* Verhindert Farbänderungen bei Besuch oder Hover */
+  #menu h1 a:visited, #menu h1 a:hover, #menu h1 a:active {
+    color: inherit;
+    text-decoration: none;
+  }
+
   .song-entry{
     display:flex;
     gap:10px;
@@ -140,7 +155,7 @@
 <body>
 
   <nav id="menu" aria-label="Songliste">
-    <h1>Songtexte</h1>
+    <h1><a href="Songtexte.html">Songtexte</a></h1>
     </nav>
 
   <section id="content-wrap">
