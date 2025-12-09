@@ -11,7 +11,7 @@
     --cover-side:260px;
     --bg-opacity:0.08;
     --bg-blur:6px;
-    --accent:#f3c64a; /* GOLD - Design wiederhergestellt */
+    --accent:#f3c64a; /* GOLD */
     --menu-bg:#111; /* SCHWARZ */
     --menu-hover:#2b2b2b;
     --text-color:#222;
@@ -132,7 +132,7 @@
   }
   .chord-grid {
     display: flex; 
-    flex-flow: row wrap; /* Umbruch erlaubt */
+    flex-flow: row wrap; 
     justify-content: center; 
     gap: 8px; 
   }
@@ -208,15 +208,15 @@
   </section>
 
 <script>
-/* CHORD MAP - ERWEITERT UM FLAT-AKKORDE */
+/* CHORD MAP */
 const CHORD_MAP = {
-  "C":  [0, 4, 7],      
-  "G":  [7, 11, 14],    
-  "Am": [9, 12, 16],    
-  "F":  [5, 9, 12],     
-  "Dm": [2, 5, 9],
+  "C":  [0, 4, 7],      // C-Dur
+  "G":  [7, 11, 14],    // G-Dur
+  "Am": [9, 12, 16],    // A-Moll
+  "F":  [5, 9, 12],     // F-Dur
+  "Dm": [2, 5, 9],      // D-Moll
   
-  // Moll & Flat Akkorde für "So schön ist die Weihnacht"
+  // Moll & Flat Akkorde
   "Cm": [0, 3, 7],      // C-Moll
   "Gm": [7, 10, 14],    // G-Moll
   "Ab": [8, 12, 15],    // As-Dur
@@ -324,7 +324,7 @@ const songs = [
     image: "IMG_8762.jpeg",
     chords: {
       verse: ["Eb", "Cm", "Ab", "Bb", "Cm", "Eb", "Ab", "Bb"],
-      chorus: ["Ab", "Eb", "Cm", "Bb", "Ab", "Eb", "Cm", "Gm"]
+      chorus: ["Ab", "Eb", "Gm", "Bb", "Ab", "Eb", "Gm", "Gm"] // Korrigiert: Cm zu Gm an den betroffenen Stellen
     },
     text: `So schön ist die Weihnacht\nWenn die Welt zur Ruhe kommt\nEin leiser Schnee fällt\nUnd das Licht in uns wohnt\n\nJede Kerze flackert\nIn den Augen deiner Kinder\nEin Moment der Liebe\nDer uns macht viel gesünder\n\nLass uns lachen und singen\nUnd einander vergeben\nSo schön ist die Weihnacht\nSo beginnt unser Leben\n\nSo schön ist die Weihnacht\nSo beginnt unser Leben`
   }
@@ -427,7 +427,6 @@ function escapeHtml(str){
   return str.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
 }
 
-// Window Onload für sicheren Start
 window.onload = function() {
   const menu = document.getElementById('menu');
 
