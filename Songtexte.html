@@ -56,7 +56,7 @@
     display:flex; flex-direction:column; min-width:0;
   }
   
-  /* STYLES FÜR PLAYLISTEN (angepasst an Artist/Title Logic) */
+  /* STYLES FÜR PLAYLISTEN */
   .playlist-title{
     font-weight:700; font-size:15px; line-height:1; color:#fff;
     white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
@@ -152,7 +152,6 @@
     <div id="cover-bg" aria-hidden="true"></div>
 
     <main id="content">
-      
       <article class="info-box" id="info-box">
         <h2>Wähle eine Sammlung</h2>
         <p>Wähle links im Menü eine Kategorie aus, um zu den entsprechenden Songtexten zu gelangen.</p>
@@ -172,21 +171,21 @@ const playlists = [
     subtitle: "Hauptübersicht",
     desc: "Die komplette Sammlung aller Songs für meine TikTok Live-Streams. Hier findest du die Klassiker von Al Bano bis Yungblud.",
     link: "index.html", 
-    image: "IMG_7278.jpeg" /* Altes Cover als Platzhalter */
+    image: "IMG_7278.jpeg" 
   },
   {
     title: "Weihnachtslieder",
     subtitle: "X-Mas Special",
     desc: "Meine eigenen Weihnachtssongs und besinnliche Texte für die Feiertage. One Day in Rome & Sweet Velvet.",
     link: "Weihnachtslieder",
-    image: "Facetune_14-12-2024-17-46-57.jpeg" /* Weihnachtscover */
+    image: "Facetune_14-12-2024-17-46-57.jpeg"
   },
   {
     title: "Auftritt Weihnachtsfeier",
     subtitle: "Live am 12.12.2025",
-    desc: "Die komplette Setlist für die Weihnachtsfeier bei René. Eigene Songs von One Day in Rome & Sweet Velvet live.",
+    desc: "Die komplette Setlist für die Weihnachtsfeier bei René. Eigene Songs von One Day in Rome live.",
     link: "Weihnachtsfeier.html",
-    image: "Snapshot 11-02-2024 02:00.jpeg" /* Projekt Logo als Platzhalter */
+    image: "Snapshot 11-02-2024 02:00.jpeg"
   }
 ];
 
@@ -200,7 +199,6 @@ function makeEntry(item){
   const div = document.createElement('div');
   div.className = 'song-entry';
   
-  // Image Thumbnail
   const img = document.createElement('img');
   if(item.image){
     img.src = item.image;
@@ -227,13 +225,11 @@ function makeEntry(item){
   div.appendChild(img);
   div.appendChild(meta);
 
-  // click -> show details
   div.addEventListener('click', () => showDetails(item));
   return div;
 }
 
 function showDetails(item){
-  // 1. Hintergrund setzen
   if(item.image){
     coverBg.style.backgroundImage = `url("${item.image}")`;
     coverBg.style.opacity = "var(--bg-opacity)";
@@ -242,14 +238,12 @@ function showDetails(item){
     coverBg.style.opacity = "0";
   }
 
-  // 2. Inhalt füllen (Titel, Text, Button)
   infoBox.innerHTML = `
     <h2>${escapeHtml(item.title)}</h2>
     <p>${escapeHtml(item.desc)}</p>
     <a href="${item.link}" class="open-btn">Sammlung öffnen</a>
   `;
 
-  // 3. Cover rechts setzen
   if(item.image){
     coverLarge.src = item.image;
     coverLarge.alt = item.title;
@@ -265,12 +259,10 @@ function escapeHtml(str){
   return str.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
 }
 
-/* Init */
 playlists.forEach(pl => {
   menu.appendChild(makeEntry(pl));
 });
 
-/* Wähle standardmäßig den ersten Eintrag aus */
 if(playlists.length > 0) showDetails(playlists[0]);
 
 </script>
