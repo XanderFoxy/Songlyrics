@@ -133,7 +133,7 @@
     display: flex; 
     flex-flow: row nowrap; 
     justify-content: space-between; 
-    gap: 12px; /* Guter Abstand zwischen den Akkorden */
+    gap: 12px; 
   }
   .piano-box {
     display: flex; flex-direction: column; align-items: center;
@@ -143,7 +143,7 @@
     color: var(--accent); margin-bottom: 2px; line-height: 1;
   }
   /* SVG Styles */
-  .key-white { fill: #fff; stroke: #ccc; stroke-width: 0.5px; } 
+  .key-white { fill: #fff; stroke: #888; stroke-width: 0.5px; } 
   .key-black { fill: #000; stroke: #000; stroke-width: 0.5px; }
   .key-active { fill: var(--accent) !important; }
 
@@ -206,22 +206,15 @@
   </section>
 
 <script>
-/* CHORD MAP (Linear ohne Wrapping)
-   0 = C3, 12 = C4, 24 = C5
-   Die Zahlen entsprechen den Halbtönen ab einem tiefen C.
-*/
+/* CHORD MAP */
 const CHORD_MAP = {
-  // C-Dur (Grundstellung): C(0), E(4), G(7)
-  "C":  [0, 4, 7],      
-  // A-Moll (Linear): A(9), C(12), E(16) -> A3, C4, E4
-  "Am": [9, 12, 16],    
-  // F-Dur (Linear): F(5), A(9), C(12) -> F3, A3, C4
-  "F":  [5, 9, 12],     
-  // G-Dur (Linear): G(7), H(11), D(14) -> G3, B3, D4
-  "G":  [7, 11, 14]     
+  "C":  [0, 4, 7],      // C-Dur (Grundstellung)
+  "Am": [9, 12, 16],    // A-Moll (Linear)
+  "F":  [5, 9, 12],     // F-Dur (Linear)
+  "G":  [7, 11, 14]     // G-Dur (Linear)
 };
 
-/* ---------- SONGDATA (Auftritt 12.12.2025) ---------- */
+/* ---------- SONGDATA ---------- */
 const songs = [
   /* 1. Wir */
   {
@@ -264,90 +257,106 @@ songs.sort((a,b) => {
   if(T1 < T2) return -1; if(T1 > T2) return 1; return 0;
 });
 
-/* HELPER: PIANO SVG - TIGHT FIT (Kein Rand) */
+/* HELPER: INTELLIGENTES PIANO SVG (Anker-Logik) */
 function createPianoSVG(activeKeys) {
+  /*
+    Strategie:
+    1. Finde die tiefste Note im Akkord (minKey).
+    2. Suche das nächste C LINKS davon (oder das C selbst, wenn minKey ein C ist).
+       => startKey
+    3. Finde die höchste Note (maxKey).
+    4. Suche das nächste C (oder H/Ende einer Oktave) RECHTS davon,
+       sodass wir sicherstellen, dass wir die schwarzen Blöcke nicht zerschneiden.
+       
+    UM ES SIMPEL ZU HALTEN für die Optik und Orientierung:
+    Wir nehmen einfach den startKey (das C links vom Akkord) und zeichnen ab da
+    immer eine feste Anzahl weißer Tasten, z.B. 10 oder 12.
+    Das garantiert, dass man immer C-D-E-F-G... sieht und die schwarzen Tasten
+    an der gewohnten Position sind.
+  */
+  
   let minKey = Math.min(...activeKeys);
   let maxKey = Math.max(...activeKeys);
   
-  // Bereich exakt von minKey bis maxKey (kein -1 oder +1 Padding)
-  let startKey = minKey;
-  let endKey = maxKey;
+  // Anker: Das C unterhalb (oder gleich) der tiefsten Note.
+  // (Note % 12 == 0 ist ein C)
+  let startKey = Math.floor(minKey / 12) * 12;
   
-  // Helper: Ist Taste Weiß?
+  // Wie viele weiße Tasten brauchen wir mindestens?
+  // Wir wollen bis zur höchsten Note + ein bisschen Puffer rechts (bis zum nächsten E oder H).
+  // Aber noch besser: Wir zeichnen einfach pauschal eine Oktave + eine Quinte (ca 10-12 weiße Tasten),
+  // solange der Akkord reinpasst. Wenn der Akkord breiter ist, erweitern wir.
+  
+  // Berechne den Index der letzten Note relativ zum Start
+  // Wir müssen wissen, wie viele weiße Tasten bis maxKey nötig sind.
+  let neededWhiteKeys = 0;
+  
   const isWhite = (k) => [0,2,4,5,7,9,11].includes((k % 12 + 12) % 12);
-
-  // Berechne Anzahl der weißen Tasten im exakten Bereich
-  let whiteKeyCount = 0;
-  // Wenn Start oder Ende schwarze Tasten sind, brauchen wir trotzdem Platz dafür.
-  // Wir iterieren chromatisch.
-  for(let k=startKey; k<=endKey; k++) {
-    if(isWhite(k)) whiteKeyCount++;
+  
+  // Zähle weiße Tasten von startKey bis maxKey
+  for(let k = startKey; k <= maxKey; k++) {
+    if(isWhite(k)) neededWhiteKeys++;
   }
   
-  // Sonderfall: Wenn startKey schwarz ist, und die nächste weiße erst kommt,
-  // dann "hängt" die schwarze Taste links über der ersten weißen Taste?
-  // Nein, schwarze Tasten liegen immer *zwischen* weißen (außer am Rand).
-  // Wir müssen sicherstellen, dass wir die weißen Tasten zeichnen, die "unter" den schwarzen liegen.
-  // Wenn startKey schwarz ist (z.B. C#=1), brauchen wir C(0) als Basis für die X-Position.
-  // Also runden wir den Bereich auf die beteiligten weißen Tasten auf.
+  // Wir wollen immer mindestens z.B. 8 weiße Tasten (eine Oktave C-C) sehen zur Orientierung.
+  // Oder besser noch: Bis zum nächsten "H", um den Block abzuschließen.
+  // Einfachste Lösung für Konsistenz: Wir runden auf volle Oktaven auf? 
+  // Nein, zu breit.
   
-  // Finde die weiße Taste direkt unter/vor startKey
-  let visStart = isWhite(startKey) ? startKey : startKey - 1;
-  // Finde die weiße Taste direkt unter/nach endKey
-  let visEnd = isWhite(endKey) ? endKey : endKey + 1; // Muss +1 sein, falls EndKey schwarz (z.B. F# -> G als Abschluss?) 
-  // Nein, eigentlich reicht es, bis zur weißen Taste VOR der schwarzen zu zeichnen und die schwarze drauf zu malen.
-  // Aber visuell besser: visEnd ist die weiße Taste, die das Raster abschließt.
-  if(!isWhite(endKey)) visEnd = endKey + 1; // Wenn Ende schwarz, nimm die weiße danach dazu für den Rahmen? 
-  // User will "keine Nahtzugabe". Wenn Akkord C-E-G ist, zeigen wir C,D,E,F,G.
-  // Wenn Akkord A-C-E ist, zeigen wir A,B,C,D,E.
-  // Das funktioniert perfekt.
+  // Wir nehmen "neededWhiteKeys" und addieren rechts Puffer, bis wir bei einem E(4) oder H(11) landen (den Lücken).
+  // Das garantiert, dass rechts kein schwarzer Block angeschnitten wird.
   
-  // Korrektur: Wenn wir A-C-E haben (9,12,16). 
-  // visStart = 9 (A). visEnd = 16 (E).
-  // Weiße Tasten: A, B, C, D, E. (5 Stück).
-  
-  whiteKeyCount = 0;
-  for(let k=visStart; k<=visEnd; k++) {
-    if(isWhite(k)) whiteKeyCount++;
+  let endKey = maxKey;
+  while(true) {
+    let noteInOctave = (endKey % 12 + 12) % 12;
+    // Gute Endpunkte sind E (4) und H (11), da dort keine schwarze Taste folgt.
+    if(noteInOctave === 4 || noteInOctave === 11) break;
+    endKey++;
   }
   
-  const keyWidth = 40 / Math.max(whiteKeyCount, 3); // Min 3 Tasten breit, sonst zu riesig
+  // Jetzt zählen wir die finalen weißen Tasten von startKey bis endKey
+  let totalWhiteKeys = 0;
+  for(let k = startKey; k <= endKey; k++) {
+    if(isWhite(k)) totalWhiteKeys++;
+  }
+  
+  // Layout
+  const keyWidth = 40 / Math.max(totalWhiteKeys, 7); // Min 7 Tasten Breite (eine Oktave C-H)
   const hWhite = 24;
-  const wBlack = keyWidth * 0.6;
+  const wBlack = keyWidth * 0.65;
   const hBlack = 14;
   
   let svgContent = "";
   let currentX = 0;
-  let whitePositions = {}; // Map note index -> x pos
+  let whitePositions = {}; 
   
   // 1. Whites
-  for(let k=visStart; k<=visEnd; k++) {
+  for(let k = startKey; k <= endKey; k++) {
     if(isWhite(k)) {
       let isActive = activeKeys.includes(k);
       let cls = isActive ? "key-white key-active" : "key-white";
       svgContent += `<rect x="${currentX}" y="0" width="${keyWidth}" height="${hWhite}" class="${cls}" />`;
+      
+      // Markiere das C (optional, aber gut zur Orientierung)
+      // if ((k % 12) === 0) { ... } 
+      
       whitePositions[k] = currentX;
       currentX += keyWidth;
     }
   }
   
-  // 2. Blacks (nur die im Bereich activeKeys oder zwischen visStart/visEnd)
-  for(let k=visStart; k<=visEnd; k++) {
+  // 2. Blacks
+  for(let k = startKey; k <= endKey; k++) {
     if(!isWhite(k)) {
-      // Schwarze Taste k. Liegt zwischen k-1 und k+1.
-      // Wir brauchen die Position von k-1 (die weiße Taste davor)
+      // Schwarze Taste k. Position ist zwischen k-1 und k+1.
       let prevWhite = k - 1;
+      // Wir brauchen die Position von k-1
       if(whitePositions[prevWhite] !== undefined) {
         let isActive = activeKeys.includes(k);
         let cls = isActive ? "key-black key-active" : "key-black";
-        
-        // Prüfen ob wir am Rand sind?
-        // Wenn k=startKey (und schwarz), dann zeichnen wir sie.
-        // Wenn k innerhalb, zeichnen.
-        // Visuell: schwarze Taste liegt auf der Kante rechts von prevWhite.
         let xPos = whitePositions[prevWhite] + keyWidth - (wBlack/2);
         
-        // Nur zeichnen, wenn nicht komplett abgeschnitten (sollte durch visStart/visEnd passen)
+        // Zeichnen nur wenn wir nicht über den Rand ragen (sollte durch endKey-Logik passen)
         svgContent += `<rect x="${xPos}" y="0" width="${wBlack}" height="${hBlack}" class="${cls}" />`;
       }
     }
