@@ -109,38 +109,41 @@
   .front { z-index: 2; transform: rotateY(0deg); }
   .front img { width: 100%; height: 100%; object-fit: cover; background:#ddd; }
   
-  /* RÜCKSEITE STYLE (PIANO MINIATUREN) - OPTIMIERT */
+  /* RÜCKSEITE STYLE */
   .back {
     transform: rotateY(180deg);
     background: #1a1a1a;
     color: #fff;
     display: flex; flex-direction: column; 
-    justify-content: center; /* Zentriert vertikal */
+    justify-content: center; 
     align-items: center;
     padding: 10px; box-sizing: border-box; text-align: center;
-    overflow-y: auto;
+    overflow-y: auto; 
   }
   
-  /* SPACING ANPASSUNG */
+  /* WIEDERHERGESTELLTE GROSSZÜGIGE ABSTÄNDE */
   .chord-section { 
-    width: 100%; margin-bottom: 6px; /* Reduziert von 12px für mehr Luft oben/unten */
+    width: 100%; 
+    margin-bottom: 12px; /* Wieder luftig wie früher */
   }
   .chord-section:last-child { margin-bottom: 0; }
 
   .chord-part-label {
     font-family: Inter, sans-serif; font-size: 10px; text-transform: uppercase;
-    color: #666; margin: 0 0 2px 0; /* Reduziert von 4px */
+    color: #666; margin: 0 0 4px 0; /* Wieder 4px */
     letter-spacing: 1px; width:100%; text-align:left; border-bottom:1px solid #333;
   }
+  
+  /* DYNAMIK: flex-wrap erlaubt Umbruch, gap ist wieder groß */
   .chord-grid {
     display: flex; 
-    flex-flow: row wrap; 
+    flex-flow: row wrap; /* Das ist die "Dynamik": Umbruch wenn nötig */
     justify-content: center; 
-    gap: 8px; 
+    gap: 12px; /* Schöner, großer Abstand */
+    row-gap: 12px; /* Abstand zwischen den Zeilen beim Umbruch */
   }
   .piano-box {
     display: flex; flex-direction: column; align-items: center;
-    margin-bottom: 2px; /* Reduziert */
   }
   .piano-name {
     font-family: Inter, sans-serif; font-weight: 700; font-size: 10px; 
@@ -237,11 +240,11 @@ const songs = [
     },
     text: `Bis zum Morgen\nLass uns bleiben\nLass mich deine Blicke spüren\nJede Seite neu beschreiben\n\nOhne Wärme, ohne Liebe\nWürden wir nicht existieren\nIn der kalten Atmosphäre\nHoffnungslos erfrieren\n\nReiß dich los, lass uns treiben\nEinmal um die ganze Welt\nBis zum Mond und immer weiter\n\nDir allein nur will ich zeigen\nWas den höchsten Stern erhellt\nLass uns lieben, lass uns schweigen\n\nNur für eine Ewigkeit\nWill ich in deinen Armen sein\nSteh mir bei, sei mein Begleiter\nLass mich nicht allein\n\nReiß dich los, lass uns treiben\nEinmal um die ganze Welt\nBis zum Mond und immer weiter\n\nLass uns fliegen, übersteig\nWas sich in deinen Schatten stellt\nBis zum Mond und immer weiter\n\nUnd immer weiter...`
   },
-  /* 2. Ein Leben Lang (Komplexe Version, wie befohlen) */
+  /* 2. Ein Leben Lang */
   {
     artist: "One Day in Rome", title: "Ein Leben Lang", year: "2025", copyright: "© Xander Fox", image: "IMG_0166.jpeg",
     chords: { 
-      verse: ["Cm", "Gm", "Ab", "Eb"],
+      verse: ["Cm", "Gm", "Ab", "Eb"], // Cm-Moll Basis (Original)
       chorus: ["Cm", "Ab", "Eb", "Bb"] 
     },
     text: `So lang du denkst\nWie schön es wär\nLebst du dem Traum\nNur hinterher\n\nMit allen Wolken\nWillst du ziehen\nDeinem Gefühl\nNie mehr widerstehen\n\nUnd wenn du fällst\nNimm meine Hand\nIch will mit dir gemeinsam gehen\nEin Leben lang\nDurch diese Welt\nHab keine Angst\nHör auf dein Herz\nUnd wir verlieren den Verstand\n\nDie Sehnsucht brennt\nDer Weg ist weit\nBis in das Licht\nTrägt uns die Zeit\n\nUnd irgendwann\nWird um uns ein\nHimmel so hoch\nUnd endlos sein\n\nUnd wenn du fällst\nNimm meine Hand\nIch will mit dir gemeinsam gehen\nEin Leben lang\nDurch diese Welt\nHab keine Angst\nHör auf dein Herz\nUnd wir verlieren den Verstand`
