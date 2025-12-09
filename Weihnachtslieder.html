@@ -36,9 +36,8 @@
     font-weight:600;color:var(--accent);
   }
 
-  /* VERSTECKTER LINK */
   #menu h1 a { color: inherit; text-decoration: none; cursor: pointer; }
-  #menu h1 a:hover, #menu h1 a:visited, #menu h1 a:active { color: inherit; text-decoration: none; }
+  #menu h1 a:hover { color: inherit; }
 
   .song-entry{
     display:flex; gap:10px; align-items:center; padding:8px; border-radius:8px;
@@ -121,7 +120,7 @@
     overflow-y: auto;
   }
   
-  /* SPACING WIEDER AUF STANDARD (Luftig) */
+  /* STANDARD SPACING (LUFTIG) */
   .chord-section { 
     width: 100%; margin-bottom: 12px; 
   }
@@ -129,26 +128,34 @@
 
   .chord-part-label {
     font-family: Inter, sans-serif; font-size: 10px; text-transform: uppercase;
-    color: #666; margin: 0 0 4px 0; letter-spacing: 1px; width:100%; text-align:left; border-bottom:1px solid #333;
+    color: #666; margin: 0 0 4px 0; 
+    letter-spacing: 1px; width:100%; text-align:left; border-bottom:1px solid #333;
   }
-  
-  /* DYNAMIK: flex-wrap erlaubt Umbruch, gap ist großzügig */
   .chord-grid {
-    display: flex; 
-    flex-flow: row wrap; 
-    justify-content: center; 
-    gap: 12px; 
-    row-gap: 12px;
+    display: flex; flex-flow: row wrap; justify-content: center; 
+    gap: 12px; row-gap: 12px;
   }
   .piano-box {
     display: flex; flex-direction: column; align-items: center;
+    margin-bottom: 4px;
+  }
+
+  /* DYNAMISCHES SPACING (KOMPAKT für viele Akkorde) */
+  .chord-section.dense {
+    margin-bottom: 6px; /* Reduzierter Abstand */
+  }
+  .chord-grid.dense {
+    gap: 6px; /* Enger */
+    row-gap: 6px;
+  }
+  .chord-grid.dense .piano-box {
     margin-bottom: 2px;
   }
+
   .piano-name {
     font-family: Inter, sans-serif; font-weight: 700; font-size: 10px; 
     color: var(--accent); margin-bottom: 2px; line-height: 1;
   }
-  /* SVG Styles */
   .key-white { fill: #fff; stroke: #888; stroke-width: 0.5px; } 
   .key-black { fill: #000; stroke: #000; stroke-width: 0.5px; }
   .key-active { fill: var(--accent) !important; }
@@ -214,18 +221,18 @@
 <script>
 /* CHORD MAP */
 const CHORD_MAP = {
-  "C":  [0, 4, 7],      // C-Dur
-  "G":  [7, 11, 14],    // G-Dur
-  "Am": [9, 12, 16],    // A-Moll
-  "F":  [5, 9, 12],     // F-Dur
-  "Dm": [2, 5, 9],      // D-Moll
+  "C":  [0, 4, 7],      
+  "G":  [7, 11, 14],    
+  "Am": [9, 12, 16],    
+  "F":  [5, 9, 12],     
+  "Dm": [2, 5, 9],
   
   // Moll & Flat Akkorde
-  "Cm": [0, 3, 7],      // C-Moll
-  "Gm": [7, 10, 14],    // G-Moll
-  "Ab": [8, 12, 15],    // As-Dur
-  "Eb": [3, 7, 10],     // Es-Dur
-  "Bb": [10, 14, 17]    // B-Dur
+  "Cm": [0, 3, 7],      
+  "Gm": [7, 10, 14],    
+  "Ab": [8, 12, 15],    
+  "Eb": [3, 7, 10],     
+  "Bb": [10, 14, 17]    
 };
 
 /* HELPER: INTELLIGENTES PIANO SVG */
@@ -299,7 +306,7 @@ function createPianoSVG(activeKeys) {
 }
 
 
-/* SONGDATA FÜR WEIHNACHTEN */
+/* SONGDATA */
 const songs = [
   /* 1. Als Wenn Ein Engel.. */
   {
@@ -319,7 +326,7 @@ const songs = [
     image: "IMG_6876.jpeg",
     text: `When the Stars appear so near\nSeem to shine only for you\nThrough the Trees so silently\nGive me company\nCome on, walk with me\n\nFill My Eyes\nwith all the magic love and light\n\nGive my heart\nthe joy of Christmas for this night\n\nHold on tight\nBecause I want you to be close\n\nWithin my arms\nAs close as you can come\n\nEyes illuminate from candle shine\nShare the holy tide with me\nOn your heartbeat I can hear\ncarol melodies\nLet it talk to me\n\nFill My Eyes\nwith all the magic love and light\n\nGive my heart\nthe joy of Christmas for this night\n\nHold on tight\nBecause I want you to be close\n\nWithin my arms\nAs close as you can come`
   },
-  /* 3. So schön ist die Weihnacht (Akkorde: Refrain endet auf Gm, Ab) */
+  /* 3. So schön ist die Weihnacht (8 Akkorde -> wird dynamisch komprimiert) */
   {
     artist: "One Day in Rome",
     title: "So schön ist die Weihnacht",
@@ -377,7 +384,12 @@ function showSong(song){
   if(song.chords){
     let html = "";
     const renderSection = (label, chordNames) => {
-      let sectionHtml = `<div class="chord-section"><div class="chord-part-label">${label}</div><div class="chord-grid">`;
+      // DYNAMISCHE ERKENNUNG: Mehr als 4 Akkorde -> Kompaktes Layout
+      const isDense = chordNames.length > 4;
+      const sectionClass = isDense ? "chord-section dense" : "chord-section";
+      const gridClass = isDense ? "chord-grid dense" : "chord-grid";
+
+      let sectionHtml = `<div class="${sectionClass}"><div class="chord-part-label">${label}</div><div class="${gridClass}">`;
       chordNames.forEach(cName => {
         let keys = CHORD_MAP[cName] || [];
         let svg = createPianoSVG(keys);
