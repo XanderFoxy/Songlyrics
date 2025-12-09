@@ -54,7 +54,7 @@
     display:flex; flex-direction:column; min-width:0;
   }
   
-  /* HIER SIND DIE ORIGINAL CSS KLASSEN */
+  /* ORIGINAL STYLES */
   .artist{
     font-weight:700; font-size:15px; line-height:1; color:#fff;
     white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
@@ -90,7 +90,6 @@
     margin:0 0 2px 0; 
     font-style:normal; font-size:22px; color:#111;
   }
-  /* Das Copyright Styling */
   .song-copyright {
     font-family: Inter, sans-serif;
     font-style: normal;
@@ -342,14 +341,13 @@ function makeEntry(song, idx){
   const meta = document.createElement('div');
   meta.className = 'meta';
   
-  // HIER IST DIE LOGIK-ÄNDERUNG (Aber Styling bleibt ORIGINAL):
-  
-  // Wir nutzen die CSS-Klasse ".artist" (weiß/fett), aber füllen sie mit dem Song-Titel
+  // Menü-Logik:
+  // .artist (weiß/fett) = TITEL
   const mainLine = document.createElement('div');
   mainLine.className = 'artist'; 
   mainLine.textContent = song.title || '';
   
-  // Wir nutzen die CSS-Klasse ".title" (hellgrau/kursiv), aber füllen sie mit dem Künstler
+  // .title (hellgrau/kursiv) = KÜNSTLER
   const subLine = document.createElement('div');
   subLine.className = 'title';
   subLine.textContent = song.artist || '';
@@ -376,8 +374,8 @@ function showSong(song){
   }
 
   // Build the content HTML
-  // Im Lyric-Bereich bleibt es: Artist - Title
-  let h = `<h2>${escapeHtml(song.artist)} — ${escapeHtml(song.title)}</h2>`;
+  // HIER IST DIE ÄNDERUNG: NUR NOCH SONGTITEL IN H2
+  let h = `<h2>${escapeHtml(song.title)}</h2>`;
   
   if(song.copyright){
     h += `<span class="song-copyright">${escapeHtml(song.copyright)}</span>`;
@@ -387,7 +385,7 @@ function showSong(song){
   content.innerHTML = h + p;
 
   // set right cover
-  // Im Cover-Bereich bleibt es: Artist oben, Titel unten
+  // Cover-Bereich bleibt original: Artist oben, Titel unten
   if(song.image){
     coverLarge.src = song.image;
     coverLarge.alt = `${song.artist} - ${song.title}`;
