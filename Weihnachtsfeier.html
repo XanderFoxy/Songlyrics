@@ -118,6 +118,7 @@
     justify-content: center; 
     align-items: center;
     padding: 10px; box-sizing: border-box; text-align: center;
+    overflow-y: auto; /* Scrollbar falls zu viele Akkorde */
   }
   
   .chord-section { 
@@ -129,14 +130,16 @@
     font-family: Inter, sans-serif; font-size: 10px; text-transform: uppercase;
     color: #666; margin: 0 0 4px 0; letter-spacing: 1px; width:100%; text-align:left; border-bottom:1px solid #333;
   }
+  /* LOGIK UPDATE: wrap erlaubt Umbruch */
   .chord-grid {
     display: flex; 
-    flex-flow: row nowrap; 
+    flex-flow: row wrap; 
     justify-content: center; 
-    gap: 12px; 
+    gap: 8px; /* Etwas kleinerer Abstand für mehr Platz */
   }
   .piano-box {
     display: flex; flex-direction: column; align-items: center;
+    margin-bottom: 4px;
   }
   .piano-name {
     font-family: Inter, sans-serif; font-weight: 700; font-size: 10px; 
@@ -233,23 +236,27 @@ const songs = [
     },
     text: `Bis zum Morgen\nLass uns bleiben\nLass mich deine Blicke spüren\nJede Seite neu beschreiben\n\nOhne Wärme, ohne Liebe\nWürden wir nicht existieren\nIn der kalten Atmosphäre\nHoffnungslos erfrieren\n\nReiß dich los, lass uns treiben\nEinmal um die ganze Welt\nBis zum Mond und immer weiter\n\nDir allein nur will ich zeigen\nWas den höchsten Stern erhellt\nLass uns lieben, lass uns schweigen\n\nNur für eine Ewigkeit\nWill ich in deinen Armen sein\nSteh mir bei, sei mein Begleiter\nLass mich nicht allein\n\nReiß dich los, lass uns treiben\nEinmal um die ganze Welt\nBis zum Mond und immer weiter\n\nLass uns fliegen, übersteig\nWas sich in deinen Schatten stellt\nBis zum Mond und immer weiter\n\nUnd immer weiter...`
   },
-  /* 2. Ein Leben Lang (KORRIGIERT: KEIN C-Dur, sondern C-Moll Sequenz) */
+  /* 2. Ein Leben Lang */
   {
     artist: "One Day in Rome", title: "Ein Leben Lang", year: "2025", copyright: "© Xander Fox", image: "IMG_0166.jpeg",
     chords: { 
-      verse: ["Cm", "Gm", "Ab", "Eb"], // Ihre explizite Anweisung: Cm Gm Ab Eb
-      chorus: ["Cm", "Ab", "Eb", "Bb"] // Ihre explizite Anweisung: Cm Ab Eb Bb
+      verse: ["Cm", "Gm", "Ab", "Eb"], // Originale Anweisung beibehalten
+      chorus: ["Cm", "Ab", "Eb", "Bb"] 
     },
     text: `So lang du denkst\nWie schön es wär\nLebst du dem Traum\nNur hinterher\n\nMit allen Wolken\nWillst du ziehen\nDeinem Gefühl\nNie mehr widerstehen\n\nUnd wenn du fällst\nNimm meine Hand\nIch will mit dir gemeinsam gehen\nEin Leben lang\nDurch diese Welt\nHab keine Angst\nHör auf dein Herz\nUnd wir verlieren den Verstand\n\nDie Sehnsucht brennt\nDer Weg ist weit\nBis in das Licht\nTrägt uns die Zeit\n\nUnd irgendwann\nWird um uns ein\nHimmel so hoch\nUnd endlos sein\n\nUnd wenn du fällst\nNimm meine Hand\nIch will mit dir gemeinsam gehen\nEin Leben lang\nDurch diese Welt\nHab keine Angst\nHör auf dein Herz\nUnd wir verlieren den Verstand`
   },
-  /* 3. Halt mich */
+  /* 3. Halt mich! (NEU & KORRIGIERT: TITEL UND TEXT TRENNUNG) */
   {
-    artist: "One Day in Rome", title: "Halt mich", year: "2025", copyright: "© Xander Fox", image: "fQ5C8n5z.jpeg",
+    artist: "One Day in Rome", 
+    title: "Halt mich!", // Titel korrekt mit Ausrufezeichen
+    year: "2025", copyright: "© Xander Fox", image: "fQ5C8n5z.jpeg",
     chords: {
+      // 8 Akkorde im Text Teil -> Werden jetzt umbrechen
       verse: ["Cm", "Eb", "Ab", "Eb", "Gm", "Ab", "Eb", "Bb"],
       chorus: ["Ab", "Eb", "Cm", "Bb"]
     },
-    text: `Halt mich! Sag mir nur noch einmal was es heißt, dass wir uns so tief berühren.\nDeine Nähe die mich fast zerreißt, kann ich nicht mehr ignorieren.\n\nGib mir ein Herz, in das ich mich verlieren kann\nHalt mich und sieh mich an, wie du mich siehst.\nNimm meinen Schmerz von mir, dass ich dich fühlen kann,\nWie du mit deiner Hand mich reparierst.\n\nDeine Augen reflektieren ein unbeschreiblich schönes Bild.\nLass mich wieder deine Liebe spüren alles was ich fühl.\n\nGib mir ein Herz, in das ich mich verlieren kann,\nHalt mich und sieh mich an, wie du mich siehst.\nNimm meinen Schmerz von mir, dass ich dich fühlen kann,\nWie du mit deiner Hand mich reparierst\n\nGib mir ein Herz, gib mir ein Herz,\nHalt mich und sieh mich an, wie du mich siehst.\nNimm meinen Schmerz nimm meinen Schmerz.\nWie du mit deiner Hand mich reparierst`
+    // Text bereinigt: "Halt mich!" am Anfang entfernt
+    text: `Sag mir nur noch einmal was es heißt, dass wir uns so tief berühren.\nDeine Nähe die mich fast zerreißt, kann ich nicht mehr ignorieren.\n\nGib mir ein Herz, in das ich mich verlieren kann\nHalt mich und sieh mich an, wie du mich siehst.\nNimm meinen Schmerz von mir, dass ich dich fühlen kann,\nWie du mit deiner Hand mich reparierst.\n\nDeine Augen reflektieren ein unbeschreiblich schönes Bild.\nLass mich wieder deine Liebe spüren alles was ich fühl.\n\nGib mir ein Herz, in das ich mich verlieren kann,\nHalt mich und sieh mich an, wie du mich siehst.\nNimm meinen Schmerz von mir, dass ich dich fühlen kann,\nWie du mit deiner Hand mich reparierst\n\nGib mir ein Herz, gib mir ein Herz,\nHalt mich und sieh mich an, wie du mich siehst.\nNimm meinen Schmerz nimm meinen Schmerz.\nWie du mit deiner Hand mich reparierst`
   },
   /* 4. Kein Mensch */
   {
@@ -270,8 +277,8 @@ const songs = [
   {
     artist: "One Day in Rome", title: "Ohne Deine Liebe", year: "2025", copyright: "© Xander Fox", image: "Facetune_29-07-2023-13-55-27.jpeg",
     chords: {
-      verse: ["Ab", "Bb", "Ab", "Gm"], // Screenshot-Korrektur: Ab Bb Ab Gm
-      chorus: ["Cm", "Eb", "Ab", "Gm"] // Screenshot-Korrektur: Cm Eb Ab Gm
+      verse: ["Ab", "Bb", "Ab", "Gm"], 
+      chorus: ["Cm", "Eb", "Ab", "Gm"] 
     },
     text: `Kannst du mir erklären\nWas geschehen ist\nMusst du denn zerstören\nWas du mir noch bist\n\nWarum bin ich einsam\nDu nicht mehr bei mir\nWollten wir gemeinsam\nNicht die Welt regieren\n\nWarum bin ich hier\nWie lang muss ich bleiben\nOhne deine Liebe\nDie mich still entführt\n\nMein Herz ruft nach dir\nKann dich nicht verschweigen\nDu wirst immer bleiben\nIrgendwo in mir\n\nWarum bist du so\nFern und unerreichbar\nDa wohin du gehen willst\nKann ich dich nicht sehen\n\nWas hält uns am Leben\nWorin liegt der Sinn\nSag mir doch weswegen\nWir verloren sind\n\nWarum bin ich hier\nWie lang muss ich bleiben\nOhne deine Liebe\nDie mich still entführt\n\nMein Herz ruft nach dir\nKann dich nicht verschweigen\nDu wirst immer bleiben\nIrgendwo in mir`
   },
