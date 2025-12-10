@@ -116,17 +116,17 @@
     display: flex; flex-direction: column; 
     justify-content: center; 
     align-items: center;
-    padding: 10px; /* Standard Padding */
+    padding: 10px; 
     box-sizing: border-box; text-align: center;
     overflow-y: auto; 
   }
   
-  /* SONDERREGEL: Dense Mode -> Reduziertes seitliches Padding für 5er Reihen */
+  /* Dense Mode: Reduziertes seitliches Padding */
   .back.dense-mode {
     padding: 10px 2px; 
   }
 
-  /* STANDARD SPACING (Luftig - 12px) */
+  /* STANDARD SPACING (Luftig) - für normale Songs */
   .chord-section { 
     width: 100%; margin-bottom: 12px; 
   }
@@ -144,25 +144,27 @@
   }
 
   .chord-grid {
-    display: flex; flex-flow: row wrap; justify-content: center; 
-    gap: 12px; row-gap: 12px;
+    display: flex; 
+    flex-flow: row wrap; 
+    justify-content: center; 
+    gap: 12px; 
+    row-gap: 12px;
   }
   .piano-box {
     display: flex; flex-direction: column; align-items: center;
     margin-bottom: 4px;
   }
 
-  /* DYNAMISCHES SPACING (KOMPAKT) - HIER AUF 6PX KORRIGIERT */
-  /* Dies sind die bewährten Werte aus der Weihnachtslieder.html */
+  /* DYNAMISCHES SPACING (EXTREM KOMPAKT) - Damit 4 Zeilen + Labels passen */
   .chord-section.dense {
-    margin-bottom: 6px; 
+    margin-bottom: 4px; /* Sehr klein, zieht Blöcke zusammen */
   }
   .chord-grid.dense {
-    gap: 3px; /* Horizontal eng für 5 Akkorde */
-    row-gap: 6px; /* Vertikal angenehm (nicht 2px, nicht 12px) */
+    gap: 3px; /* Horizontal eng */
+    row-gap: 2px; /* Vertikal extrem eng */
   }
   .chord-grid.dense .piano-box {
-    margin-bottom: 2px;
+    margin-bottom: 1px; /* Fast kein Abstand */
   }
 
   /* Zeilenumbruch */
@@ -287,11 +289,10 @@ const songs = [
     artist: "One Day in Rome", title: "Kein Mensch", year: "2025", copyright: "© Xander Fox", image: "Snapshot 11-02-2024 02:00.jpeg",
     text: `Es ist Nacht\nhier\nin deinen Armen\nNimm meine Hand\nDenn du weißt genau\ndass ich auch\nnicht mehr anders kann\nDu musst nichts verstehen\nIch bin schon lang in deinem Bann\nDarum bleib bei mir\nKomm und sieh mich\nnur noch einmal\nso an\n\nSo als würden wir\nunsere Seelen inhalieren\nIch will dich mit mir\nbis die Sterne explodieren\nSelbst wenn wir\ngemeinsam fallen\nWer kommt mich heilen?\nUnd ich weiß\nkein Mensch\nWürde\nSo wie du mit mir sein\n\nIch lieg wach\nhier\nin deinen Armen\nbin ich dir nah\nGrad hab ich noch\nvon dir geträumt\nUnd schon bist du wahr\nUnd so wunderschön\nDas ist alles\nnicht mehr normal\nHalt dich bei mir fest\nDenn wir haben\neh keine andere\nWahl\n\nSo als würden wir\nunsere Seelen inhalieren\nIch will dich mit mir\nbis die Sterne explodieren\nSelbst wenn wir\ngemeinsam fallen\nWer kommt mich heilen?\nUnd ich weiß\nkein Mensch\nWürde\nSo wie du mit mir sein`
   },
-  /* 5. Let Me Know (MIT BREAK & DENSE MODE TRIGGER) */
+  /* 5. Let Me Know */
   {
     artist: "One Day in Rome", title: "Let Me Know", year: "2025", copyright: "© Xander Fox", image: "IMG_1393.jpeg",
     chords: {
-      // Verse: 4 Chords -> BREAK -> 5 Chords (Am G F Am G)
       verse: ["Am", "G", "F", "Dm", "BREAK", "Am", "G", "F", "Am", "G"], 
       chorus: ["C", "G", "Dm", "Am"] 
     },
@@ -320,7 +321,9 @@ const songs = [
   {
     artist: "One Day in Rome", title: "Wir", year: "2025", copyright: "© Xander Fox", image: "IMG_0179.jpeg",
     chords: {
+      // Verse: 10 Chords + Break -> Trigger Dense
       verse: ["Cm", "Ab", "Gm", "Cm", "Gm", "BREAK", "Bb", "Ab", "Gm", "Cm", "Gm"],
+      // Chorus: 6 Chords + Break -> Trigger Dense
       chorus: ["Cm", "Eb", "Gm", "BREAK", "Ab", "Gm", "Bb"]
     },
     text: `Es ist gar nicht so leicht\nDieses Leben zu verstehen\nManchmal darum vielleicht\nAuch so schwer, einfach weiterzugehen\n\nWenn du denkst, durchzudrehen\nWeil du noch etwas spürst in dir\nLass uns nicht lange reden\nEs gibt viel zu viel zu verlieren\n\nWenn die Welt untergeht\nBin ich bei dir\nDu bist alles, was zählt\nWas ich fühl in mir\nDarum lass uns nicht warten\nWarum sollen wir leiden, wofür?\nDas ist unsere Wahrheit\nAlles was wir noch haben, sind wir\n\nWir sind groß\nWir sind schön, unerreicht\nSchwer zu greifen\nDenn wir schweben federleicht\n\nAuch wenn sie uns versuchen\nzu verführen\nKeine Chance\nWir sind viel zu wir dafür\n\nWenn die Welt untergeht\nBin ich bei dir\nDu bist alles, was zählt\nWas ich fühl in mir\nDarum lass uns nicht warten\nWarum sollen wir leiden, wofür?\nDas ist unsere Wahrheit\nAlles was wir noch haben, sind wir`
@@ -337,11 +340,12 @@ songs.sort((a,b) => {
   if(T1 < T2) return -1; if(T1 > T2) return 1; return 0;
 });
 
-/* HELPER: INTELLIGENTES PIANO SVG */
+/* HELPER: INTELLIGENTES PIANO SVG - BLOCK ANKER LOGIK */
 function createPianoSVG(activeKeys) {
   let minKey = Math.min(...activeKeys);
   let maxKey = Math.max(...activeKeys);
   
+  // 1. Start-Anker
   let startKey = minKey;
   while(true) {
     let noteInOctave = (startKey % 12 + 12) % 12;
@@ -349,6 +353,7 @@ function createPianoSVG(activeKeys) {
     startKey--;
   }
   
+  // 2. End-Punkt
   const isWhite = (k) => [0,2,4,5,7,9,11].includes((k % 12 + 12) % 12);
   let endKey = maxKey;
   if(!isWhite(endKey)) endKey++; 
@@ -409,6 +414,7 @@ const metaYear = document.getElementById('meta-year');
 const metaArtist = document.getElementById('meta-artist');
 const metaTitle = document.getElementById('meta-title');
 
+// FLIP EVENT LISTENER
 coverFlipContainer.addEventListener('click', function() {
   this.classList.toggle('flipped');
 });
@@ -466,12 +472,12 @@ function showSong(song){
   }
 
   coverBackContent.innerHTML = "";
-  coverBackContent.className = "back"; 
+  coverBackContent.className = "back"; // Reset
 
   if(song.chords){
     let html = "";
     
-    // LOGIK: DENSE MODE TRIGGER (Mehr als 14 Akkorde ODER expliziter BREAK)
+    // Check dense mode (Logic: Total chords > 14 OR explicit BREAK)
     let totalChords = 0;
     if(song.chords.verse) totalChords += song.chords.verse.filter(c => c !== "BREAK").length;
     if(song.chords.chorus) totalChords += song.chords.chorus.filter(c => c !== "BREAK").length;
@@ -485,6 +491,7 @@ function showSong(song){
     }
 
     const renderSection = (label, chordNames) => {
+      // Determine density for this specific section
       const sectionDense = chordNames.length > 4 || chordNames.includes("BREAK");
       const sectionClass = sectionDense ? "chord-section dense" : "chord-section";
       const gridClass = sectionDense ? "chord-grid dense" : "chord-grid";
