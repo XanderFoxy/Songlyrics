@@ -116,12 +116,12 @@
     display: flex; flex-direction: column; 
     justify-content: center; 
     align-items: center;
-    padding: 10px; 
+    padding: 10px; /* Standard Padding */
     box-sizing: border-box; text-align: center;
     overflow-y: auto; 
   }
   
-  /* Dense Mode: Reduziertes seitliches Padding */
+  /* Dense Mode: Reduziertes seitliches Padding für 5er Reihen */
   .back.dense-mode {
     padding: 10px 2px; 
   }
@@ -155,16 +155,16 @@
     margin-bottom: 4px;
   }
 
-  /* DYNAMISCHES SPACING (KOMPAKT) */
+  /* DYNAMISCHES SPACING (KOMPAKT) - WIEDER VERTIKAL GESTAUCHT */
   .chord-section.dense {
-    margin-bottom: 6px; 
+    margin-bottom: 4px; /* Kompakt */
   }
   .chord-grid.dense {
-    gap: 3px; 
-    row-gap: 6px; 
+    gap: 3px; /* Horizontal eng */
+    row-gap: 2px; /* Vertikal sehr eng */
   }
   .chord-grid.dense .piano-box {
-    margin-bottom: 2px;
+    margin-bottom: 1px;
   }
 
   /* Zeilenumbruch */
@@ -257,7 +257,7 @@ const CHORD_MAP = {
   "Gb": [6, 10, 13],    // Gb, Bb, Db
   "Fm": [5, 8, 12],     // F, Ab, C
 
-  // Spezial-Akkorde für "The Wall" Refrain
+  // Spezial-Akkorde für "The Wall" Refrain (KORRIGIERT)
   "Ebm/Bb": [10, 15, 18], 
   "Gb/Bb": [10, 13, 18],  
   "Db": [1, 5, 8],        
@@ -327,7 +327,7 @@ const songs = [
   {
     artist: "One Day in Rome", title: "The Wall", year: "2025", copyright: "© Xander Fox", image: "nDkD8XLZ.jpeg",
     chords: {
-      verse: ["Bbm", "Gb", "Ab", "Fm"], // Die neuen Akkorde
+      verse: ["Bbm", "Gb", "Ab", "Fm"], 
       chorus: ["Ebm/Bb", "Gb/Bb", "Db", "Ab/C"]
     },
     text: `Welcome to the fake\nZombies living for God's sake\nIn a world of Sheep\nEverything we do believe\n\nWe claim we know it all\nCan’t see who is behind this wall.\nDon’t wait, follow the light\nWake up, open your eyes.\n\nWhy can’t we just feel\nThere is so much more to see\nAre we hypnotised?\nWhat does it need to realise\n\nWe claim we know it all\nCan’t see who is behind this wall.\nDon’t wait, follow the light\nWake up, open your eyes.`
@@ -487,7 +487,7 @@ function showSong(song){
   }
 
   coverBackContent.innerHTML = "";
-  coverBackContent.className = "back"; // Reset classes
+  coverBackContent.className = "back"; // Reset
 
   if(song.chords){
     let html = "";
