@@ -121,12 +121,12 @@
     overflow-y: auto; 
   }
   
-  /* Dense Mode: Reduziertes seitliches Padding */
+  /* SONDERREGEL (Dense Mode): Weniger Padding an den Seiten */
   .back.dense-mode {
     padding: 10px 2px; 
   }
 
-  /* STANDARD SPACING (Luftig) - für normale Songs */
+  /* STANDARD SPACING (Luftig) */
   .chord-section { 
     width: 100%; margin-bottom: 12px; 
   }
@@ -155,16 +155,16 @@
     margin-bottom: 4px;
   }
 
-  /* DYNAMISCHES SPACING (EXTREM KOMPAKT) - Damit 4 Zeilen + Labels passen */
+  /* DYNAMISCHES SPACING (KOMPAKT) */
   .chord-section.dense {
-    margin-bottom: 4px; /* Sehr klein, zieht Blöcke zusammen */
+    margin-bottom: 4px; /* Vertikal gestaucht */
   }
   .chord-grid.dense {
     gap: 3px; /* Horizontal eng */
-    row-gap: 2px; /* Vertikal extrem eng */
+    row-gap: 2px; /* Vertikal sehr eng */
   }
   .chord-grid.dense .piano-box {
-    margin-bottom: 1px; /* Fast kein Abstand */
+    margin-bottom: 0; /* Kein extra Abstand */
   }
 
   /* Zeilenumbruch */
@@ -250,7 +250,13 @@ const CHORD_MAP = {
   "Gm": [7, 10, 14],    // G-Moll
   "Ab": [8, 12, 15],    // Ab-Dur
   "Eb": [3, 7, 10],     // Es-Dur
-  "Bb": [10, 14, 17]    // Bb-Dur
+  "Bb": [10, 14, 17],   // B-Dur
+
+  // Spezial-Akkorde für "The Wall"
+  "Ab7": [8, 15, 18],    // As (8), Dis (15), Fis (18)
+  "Absus4": [8, 13, 18], // As (8), Cis (13), Fis (18)
+  "Db": [1, 5, 8],       // Cis (1), F (5), Gis (8)
+  "Ab/C": [0, 3, 8]      // C (0), Dis (3), Gis (8)
 };
 
 /* ---------- SONGDATA ---------- */
@@ -312,18 +318,20 @@ const songs = [
     },
     text: `Kannst du mir erklären\nWas geschehen ist\nMusst du denn zerstören\nWas du mir noch bist\n\nWarum bin ich einsam\nDu nicht mehr bei mir\nWollten wir gemeinsam\nNicht die Welt regieren\n\nWarum bin ich hier\nWie lang muss ich bleiben\nOhne deine Liebe\nDie mich still entführt\n\nMein Herz ruft nach dir\nKann dich nicht verschweigen\nDu wirst immer bleiben\nIrgendwo in mir\n\nWarum bist du so\nFern und unerreichbar\nDa wohin du gehen willst\nKann ich dich nicht sehen\n\nWas hält uns am Leben\nWorin liegt der Sinn\nSag mir doch weswegen\nWir verloren sind\n\nWarum bin ich hier\nWie lang muss ich bleiben\nOhne deine Liebe\nDie mich still entführt\n\nMein Herz ruft nach dir\nKann dich nicht verschweigen\nDu wirst immer bleiben\nIrgendwo in mir`
   },
-  /* 8. The Wall */
+  /* 8. The Wall (NEU: Refrain Akkorde hinzugefügt) */
   {
     artist: "One Day in Rome", title: "The Wall", year: "2025", copyright: "© Xander Fox", image: "nDkD8XLZ.jpeg",
+    chords: {
+      verse: [], // Verse chords not provided yet
+      chorus: ["Ab7", "Absus4", "Db", "Ab/C"]
+    },
     text: `Welcome to the fake\nZombies living for God's sake\nIn a world of Sheep\nEverything we do believe\n\nWe claim we know it all\nCan’t see who is behind this wall.\nDon’t wait, follow the light\nWake up, open your eyes.\n\nWhy can’t we just feel\nThere is so much more to see\nAre we hypnotised?\nWhat does it need to realise\n\nWe claim we know it all\nCan’t see who is behind this wall.\nDon’t wait, follow the light\nWake up, open your eyes.`
   },
-  /* 9. Wir */
+  /* 9. Wir (EXTREMFALL: Dense Mode) */
   {
     artist: "One Day in Rome", title: "Wir", year: "2025", copyright: "© Xander Fox", image: "IMG_0179.jpeg",
     chords: {
-      // Verse: 10 Chords + Break -> Trigger Dense
       verse: ["Cm", "Ab", "Gm", "Cm", "Gm", "BREAK", "Bb", "Ab", "Gm", "Cm", "Gm"],
-      // Chorus: 6 Chords + Break -> Trigger Dense
       chorus: ["Cm", "Eb", "Gm", "BREAK", "Ab", "Gm", "Bb"]
     },
     text: `Es ist gar nicht so leicht\nDieses Leben zu verstehen\nManchmal darum vielleicht\nAuch so schwer, einfach weiterzugehen\n\nWenn du denkst, durchzudrehen\nWeil du noch etwas spürst in dir\nLass uns nicht lange reden\nEs gibt viel zu viel zu verlieren\n\nWenn die Welt untergeht\nBin ich bei dir\nDu bist alles, was zählt\nWas ich fühl in mir\nDarum lass uns nicht warten\nWarum sollen wir leiden, wofür?\nDas ist unsere Wahrheit\nAlles was wir noch haben, sind wir\n\nWir sind groß\nWir sind schön, unerreicht\nSchwer zu greifen\nDenn wir schweben federleicht\n\nAuch wenn sie uns versuchen\nzu verführen\nKeine Chance\nWir sind viel zu wir dafür\n\nWenn die Welt untergeht\nBin ich bei dir\nDu bist alles, was zählt\nWas ich fühl in mir\nDarum lass uns nicht warten\nWarum sollen wir leiden, wofür?\nDas ist unsere Wahrheit\nAlles was wir noch haben, sind wir`
@@ -345,7 +353,6 @@ function createPianoSVG(activeKeys) {
   let minKey = Math.min(...activeKeys);
   let maxKey = Math.max(...activeKeys);
   
-  // 1. Start-Anker
   let startKey = minKey;
   while(true) {
     let noteInOctave = (startKey % 12 + 12) % 12;
@@ -353,7 +360,6 @@ function createPianoSVG(activeKeys) {
     startKey--;
   }
   
-  // 2. End-Punkt
   const isWhite = (k) => [0,2,4,5,7,9,11].includes((k % 12 + 12) % 12);
   let endKey = maxKey;
   if(!isWhite(endKey)) endKey++; 
@@ -472,7 +478,7 @@ function showSong(song){
   }
 
   coverBackContent.innerHTML = "";
-  coverBackContent.className = "back"; // Reset
+  coverBackContent.className = "back"; // Reset classes
 
   if(song.chords){
     let html = "";
