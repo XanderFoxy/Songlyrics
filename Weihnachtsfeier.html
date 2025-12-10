@@ -116,12 +116,12 @@
     display: flex; flex-direction: column; 
     justify-content: center; 
     align-items: center;
-    padding: 10px; /* Standard Padding */
+    padding: 10px; 
     box-sizing: border-box; text-align: center;
     overflow-y: auto; 
   }
   
-  /* SONDERREGEL (Dense Mode): Weniger Padding an den Seiten */
+  /* Dense Mode: Reduziertes seitliches Padding */
   .back.dense-mode {
     padding: 10px 2px; 
   }
@@ -156,13 +156,12 @@
   }
 
   /* DYNAMISCHES SPACING (KOMPAKT) */
-  /* Vertikal: 6px (korrigiert von 4px/2px), Horizontal: 3px */
   .chord-section.dense {
     margin-bottom: 6px; 
   }
   .chord-grid.dense {
-    gap: 3px; /* Horizontal eng */
-    row-gap: 6px; /* Vertikal: Luftiger als vorher, damit es nicht klebt */
+    gap: 3px; 
+    row-gap: 6px; 
   }
   .chord-grid.dense .piano-box {
     margin-bottom: 2px;
@@ -253,11 +252,16 @@ const CHORD_MAP = {
   "Eb": [3, 7, 10],     // Es-Dur
   "Bb": [10, 14, 17],   // B-Dur
 
-  // Spezial-Akkorde für "The Wall" (KORRIGIERT)
-  "Ebm/Bb": [10, 15, 18], // B(10), Dis(15), Fis(18)
-  "Gb/Bb": [10, 13, 18],  // B(10), Cis(13), Fis(18)
-  "Db": [1, 5, 8],        // Cis(1), F(5), Gis(8)
-  "Ab/C": [0, 3, 8]       // C(0), Dis(3), Gis(8)
+  // NEUE AKKORDE für "The Wall" Text Teil
+  "Bbm": [10, 13, 17],  // Bb, Db, F
+  "Gb": [6, 10, 13],    // Gb, Bb, Db
+  "Fm": [5, 8, 12],     // F, Ab, C
+
+  // Spezial-Akkorde für "The Wall" Refrain
+  "Ebm/Bb": [10, 15, 18], 
+  "Gb/Bb": [10, 13, 18],  
+  "Db": [1, 5, 8],        
+  "Ab/C": [0, 3, 8]       
 };
 
 /* ---------- SONGDATA ---------- */
@@ -319,12 +323,12 @@ const songs = [
     },
     text: `Kannst du mir erklären\nWas geschehen ist\nMusst du denn zerstören\nWas du mir noch bist\n\nWarum bin ich einsam\nDu nicht mehr bei mir\nWollten wir gemeinsam\nNicht die Welt regieren\n\nWarum bin ich hier\nWie lang muss ich bleiben\nOhne deine Liebe\nDie mich still entführt\n\nMein Herz ruft nach dir\nKann dich nicht verschweigen\nDu wirst immer bleiben\nIrgendwo in mir\n\nWarum bist du so\nFern und unerreichbar\nDa wohin du gehen willst\nKann ich dich nicht sehen\n\nWas hält uns am Leben\nWorin liegt der Sinn\nSag mir doch weswegen\nWir verloren sind\n\nWarum bin ich hier\nWie lang muss ich bleiben\nOhne deine Liebe\nDie mich still entführt\n\nMein Herz ruft nach dir\nKann dich nicht verschweigen\nDu wirst immer bleiben\nIrgendwo in mir`
   },
-  /* 8. The Wall (KORRIGIERTE CHORDS) */
+  /* 8. The Wall (KOMPLETT) */
   {
     artist: "One Day in Rome", title: "The Wall", year: "2025", copyright: "© Xander Fox", image: "nDkD8XLZ.jpeg",
     chords: {
-      verse: [],
-      chorus: ["Ebm/Bb", "Gb/Bb", "Db", "Ab/C"] // Korrigierte Akkorde
+      verse: ["Bbm", "Gb", "Ab", "Fm"], // Die neuen Akkorde
+      chorus: ["Ebm/Bb", "Gb/Bb", "Db", "Ab/C"]
     },
     text: `Welcome to the fake\nZombies living for God's sake\nIn a world of Sheep\nEverything we do believe\n\nWe claim we know it all\nCan’t see who is behind this wall.\nDon’t wait, follow the light\nWake up, open your eyes.\n\nWhy can’t we just feel\nThere is so much more to see\nAre we hypnotised?\nWhat does it need to realise\n\nWe claim we know it all\nCan’t see who is behind this wall.\nDon’t wait, follow the light\nWake up, open your eyes.`
   },
@@ -483,12 +487,12 @@ function showSong(song){
   }
 
   coverBackContent.innerHTML = "";
-  coverBackContent.className = "back"; // Reset
+  coverBackContent.className = "back"; // Reset classes
 
   if(song.chords){
     let html = "";
     
-    // Check dense mode
+    // LOGIK: DENSE MODE TRIGGER (Mehr als 14 Akkorde ODER expliziter BREAK)
     let totalChords = 0;
     if(song.chords.verse) totalChords += song.chords.verse.filter(c => c !== "BREAK").length;
     if(song.chords.chorus) totalChords += song.chords.chorus.filter(c => c !== "BREAK").length;
