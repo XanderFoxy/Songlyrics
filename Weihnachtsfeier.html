@@ -116,12 +116,12 @@
     display: flex; flex-direction: column; 
     justify-content: center; 
     align-items: center;
-    padding: 10px; 
+    padding: 10px; /* Standard */
     box-sizing: border-box; text-align: center;
     overflow-y: auto; 
   }
   
-  /* SONDERREGEL (Dense Mode): Weniger Padding an den Seiten */
+  /* SONDERREGEL (Extremfall "Wir"): Reduziertes Padding seitlich für 5 Akkorde */
   .back.dense-mode {
     padding: 10px 2px; 
   }
@@ -155,16 +155,16 @@
     margin-bottom: 4px;
   }
 
-  /* DYNAMISCHES SPACING (KOMPAKT) - WIEDERHERGESTELLT */
+  /* DYNAMISCHES SPACING (KOMPAKT) - VERTIKAL WIEDERHERGESTELLT */
   .chord-section.dense {
-    margin-bottom: 4px; /* Enger */
+    margin-bottom: 6px; /* Zurück auf 6px (nicht 4px) */
   }
   .chord-grid.dense {
-    gap: 3px; /* Enger */
-    row-gap: 2px; /* Viel enger für 4 Zeilen */
+    column-gap: 3px; /* Eng NUR horizontal für 5er Reihe */
+    row-gap: 6px;    /* Vertikal luftiger (wie vorher definiert) */
   }
   .chord-grid.dense .piano-box {
-    margin-bottom: 0; /* Kein extra Abstand */
+    margin-bottom: 2px;
   }
 
   /* Zeilenumbruch */
@@ -239,17 +239,18 @@
 <script>
 /* CHORD MAP */
 const CHORD_MAP = {
-  "C":  [0, 4, 7],      
-  "Am": [9, 12, 16],    
-  "F":  [5, 9, 12],     
-  "G":  [7, 11, 14],    
-  "Dm": [2, 5, 9],      
+  "C":  [0, 4, 7],      // C-Dur
+  "Am": [9, 12, 16],    // A-Moll
+  "F":  [5, 9, 12],     // F-Dur
+  "G":  [7, 11, 14],    // G-Dur
+  "Dm": [2, 5, 9],      // D-Moll
   
-  "Cm": [0, 3, 7],      
-  "Gm": [7, 10, 14],    
-  "Ab": [8, 12, 15],    
-  "Eb": [3, 7, 10],    
-  "Bb": [10, 14, 17]    
+  // Moll-Akkorde (FÜR OHNE DEINE LIEBE & HALT MICH & EIN LEBEN LANG)
+  "Cm": [0, 3, 7],      // C-Moll (C, Eb, G)
+  "Gm": [7, 10, 14],    // G-Moll (G, Bb, D - D in nächster Oktave)
+  "Ab": [8, 12, 15],    // Ab-Dur (Ab, C, Eb)
+  "Eb": [3, 7, 10],    // Eb-Dur (Eb, G, Bb)
+  "Bb": [10, 14, 17]    // Bb-Dur (Bb, D, F)
 };
 
 /* ---------- SONGDATA ---------- */
@@ -288,12 +289,12 @@ const songs = [
     artist: "One Day in Rome", title: "Kein Mensch", year: "2025", copyright: "© Xander Fox", image: "Snapshot 11-02-2024 02:00.jpeg",
     text: `Es ist Nacht\nhier\nin deinen Armen\nNimm meine Hand\nDenn du weißt genau\ndass ich auch\nnicht mehr anders kann\nDu musst nichts verstehen\nIch bin schon lang in deinem Bann\nDarum bleib bei mir\nKomm und sieh mich\nnur noch einmal\nso an\n\nSo als würden wir\nunsere Seelen inhalieren\nIch will dich mit mir\nbis die Sterne explodieren\nSelbst wenn wir\ngemeinsam fallen\nWer kommt mich heilen?\nUnd ich weiß\nkein Mensch\nWürde\nSo wie du mit mir sein\n\nIch lieg wach\nhier\nin deinen Armen\nbin ich dir nah\nGrad hab ich noch\nvon dir geträumt\nUnd schon bist du wahr\nUnd so wunderschön\nDas ist alles\nnicht mehr normal\nHalt dich bei mir fest\nDenn wir haben\neh keine andere\nWahl\n\nSo als würden wir\nunsere Seelen inhalieren\nIch will dich mit mir\nbis die Sterne explodieren\nSelbst wenn wir\ngemeinsam fallen\nWer kommt mich heilen?\nUnd ich weiß\nkein Mensch\nWürde\nSo wie du mit mir sein`
   },
-  /* 5. Let Me Know (Refrain 4 Akkorde -> Standard Spacing) */
+  /* 5. Let Me Know */
   {
     artist: "One Day in Rome", title: "Let Me Know", year: "2025", copyright: "© Xander Fox", image: "IMG_1393.jpeg",
     chords: {
       verse: ["Am", "G", "F", "Dm", "Am", "G", "F", "Am", "G"], // 9 Akkorde -> dense
-      chorus: ["C", "G", "Dm", "Am"] // G entfernt -> 4 Akkorde -> luftig
+      chorus: ["C", "G", "Dm", "Am"] // 4 Akkorde -> luftig
     },
     text: `Since I am born, I beg and cry\nFor love I yearn each day at night\nDark, like my world inside you hide\nNo sign, no word, no wrong or right\n\nWhenever you return let me know why\nDo I have to burn while I'm alive\nIf there's a chance to get out and survive\nGive me a light to see, open up my eyes\n\nMy life, it hurts without you now\nI find no cure, can’t make it out\nIf I deserve please set me free\nAlmighty girl, let it be me\n\nWhenever you return let me know why\nDo I have to burn while I'm alive\nIf there's a chance to get out and survive\nGive me a light to see, open up my eyes`
   },
@@ -316,13 +317,13 @@ const songs = [
     artist: "One Day in Rome", title: "The Wall", year: "2025", copyright: "© Xander Fox", image: "nDkD8XLZ.jpeg",
     text: `Welcome to the fake\nZombies living for God's sake\nIn a world of Sheep\nEverything we do believe\n\nWe claim we know it all\nCan’t see who is behind this wall.\nDon’t wait, follow the light\nWake up, open your eyes.\n\nWhy can’t we just feel\nThere is so much more to see\nAre we hypnotised?\nWhat does it need to realise\n\nWe claim we know it all\nCan’t see who is behind this wall.\nDon’t wait, follow the light\nWake up, open your eyes.`
   },
-  /* 9. Wir */
+  /* 9. Wir (EXTREMFALL) */
   {
     artist: "One Day in Rome", title: "Wir", year: "2025", copyright: "© Xander Fox", image: "IMG_0179.jpeg",
     chords: {
-      // Verse: 5 Akkorde -> BREAK -> 5 Akkorde (Dense)
+      // Verse: 10 Chords + Break -> Trigger Dense
       verse: ["Cm", "Ab", "Gm", "Cm", "Gm", "BREAK", "Bb", "Ab", "Gm", "Cm", "Gm"],
-      // Chorus: 3 Akkorde -> BREAK -> 3 Akkorde (Dense)
+      // Chorus: 6 Chords + Break -> Trigger Dense
       chorus: ["Cm", "Eb", "Gm", "BREAK", "Ab", "Gm", "Bb"]
     },
     text: `Es ist gar nicht so leicht\nDieses Leben zu verstehen\nManchmal darum vielleicht\nAuch so schwer, einfach weiterzugehen\n\nWenn du denkst, durchzudrehen\nWeil du noch etwas spürst in dir\nLass uns nicht lange reden\nEs gibt viel zu viel zu verlieren\n\nWenn die Welt untergeht\nBin ich bei dir\nDu bist alles, was zählt\nWas ich fühl in mir\nDarum lass uns nicht warten\nWarum sollen wir leiden, wofür?\nDas ist unsere Wahrheit\nAlles was wir noch haben, sind wir\n\nWir sind groß\nWir sind schön, unerreicht\nSchwer zu greifen\nDenn wir schweben federleicht\n\nAuch wenn sie uns versuchen\nzu verführen\nKeine Chance\nWir sind viel zu wir dafür\n\nWenn die Welt untergeht\nBin ich bei dir\nDu bist alles, was zählt\nWas ich fühl in mir\nDarum lass uns nicht warten\nWarum sollen wir leiden, wofür?\nDas ist unsere Wahrheit\nAlles was wir noch haben, sind wir`
@@ -339,11 +340,12 @@ songs.sort((a,b) => {
   if(T1 < T2) return -1; if(T1 > T2) return 1; return 0;
 });
 
-/* HELPER: INTELLIGENTES PIANO SVG */
+/* HELPER: INTELLIGENTES PIANO SVG - BLOCK ANKER LOGIK */
 function createPianoSVG(activeKeys) {
   let minKey = Math.min(...activeKeys);
   let maxKey = Math.max(...activeKeys);
   
+  // 1. Start-Anker
   let startKey = minKey;
   while(true) {
     let noteInOctave = (startKey % 12 + 12) % 12;
@@ -351,6 +353,7 @@ function createPianoSVG(activeKeys) {
     startKey--;
   }
   
+  // 2. End-Punkt
   const isWhite = (k) => [0,2,4,5,7,9,11].includes((k % 12 + 12) % 12);
   let endKey = maxKey;
   if(!isWhite(endKey)) endKey++; 
@@ -375,6 +378,7 @@ function createPianoSVG(activeKeys) {
   let currentX = 0;
   let whitePositions = {}; 
   
+  // 1. Whites
   for(let k=startKey; k<=endKey; k++) {
     if(isWhite(k)) {
       let isActive = activeKeys.includes(k);
@@ -385,6 +389,7 @@ function createPianoSVG(activeKeys) {
     }
   }
   
+  // 2. Blacks
   for(let k=startKey; k<=endKey; k++) {
     if(!isWhite(k)) {
       let prevWhite = k - 1;
@@ -474,20 +479,23 @@ function showSong(song){
   if(song.chords){
     let html = "";
     
-    // Dense mode check (more than 4 chords or explicit break)
-    const isDense = (song.chords.verse && (song.chords.verse.length > 4 || song.chords.verse.includes("BREAK"))) || 
-                    (song.chords.chorus && (song.chords.chorus.length > 4 || song.chords.chorus.includes("BREAK")));
+    // ZÄHLEN DER TOTALEN AKKORDE (ohne BREAKS)
+    let totalChords = 0;
+    if(song.chords.verse) totalChords += song.chords.verse.filter(c => c !== "BREAK").length;
+    if(song.chords.chorus) totalChords += song.chords.chorus.filter(c => c !== "BREAK").length;
+
+    // SCHWELLENWERT: >14 Akkorde = EXTREMFALL "Wir" -> Dense Mode
+    const isDense = totalChords > 14;
     
     if(isDense) {
       coverBackContent.classList.add("dense-mode");
     }
 
     const renderSection = (label, chordNames) => {
-      // Determine density for this specific section
-      const sectionDense = chordNames.length > 4 || chordNames.includes("BREAK");
-      const sectionClass = sectionDense ? "chord-section dense" : "chord-section";
-      const gridClass = sectionDense ? "chord-grid dense" : "chord-grid";
-      const labelClass = sectionDense ? "chord-part-label dense-label" : "chord-part-label";
+      // Auch Section bekommt dense Klasse wenn Song Dense ist
+      const sectionClass = isDense ? "chord-section dense" : "chord-section";
+      const gridClass = isDense ? "chord-grid dense" : "chord-grid";
+      const labelClass = isDense ? "chord-part-label dense-label" : "chord-part-label";
 
       let sectionHtml = `<div class="${sectionClass}"><div class="${labelClass}">${label}</div><div class="${gridClass}">`;
       chordNames.forEach(cName => {
