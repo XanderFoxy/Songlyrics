@@ -121,12 +121,12 @@
     overflow-y: auto; 
   }
   
-  /* SONDERREGEL: Wenn dense-mode aktiv ist (viele Akkorde), reduziere Padding, damit 5 Akkorde passen */
+  /* Wenn dense-mode: Padding verringern, damit 5 Akkorde passen */
   .back.dense-mode {
-    padding: 10px 2px; /* Reduziertes seitliches Padding */
+    padding: 10px 2px; 
   }
 
-  /* STANDARD SPACING (Luftig) */
+  /* STANDARD SPACING */
   .chord-section { 
     width: 100%; margin-bottom: 12px; 
   }
@@ -136,6 +136,13 @@
     font-family: Inter, sans-serif; font-size: 10px; text-transform: uppercase;
     color: #666; margin: 0 0 4px 0; 
     letter-spacing: 1px; width:100%; text-align:left; border-bottom:1px solid #333;
+  }
+
+  /* SPEZIAL: Wenn dense-mode, Label wieder einrücken für sauberen Look */
+  .back.dense-mode .chord-part-label {
+    margin-left: 8px;
+    margin-right: 8px;
+    width: auto; /* Damit margin greift */
   }
   
   .chord-grid {
@@ -154,20 +161,24 @@
   .chord-section.dense {
     margin-bottom: 6px;
   }
-  /* Hier angepasst: Gap auf 3px reduziert für 5-Akkorde-Reihen */
   .chord-grid.dense {
-    gap: 3px; 
+    gap: 3px; /* Enger Gap für 5er Reihen */
     row-gap: 6px;
   }
   .chord-grid.dense .piano-box {
     margin-bottom: 2px;
   }
 
+  /* Zeilenumbruch-Element */
+  .break {
+    flex-basis: 100%;
+    height: 0;
+  }
+
   .piano-name {
     font-family: Inter, sans-serif; font-weight: 700; font-size: 10px; 
     color: var(--accent); margin-bottom: 2px; line-height: 1;
   }
-  /* SVG Styles */
   .key-white { fill: #fff; stroke: #888; stroke-width: 0.5px; } 
   .key-black { fill: #000; stroke: #000; stroke-width: 0.5px; }
   .key-active { fill: var(--accent) !important; }
@@ -233,18 +244,17 @@
 <script>
 /* CHORD MAP */
 const CHORD_MAP = {
-  "C":  [0, 4, 7],      // C-Dur
-  "Am": [9, 12, 16],    // A-Moll
-  "F":  [5, 9, 12],     // F-Dur
-  "G":  [7, 11, 14],    // G-Dur
-  "Dm": [2, 5, 9],      // D-Moll
+  "C":  [0, 4, 7],      
+  "Am": [9, 12, 16],    
+  "F":  [5, 9, 12],     
+  "G":  [7, 11, 14],    
+  "Dm": [2, 5, 9],      
   
-  // Moll-Akkorde (FÜR OHNE DEINE LIEBE & HALT MICH & EIN LEBEN LANG)
-  "Cm": [0, 3, 7],      // C-Moll (C, Eb, G)
-  "Gm": [7, 10, 14],    // G-Moll (G, Bb, D - D in nächster Oktave)
-  "Ab": [8, 12, 15],    // Ab-Dur (Ab, C, Eb)
-  "Eb": [3, 7, 10],    // Eb-Dur (Eb, G, Bb)
-  "Bb": [10, 14, 17]    // Bb-Dur (Bb, D, F)
+  "Cm": [0, 3, 7],      
+  "Gm": [7, 10, 14],    
+  "Ab": [8, 12, 15],    
+  "Eb": [3, 7, 10],    
+  "Bb": [10, 14, 17]    
 };
 
 /* ---------- SONGDATA ---------- */
@@ -283,12 +293,12 @@ const songs = [
     artist: "One Day in Rome", title: "Kein Mensch", year: "2025", copyright: "© Xander Fox", image: "Snapshot 11-02-2024 02:00.jpeg",
     text: `Es ist Nacht\nhier\nin deinen Armen\nNimm meine Hand\nDenn du weißt genau\ndass ich auch\nnicht mehr anders kann\nDu musst nichts verstehen\nIch bin schon lang in deinem Bann\nDarum bleib bei mir\nKomm und sieh mich\nnur noch einmal\nso an\n\nSo als würden wir\nunsere Seelen inhalieren\nIch will dich mit mir\nbis die Sterne explodieren\nSelbst wenn wir\ngemeinsam fallen\nWer kommt mich heilen?\nUnd ich weiß\nkein Mensch\nWürde\nSo wie du mit mir sein\n\nIch lieg wach\nhier\nin deinen Armen\nbin ich dir nah\nGrad hab ich noch\nvon dir geträumt\nUnd schon bist du wahr\nUnd so wunderschön\nDas ist alles\nnicht mehr normal\nHalt dich bei mir fest\nDenn wir haben\neh keine andere\nWahl\n\nSo als würden wir\nunsere Seelen inhalieren\nIch will dich mit mir\nbis die Sterne explodieren\nSelbst wenn wir\ngemeinsam fallen\nWer kommt mich heilen?\nUnd ich weiß\nkein Mensch\nWürde\nSo wie du mit mir sein`
   },
-  /* 5. Let Me Know (Refrain 4 Akkorde -> Standard) */
+  /* 5. Let Me Know (Refrain 4 Akkorde -> Standard Spacing) */
   {
     artist: "One Day in Rome", title: "Let Me Know", year: "2025", copyright: "© Xander Fox", image: "IMG_1393.jpeg",
     chords: {
-      verse: ["Am", "G", "F", "Dm", "Am", "G", "F", "Am", "G"], 
-      chorus: ["C", "G", "Dm", "Am"] 
+      verse: ["Am", "G", "F", "Dm", "Am", "G", "F", "Am", "G"], // 9 Akkorde -> wird kompakt
+      chorus: ["C", "G", "Dm", "Am"] // 4 Akkorde -> Standard
     },
     text: `Since I am born, I beg and cry\nFor love I yearn each day at night\nDark, like my world inside you hide\nNo sign, no word, no wrong or right\n\nWhenever you return let me know why\nDo I have to burn while I'm alive\nIf there's a chance to get out and survive\nGive me a light to see, open up my eyes\n\nMy life, it hurts without you now\nI find no cure, can’t make it out\nIf I deserve please set me free\nAlmighty girl, let it be me\n\nWhenever you return let me know why\nDo I have to burn while I'm alive\nIf there's a chance to get out and survive\nGive me a light to see, open up my eyes`
   },
@@ -311,18 +321,14 @@ const songs = [
     artist: "One Day in Rome", title: "The Wall", year: "2025", copyright: "© Xander Fox", image: "nDkD8XLZ.jpeg",
     text: `Welcome to the fake\nZombies living for God's sake\nIn a world of Sheep\nEverything we do believe\n\nWe claim we know it all\nCan’t see who is behind this wall.\nDon’t wait, follow the light\nWake up, open your eyes.\n\nWhy can’t we just feel\nThere is so much more to see\nAre we hypnotised?\nWhat does it need to realise\n\nWe claim we know it all\nCan’t see who is behind this wall.\nDon’t wait, follow the light\nWake up, open your eyes.`
   },
-  /* 9. Wir (NEUE AKKORDE - 5 pro Zeile) */
+  /* 9. Wir (MIT BREAKS) */
   {
     artist: "One Day in Rome", title: "Wir", year: "2025", copyright: "© Xander Fox", image: "IMG_0179.jpeg",
     chords: {
-      // 10 Akkorde im Verse -> Triggered dense mode
-      // Verse Part 1: Cm Ab Gm Cm Gm
-      // Verse Part 2: Bb Ab Gm Cm Gm
-      verse: ["Cm", "Ab", "Gm", "Cm", "Gm", "Bb", "Ab", "Gm", "Cm", "Gm"],
-      // 6 Akkorde im Chorus -> Triggered dense mode
-      // Chorus Part 1: Cm Eb Gm
-      // Chorus Part 2: Ab Gm Bb
-      chorus: ["Cm", "Eb", "Gm", "Ab", "Gm", "Bb"]
+      // Verse: 5 Akkorde -> BREAK -> 5 Akkorde
+      verse: ["Cm", "Ab", "Gm", "Cm", "Gm", "BREAK", "Bb", "Ab", "Gm", "Cm", "Gm"],
+      // Chorus: 3 Akkorde -> BREAK -> 3 Akkorde
+      chorus: ["Cm", "Eb", "Gm", "BREAK", "Ab", "Gm", "Bb"]
     },
     text: `Es ist gar nicht so leicht\nDieses Leben zu verstehen\nManchmal darum vielleicht\nAuch so schwer, einfach weiterzugehen\n\nWenn du denkst, durchzudrehen\nWeil du noch etwas spürst in dir\nLass uns nicht lange reden\nEs gibt viel zu viel zu verlieren\n\nWenn die Welt untergeht\nBin ich bei dir\nDu bist alles, was zählt\nWas ich fühl in mir\nDarum lass uns nicht warten\nWarum sollen wir leiden, wofür?\nDas ist unsere Wahrheit\nAlles was wir noch haben, sind wir\n\nWir sind groß\nWir sind schön, unerreicht\nSchwer zu greifen\nDenn wir schweben federleicht\n\nAuch wenn sie uns versuchen\nzu verführen\nKeine Chance\nWir sind viel zu wir dafür\n\nWenn die Welt untergeht\nBin ich bei dir\nDu bist alles, was zählt\nWas ich fühl in mir\nDarum lass uns nicht warten\nWarum sollen wir leiden, wofür?\nDas ist unsere Wahrheit\nAlles was wir noch haben, sind wir`
   },
@@ -338,12 +344,11 @@ songs.sort((a,b) => {
   if(T1 < T2) return -1; if(T1 > T2) return 1; return 0;
 });
 
-/* HELPER: INTELLIGENTES PIANO SVG - BLOCK ANKER LOGIK */
+/* HELPER: INTELLIGENTES PIANO SVG */
 function createPianoSVG(activeKeys) {
   let minKey = Math.min(...activeKeys);
   let maxKey = Math.max(...activeKeys);
   
-  // 1. Start-Anker (Links): Suche C oder F
   let startKey = minKey;
   while(true) {
     let noteInOctave = (startKey % 12 + 12) % 12;
@@ -351,16 +356,12 @@ function createPianoSVG(activeKeys) {
     startKey--;
   }
   
-  // 2. End-Punkt (Rechts): Tight Fit mit Abschluss
   const isWhite = (k) => [0,2,4,5,7,9,11].includes((k % 12 + 12) % 12);
-  
   let endKey = maxKey;
   if(!isWhite(endKey)) endKey++; 
   
-  // Stelle sicher, dass wir mind. 7 weiße Tasten haben
   let whiteCount = 0;
   let k = startKey;
-  // Vorlauf
   while(true) {
     if(isWhite(k)) whiteCount++;
     if(k >= endKey && whiteCount >= 7) {
@@ -370,7 +371,6 @@ function createPianoSVG(activeKeys) {
     k++;
   }
   
-  // Layout Maße (40px Breite fix)
   const keyWidth = 40 / whiteCount; 
   const hWhite = 24;
   const wBlack = keyWidth * 0.65;
@@ -380,7 +380,6 @@ function createPianoSVG(activeKeys) {
   let currentX = 0;
   let whitePositions = {}; 
   
-  // 1. Whites
   for(let k=startKey; k<=endKey; k++) {
     if(isWhite(k)) {
       let isActive = activeKeys.includes(k);
@@ -391,7 +390,6 @@ function createPianoSVG(activeKeys) {
     }
   }
   
-  // 2. Blacks
   for(let k=startKey; k<=endKey; k++) {
     if(!isWhite(k)) {
       let prevWhite = k - 1;
@@ -476,13 +474,12 @@ function showSong(song){
   }
 
   coverBackContent.innerHTML = "";
-  // Reset container classes
-  coverBackContent.className = "back";
+  coverBackContent.className = "back"; // Reset class
 
   if(song.chords){
     let html = "";
     
-    // Check if song requires dense mode (more than 4 chords in a section)
+    // Check dense mode
     const isDense = (song.chords.verse && song.chords.verse.length > 4) || 
                     (song.chords.chorus && song.chords.chorus.length > 4);
     
@@ -491,16 +488,19 @@ function showSong(song){
     }
 
     const renderSection = (label, chordNames) => {
-      // Determine density for this specific section
       const sectionDense = chordNames.length > 4;
       const sectionClass = sectionDense ? "chord-section dense" : "chord-section";
       const gridClass = sectionDense ? "chord-grid dense" : "chord-grid";
 
       let sectionHtml = `<div class="${sectionClass}"><div class="chord-part-label">${label}</div><div class="${gridClass}">`;
       chordNames.forEach(cName => {
-        let keys = CHORD_MAP[cName] || [];
-        let svg = createPianoSVG(keys);
-        sectionHtml += `<div class="piano-box"><div class="piano-name">${cName}</div>${svg}</div>`;
+        if(cName === "BREAK") {
+          sectionHtml += `<div class="break"></div>`;
+        } else {
+          let keys = CHORD_MAP[cName] || [];
+          let svg = createPianoSVG(keys);
+          sectionHtml += `<div class="piano-box"><div class="piano-name">${cName}</div>${svg}</div>`;
+        }
       });
       sectionHtml += `</div></div>`;
       return sectionHtml;
