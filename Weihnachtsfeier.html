@@ -121,7 +121,7 @@
     overflow-y: auto; 
   }
   
-  /* Dense Mode: Reduziertes seitliches Padding für 5er Reihen */
+  /* SONDERREGEL (Dense Mode): Weniger Padding an den Seiten */
   .back.dense-mode {
     padding: 10px 2px; 
   }
@@ -157,11 +157,11 @@
 
   /* DYNAMISCHES SPACING (KOMPAKT) */
   .chord-section.dense {
-    margin-bottom: 4px; /* Vertikal gestaucht */
+    margin-bottom: 4px; /* Enger, damit es vertikal passt */
   }
   .chord-grid.dense {
     gap: 3px; /* Horizontal eng */
-    row-gap: 2px; /* Vertikal sehr eng */
+    row-gap: 2px; /* Vertikal sehr eng für 4-Zeiler */
   }
   .chord-grid.dense .piano-box {
     margin-bottom: 1px;
@@ -264,6 +264,9 @@ const CHORD_MAP = {
   "Ab/C": [0, 3, 8]       
 };
 
+// PLATZHALTER BILD (Data URI) - Ein einfaches graues Bild mit Text "No Cover"
+const PLACEHOLDER_IMG = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 300 300'%3E%3Crect width='300' height='300' fill='%23e0e0e0'/%3E%3Ctext x='50%25' y='50%25' font-family='Arial' font-size='24' fill='%23999' dominant-baseline='middle' text-anchor='middle'%3ENo Cover%3C/text%3E%3C/svg%3E";
+
 /* ---------- SONGDATA ---------- */
 const songs = [
   /* 1. Bis zum Mond */
@@ -284,13 +287,13 @@ const songs = [
     },
     text: `So lang du denkst\nWie schön es wär\nLebst du dem Traum\nNur hinterher\n\nMit allen Wolken\nWillst du ziehen\nDeinem Gefühl\nNie mehr widerstehen\n\nUnd wenn du fällst\nNimm meine Hand\nIch will mit dir gemeinsam gehen\nEin Leben lang\nDurch diese Welt\nHab keine Angst\nHör auf dein Herz\nUnd wir verlieren den Verstand\n\nDie Sehnsucht brennt\nDer Weg ist weit\nBis in das Licht\nTrägt uns die Zeit\n\nUnd irgendwann\nWird um uns ein\nHimmel so hoch\nUnd endlos sein\n\nUnd wenn du fällst\nNimm meine Hand\nIch will mit dir gemeinsam gehen\nEin Leben lang\nDurch diese Welt\nHab keine Angst\nHör auf dein Herz\nUnd wir verlieren den Verstand`
   },
-  /* 3. Eins (NEU) */
+  /* 3. Eins (NEU - Mit Platzhalter Bild) */
   {
     artist: "One Day in Rome", title: "Eins", year: "2025", copyright: "© Xander Fox", image: "",
     chords: null,
     text: `Es Ist Doch Egal\nOb Du Mich Verstehst\nWas Dich Nicht Berührt\nDas Tut Auch Nicht Weh\n\nEs Gibt Keine Wahl\nKein A Oder B\nDarum Und Deshalb\nBrauchst Du Mich Auch Nicht\nMehr So Anzusehen..\n\nAls Wärst Du Bei Mir\nUnd Wir Noch Eins\nAls Würd Ich Dich Manchmal\nLeise Sagen Hören\nHalt Dich Fest Und Bleib\n\nAls Wärst Du Noch Hier\nWir Niemals Entzweit\nDoch Alles Was Bleibt Sind Meine Fragen\nDurch Die Einsamkeit\n\nNichts Ist Mehr Normal\nDas Chaos Regiert\nMein Herz Schlägt Schlaflos Einfach Leer\nVerbrennt Und Erfriert\n\nIch Weiß Nicht Einmal\nWas Mich Motiviert\nStill - Ohne Signal\nNur Im Freien Fall\nNoch Fängt Und Entführt..\n\nAls Wärst Du Bei Mir\nUnd Wir Noch Eins\nAls Würd Ich Dich Manchmal\nLeise Sagen Hören\nHalt Dich Fest Und Bleib\n\nAls Wärst Du Noch Hier\nWir Niemals Entzweit\nDoch Alles Was Bleibt Sind Meine Fragen\n\nDurch Die Einsamkeit\n\nAls Wärst Du Bei Mir\nUnd Wir Noch Eins\n\nAls Wärst Du Noch Hier\nWir Niemals Entzweit\n\nAls Wärst Du Bei Mir\nUnd Wir Noch Eins\nAls Würd Ich Dich Manchmal\nLeise Sagen Hören\nHalt Dich Fest Und Bleib\n\nAls Wärst Du Noch Hier\nWir Niemals Entzweit\nDoch Alles Was Bleibt Sind Meine Fragen\n\nDurch Die Einsamkeit`
   },
-  /* 4. Everything ( I Want ) (NEU) */
+  /* 4. Everything ( I Want ) (NEU - Mit Platzhalter Bild) */
   {
     artist: "One Day in Rome", title: "Everything ( I Want )", year: "2025", copyright: "© Xander Fox", image: "",
     chords: null,
@@ -298,7 +301,9 @@ const songs = [
   },
   /* 5. Halt mich! */
   {
-    artist: "One Day in Rome", title: "Halt mich!", year: "2025", copyright: "© Xander Fox", image: "fQ5C8n5z.jpeg",
+    artist: "One Day in Rome", 
+    title: "Halt mich!", 
+    year: "2025", copyright: "© Xander Fox", image: "fQ5C8n5z.jpeg",
     chords: {
       verse: ["Cm", "Eb", "Ab", "Eb", "Gm", "Ab", "Eb", "Bb"],
       chorus: ["Ab", "Eb", "Cm", "Bb"]
@@ -333,7 +338,7 @@ const songs = [
     },
     text: `Kannst du mir erklären\nWas geschehen ist\nMusst du denn zerstören\nWas du mir noch bist\n\nWarum bin ich einsam\nDu nicht mehr bei mir\nWollten wir gemeinsam\nNicht die Welt regieren\n\nWarum bin ich hier\nWie lang muss ich bleiben\nOhne deine Liebe\nDie mich still entführt\n\nMein Herz ruft nach dir\nKann dich nicht verschweigen\nDu wirst immer bleiben\nIrgendwo in mir\n\nWarum bist du so\nFern und unerreichbar\nDa wohin du gehen willst\nKann ich dich nicht sehen\n\nWas hält uns am Leben\nWorin liegt der Sinn\nSag mir doch weswegen\nWir verloren sind\n\nWarum bin ich hier\nWie lang muss ich bleiben\nOhne deine Liebe\nDie mich still entführt\n\nMein Herz ruft nach dir\nKann dich nicht verschweigen\nDu wirst immer bleiben\nIrgendwo in mir`
   },
-  /* 10. Tell Me (NEU) */
+  /* 10. Tell Me (NEU - Mit Platzhalter Bild) */
   {
     artist: "One Day in Rome", title: "Tell Me", year: "2025", copyright: "© Xander Fox", image: "",
     chords: null,
@@ -348,7 +353,7 @@ const songs = [
     },
     text: `Welcome to the fake\nZombies living for God's sake\nIn a world of Sheep\nEverything we do believe\n\nWe claim we know it all\nCan’t see who is behind this wall.\nDon’t wait, follow the light\nWake up, open your eyes.\n\nWhy can’t we just feel\nThere is so much more to see\nAre we hypnotised?\nWhat does it need to realise\n\nWe claim we know it all\nCan’t see who is behind this wall.\nDon’t wait, follow the light\nWake up, open your eyes.`
   },
-  /* 12. Wir */
+  /* 12. Wir (DENSE MODE, ENGES SPACING) */
   {
     artist: "One Day in Rome", title: "Wir", year: "2025", copyright: "© Xander Fox", image: "IMG_0179.jpeg",
     chords: {
@@ -443,7 +448,6 @@ const metaYear = document.getElementById('meta-year');
 const metaArtist = document.getElementById('meta-artist');
 const metaTitle = document.getElementById('meta-title');
 
-// FLIP EVENT LISTENER
 coverFlipContainer.addEventListener('click', function() {
   this.classList.toggle('flipped');
 });
@@ -452,14 +456,19 @@ function makeEntry(song, idx){
   const div = document.createElement('div');
   div.className = 'song-entry';
   const img = document.createElement('img');
+  
   if(song.image){
     img.src = song.image;
     img.alt = `${song.artist} - ${song.title}`;
-    img.onerror = () => { img.classList.add('no-img'); img.removeAttribute('src'); img.alt = 'kein Cover'; img.textContent = 'NO IMG'; };
+    img.onerror = () => { 
+        img.src = PLACEHOLDER_IMG; 
+        img.classList.remove('no-img');
+    };
   } else {
-    img.classList.add('no-img');
+    img.src = PLACEHOLDER_IMG;
     img.alt = 'kein Cover';
   }
+  
   const meta = document.createElement('div');
   meta.className = 'meta';
   const mainLine = document.createElement('div');
@@ -495,18 +504,22 @@ function showSong(song){
     coverLarge.src = song.image;
     coverLarge.alt = `${song.artist} - ${song.title}`;
     coverLarge.classList.remove('no-img');
+    // Error handling für Cover Large
+    coverLarge.onerror = () => {
+        coverLarge.src = PLACEHOLDER_IMG;
+    };
   } else {
-    coverLarge.removeAttribute('src');
-    coverLarge.classList.add('no-img');
+    coverLarge.src = PLACEHOLDER_IMG;
+    coverLarge.classList.remove('no-img');
   }
 
   coverBackContent.innerHTML = "";
-  coverBackContent.className = "back"; // Reset
+  coverBackContent.className = "back"; 
 
   if(song.chords){
     let html = "";
     
-    // Check dense mode
+    // Check dense mode (Logic: Total chords > 14 OR explicit BREAK)
     let totalChords = 0;
     if(song.chords.verse) totalChords += song.chords.verse.filter(c => c !== "BREAK").length;
     if(song.chords.chorus) totalChords += song.chords.chorus.filter(c => c !== "BREAK").length;
@@ -520,7 +533,6 @@ function showSong(song){
     }
 
     const renderSection = (label, chordNames) => {
-      // Determine density for this specific section
       const sectionDense = chordNames.length > 4 || chordNames.includes("BREAK");
       const sectionClass = sectionDense ? "chord-section dense" : "chord-section";
       const gridClass = sectionDense ? "chord-grid dense" : "chord-grid";
