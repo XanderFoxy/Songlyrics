@@ -294,16 +294,16 @@ const CHORD_MAP = {
   "Absus2": [8, 10, 15],   
   "Gb5": [6, 13, 18],     
 
-  // SPEZIAL-AKKORDE für "Kein Mensch" Verse (Text) - KORRIGIERT
-  "Absus2/Eb": [3, 8, 10],   // Es, As, B
-  // "Dbsus2" existiert schon
+  // SPEZIAL-AKKORDE für "Kein Mensch" Verse (Text) - OPTIMIERT (Kurznamen)
+  // Trick: "Absus2 " (mit Leerzeichen) ist optisch kurz, aber hat die anderen Noten
+  "Absus2 ": [3, 8, 10],     // Es, As, B (ehemals Absus2/Eb)
   "Abm(no5)": [8, 11, 20],   // As, H, As(okt)
   "Bsus2": [11, 13, 18],     // H, Des, Ges
-  // "Absus2" existiert schon
-  // "Gb/Bb" existiert schon
-  // "Gbsus2" existiert schon
-  "Db(add2)/Eb": [3, 5, 13], // Es, F, Des
-  "Ab5": [8, 20, 27]         // As, As(okt), Es (oder tiefer mapped für Anzeige: -4, 8, 15 -> 8, 20, 27)
+  // "Absus2" existiert schon (Standard)
+  "Gb": [10, 13, 18],        // Mapped auf Gb/Bb voicing, aber heißt kurz "Gb"
+  "Gbsus2": [6, 13, 20],
+  "Db(add2)": [3, 5, 13],    // Es, F, Des (ehemals Db(add2)/Eb)
+  "Ab5": [8, 20, 27]         // As, As(okt), Es 
 };
 
 /* ---------- SONGDATA ---------- */
@@ -352,16 +352,17 @@ const songs = [
     artist: "One Day in Rome", title: "Kein Mensch", year: "2025", copyright: "© Xander Fox", image: "7qKpkBlp.jpeg",
     chords: {
       // Verse: 12 Chords total. Split 6 / 6
+      // Kürzere Namen für besseres Layout, aber gleiche Voicings!
       verse: [
-        "Absus2/Eb", "Dbsus2", "Abm(no5)", "Bsus2", "Absus2", "Dbsus2", 
+        "Absus2 ", "Dbsus2", "Abm(no5)", "Bsus2", "Absus2", "Dbsus2", 
         "BREAK", 
-        "Gb/Bb", "Dbsus2", "Gb/Bb", "Gbsus2", "Db(add2)/Eb", "Ab5"
+        "Gb", "Dbsus2", "Gb", "Gbsus2", "Db(add2)", "Ab5"
       ],
       // Chorus: 12 Chords total. Split 6 / 6
       chorus: [
-        "Gbsus2", "Dbsus2", "Ebm", "Gb/Bb", "Absus2", "Dbsus2", 
+        "Gbsus2", "Dbsus2", "Ebm", "Gb", "Absus2", "Dbsus2", 
         "BREAK", 
-        "Gb/Bb", "Absus2", "Dbsus2", "Ebm", "Gb5", "Dbsus2"
+        "Gb", "Absus2", "Dbsus2", "Ebm", "Gb5", "Dbsus2"
       ]
     },
     text: `Es ist Nacht\nhier\nin deinen Armen\nNimm meine Hand\nDenn du weißt genau\ndass ich auch\nnicht mehr anders kann\nDu musst nichts verstehen\nIch bin schon lang in deinem Bann\nDarum bleib bei mir\nKomm und sieh mich\nnur noch einmal\nso an\n\nSo als würden wir\nunsere Seelen inhalieren\nIch will dich mit mir\nbis die Sterne explodieren\nSelbst wenn wir\ngemeinsam fallen\nWer kommt mich heilen?\nUnd ich weiß\nkein Mensch\nWürde\nSo wie du mit mir sein\n\nIch lieg wach\nhier\nin deinen Armen\nbin ich dir nah\nGrad hab ich noch\nvon dir geträumt\nUnd schon bist du wahr\nUnd so wunderschön\nDas ist alles\nnicht mehr normal\nHalt dich bei mir fest\nDenn wir haben\neh keine andere\nWahl\n\nSo als würden wir\nunsere Seelen inhalieren\nIch will dich mit mir\nbis die Sterne explodieren\nSelbst wenn wir\ngemeinsam fallen\nWer kommt mich heilen?\nUnd ich weiß\nkein Mensch\nWürde\nSo wie du mit mir sein`
