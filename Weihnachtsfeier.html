@@ -264,6 +264,7 @@
 const CHORD_MAP = {
   "C":  [0, 4, 7],      // C-Dur
   "Am": [9, 12, 16],    // A-Moll
+  "Em": [4, 7, 11],     // E-Moll (Neu!)
   "F":  [5, 9, 12],     // F-Dur
   "G":  [7, 11, 14],    // G-Dur
   "Dm": [2, 5, 9],      // D-Moll
@@ -338,10 +339,14 @@ const songs = [
     },
     text: `So lang du denkst\nWie schön es wär\nLebst du dem Traum\nNur hinterher\n\nMit allen Wolken\nWillst du ziehen\nDeinem Gefühl\nNie mehr widerstehen\n\nUnd wenn du fällst\nNimm meine Hand\nIch will mit dir gemeinsam gehen\nEin Leben lang\nDurch diese Welt\nHab keine Angst\nHör auf dein Herz\nUnd wir verlieren den Verstand\n\nDie Sehnsucht brennt\nDer Weg ist weit\nBis in das Licht\nTrägt uns die Zeit\n\nUnd irgendwann\nWird um uns ein\nHimmel so hoch\nUnd endlos sein\n\nUnd wenn du fällst\nNimm meine Hand\nIch will mit dir gemeinsam gehen\nEin Leben lang\nDurch diese Welt\nHab keine Angst\nHör auf dein Herz\nUnd wir verlieren den Verstand`
   },
-  /* 4. Eins */
+  /* 4. Eins (JETZT MIT AKKORDEN!) */
   {
     artist: "One Day in Rome", title: "Eins", year: "2025", copyright: "© Xander Fox", image: "IMG_0281.jpeg",
-    chords: null,
+    chords: {
+      verse: ["C", "Em", "Am", "G"],
+      // Layout: 2 Akkorde, dann Umbruch, dann 4 Akkorde
+      chorus: ["C", "G", "BREAK", "F", "C", "Dm", "G"]
+    },
     text: `Es Ist Doch Egal\nOb Du Mich Verstehst\nWas Dich Nicht Berührt\nDas Tut Auch Nicht Weh\n\nEs Gibt Keine Wahl\nKein A Oder B\nDarum Und Deshalb\nBrauchst Du Mich Auch Nicht\nMehr So Anzusehen..\n\nAls Wärst Du Bei Mir\nUnd Wir Noch Eins\nAls Würd Ich Dich Manchmal\nLeise Sagen Hören\nHalt Dich Fest Und Bleib\n\nAls Wärst Du Noch Hier\nWir Niemals Entzweit\nDoch Alles Was Bleibt Sind Meine Fragen\nDurch Die Einsamkeit\n\nNichts Ist Mehr Normal\nDas Chaos Regiert\nMein Herz Schlägt Schlaflos Einfach Leer\nVerbrennt Und Erfriert\n\nIch Weiß Nicht Einmal\nWas Mich Motiviert\nStill - Ohne Signal\nNur Im Freien Fall\nNoch Fängt Und Entführt..\n\nAls Wärst Du Bei Mir\nUnd Wir Noch Eins\nAls Würd Ich Dich Manchmal\nLeise Sagen Hören\nHalt Dich Fest Und Bleib\n\nAls Wärst Du Noch Hier\nWir Niemals Entzweit\nDoch Alles Was Bleibt Sind Meine Fragen\n\nDurch Die Einsamkeit\n\nAls Wärst Du Bei Mir\nUnd Wir Noch Eins\n\nAls Wärst Du Noch Hier\nWir Niemals Entzweit\n\nAls Wärst Du Bei Mir\nUnd Wir Noch Eins\nAls Würd Ich Dich Manchmal\nLeise Sagen Hören\nHalt Dich Fest Und Bleib\n\nAls Wärst Du Noch Hier\nWir Niemals Entzweit\nDoch Alles Was Bleibt Sind Meine Fragen\n\nDurch Die Einsamkeit`
   },
   /* 5. Everything ( I Want ) */
