@@ -157,14 +157,31 @@
 
   /* DYNAMISCHES SPACING (KOMPAKT) */
   .chord-section.dense {
-    margin-bottom: 4px; /* Vertikal gestaucht */
+    margin-bottom: 4px; 
   }
   .chord-grid.dense {
-    gap: 3px; /* Horizontal eng */
-    row-gap: 2px; /* Vertikal sehr eng */
+    gap: 3px; 
+    row-gap: 2px; 
   }
   .chord-grid.dense .piano-box {
     margin-bottom: 1px;
+  }
+
+  /* --- EXTREM-KOMPAKT MODUS (NUR FÜR 6-SPALTEN LAYOUTS wie KEIN MENSCH) --- */
+  .chord-section.extra-dense .chord-grid {
+    gap: 2px; /* Noch engerer Spalt */
+  }
+  /* Kleineres Piano für 6er Reihen */
+  .chord-section.extra-dense .piano-box svg {
+    width: 30px; /* Verkleinert von 40px */
+    height: 18px; /* Proportional verkleinert */
+  }
+  .chord-section.extra-dense .piano-name {
+    font-size: 9px; /* Schrift minimal kleiner */
+    margin-bottom: 1px;
+  }
+  .chord-section.extra-dense {
+    margin-bottom: 3px;
   }
 
   /* Zeilenumbruch */
@@ -185,7 +202,7 @@
   .meta-right .artist{font-weight:700;font-size:16px;color:#111;}
   .meta-right .title{font-style:italic;color:#333;font-size:15px;margin-top:4px;}
 
-  /* Standard Platzhalter-Style für den Notfall */
+  /* Platzhalter Style */
   .no-img {
     background: linear-gradient(135deg,#ddd,#eee);
     display: flex; align-items: center; justify-content: center;
@@ -267,7 +284,26 @@ const CHORD_MAP = {
   "Ebm/Bb": [10, 15, 18], 
   "Gb/Bb": [10, 13, 18],  
   "Db": [1, 5, 8],        
-  "Ab/C": [0, 3, 8]       
+  "Ab/C": [0, 3, 8],
+  
+  // SPEZIAL-AKKORDE für "Kein Mensch" Refrain (Sphärisch)
+  "Gbsus2": [6, 13, 20],   
+  "Dbsus2": [1, 3, 8],     // Des, Es, As
+  "Ebm": [3, 10, 18],      
+  // "Gb/Bb" existiert schon
+  "Absus2": [8, 10, 15],   
+  "Gb5": [6, 13, 18],     
+
+  // SPEZIAL-AKKORDE für "Kein Mensch" Verse (Text) - KORRIGIERT
+  "Absus2/Eb": [3, 8, 10],   // Es, As, B
+  // "Dbsus2" existiert schon
+  "Abm(no5)": [8, 11, 20],   // As, H, As(okt)
+  "Bsus2": [11, 13, 18],     // H, Des, Ges
+  // "Absus2" existiert schon
+  // "Gb/Bb" existiert schon
+  // "Gbsus2" existiert schon
+  "Db(add2)/Eb": [3, 5, 13], // Es, F, Des
+  "Ab5": [8, 20, 27]         // As, As(okt), Es (oder tiefer mapped für Anzeige: -4, 8, 15 -> 8, 20, 27)
 };
 
 /* ---------- SONGDATA ---------- */
@@ -311,9 +347,23 @@ const songs = [
     },
     text: `Sag mir nur noch einmal was es heißt, dass wir uns so tief berühren.\nDeine Nähe die mich fast zerreißt, kann ich nicht mehr ignorieren.\n\nGib mir ein Herz, in das ich mich verlieren kann\nHalt mich und sieh mich an, wie du mich siehst.\nNimm meinen Schmerz von mir, dass ich dich fühlen kann,\nWie du mit deiner Hand mich reparierst.\n\nDeine Augen reflektieren ein unbeschreiblich schönes Bild.\nLass mich wieder deine Liebe spüren alles was ich fühl.\n\nGib mir ein Herz, in das ich mich verlieren kann,\nHalt mich und sieh mich an, wie du mich siehst.\nNimm meinen Schmerz von mir, dass ich dich fühlen kann,\nWie du mit deiner Hand mich reparierst\n\nGib mir ein Herz, gib mir ein Herz,\nHalt mich und sieh mich an, wie du mich siehst.\nNimm meinen Schmerz nimm meinen Schmerz.\nWie du mit deiner Hand mich reparierst`
   },
-  /* 6. Kein Mensch */
+  /* 6. Kein Mensch (AUSNAHME-LAYOUT: 6 pro Zeile) */
   {
     artist: "One Day in Rome", title: "Kein Mensch", year: "2025", copyright: "© Xander Fox", image: "Snapshot 11-02-2024 02:00.jpeg",
+    chords: {
+      // Verse: 12 Chords total. Split 6 / 6
+      verse: [
+        "Absus2/Eb", "Dbsus2", "Abm(no5)", "Bsus2", "Absus2", "Dbsus2", 
+        "BREAK", 
+        "Gb/Bb", "Dbsus2", "Gb/Bb", "Gbsus2", "Db(add2)/Eb", "Ab5"
+      ],
+      // Chorus: 12 Chords total. Split 6 / 6
+      chorus: [
+        "Gbsus2", "Dbsus2", "Ebm", "Gb/Bb", "Absus2", "Dbsus2", 
+        "BREAK", 
+        "Gb/Bb", "Absus2", "Dbsus2", "Ebm", "Gb5", "Dbsus2"
+      ]
+    },
     text: `Es ist Nacht\nhier\nin deinen Armen\nNimm meine Hand\nDenn du weißt genau\ndass ich auch\nnicht mehr anders kann\nDu musst nichts verstehen\nIch bin schon lang in deinem Bann\nDarum bleib bei mir\nKomm und sieh mich\nnur noch einmal\nso an\n\nSo als würden wir\nunsere Seelen inhalieren\nIch will dich mit mir\nbis die Sterne explodieren\nSelbst wenn wir\ngemeinsam fallen\nWer kommt mich heilen?\nUnd ich weiß\nkein Mensch\nWürde\nSo wie du mit mir sein\n\nIch lieg wach\nhier\nin deinen Armen\nbin ich dir nah\nGrad hab ich noch\nvon dir geträumt\nUnd schon bist du wahr\nUnd so wunderschön\nDas ist alles\nnicht mehr normal\nHalt dich bei mir fest\nDenn wir haben\neh keine andere\nWahl\n\nSo als würden wir\nunsere Seelen inhalieren\nIch will dich mit mir\nbis die Sterne explodieren\nSelbst wenn wir\ngemeinsam fallen\nWer kommt mich heilen?\nUnd ich weiß\nkein Mensch\nWürde\nSo wie du mit mir sein`
   },
   /* 7. Let Me Know */
@@ -328,7 +378,7 @@ const songs = [
   /* 8. Meine Heiligkeit (What If..?) */
   {
     artist: "One Day in Rome", title: "Meine Heiligkeit (What If..?)", year: "2025", copyright: "© Xander Fox", image: "IMG_0174.jpeg",
-    text: `Wenn mein Herz sich nach dir sehnt\nSo heiß, wie ein Feuer brennt\nTrag mich bis zu dir hinauf\nWeil ich an deine Liebe glaub\n\nMeine Heiligkeit bist du\nHörst du, wie mein Herz dich ruft?\nDu bist alles, was es sucht\nWenn ich fall, fängst du mich auf\nDu und ich, fühlst du es auch?\nJetzt wird alles wieder gut\n\nDenn ich lieb dich unentwegt\nWie ein Gefühl, das nie vergeht\nWenn mich niemand mehr versteht\nHilft deine Hand mir auf den Weg\n\nMeine Heiligkeit bist du\nHörst du, wie mein Herz dich ruft?\nDu bist alles, was es sucht\nWenn ich fall, fängst du mich auf\nDu und ich, fühlst du es auch?\nJetzt wird alles wieder gut`
+    text: `Wenn mein Herz sich nach dir sehnt\nSo heiß, wie ein Feuer brennt\nTrag mich bis zu dir hinauf\nWeil ich an deine Liebe glaub\n\nMeine Heiligkeit bist du\nHörst du, wie mein Herz dich ruft?\nDu bist alles, was es sucht\nWenn ich fall, fängst du mich auf\nDu und ich, fühlst du es auch?\nJetzt wird alles wieder gut\n\nDenn ich lieb dich unentwegt\nWie ein Gefühl, das nie vergeht\nWenn mich niemand mehr versteht\nHilft deine Hand mir auf den Weg\n\nMeine Heiligkeit bist du\nHörst du, wie mein Herz dich ruft?\nDu bist alles, was es sucht\nWenn ich fall, fängst du mich auf\nDu und ich, fühlst du es auch?\nJetzt wird alles wieder gut\n\nDenn ich lieb dich unentwegt\nWie ein Gefühl, das nie vergeht\nWenn mich niemand mehr versteht\nHilft deine Hand mir auf den Weg\n\nMeine Heiligkeit bist du\nHörst du, wie mein Herz dich ruft?\nDu bist alles, was es sucht\nWenn ich fall, fängst du mich auf\nDu und ich, fühlst du es auch?\nJetzt wird alles wieder gut`
   },
   /* 9. Ohne Deine Liebe */
   {
@@ -358,9 +408,7 @@ const songs = [
   {
     artist: "One Day in Rome", title: "Wir", year: "2025", copyright: "© Xander Fox", image: "IMG_0179.jpeg",
     chords: {
-      // Verse: 10 Chords + Break -> Trigger Dense
       verse: ["Cm", "Ab", "Gm", "Cm", "Gm", "BREAK", "Bb", "Ab", "Gm", "Cm", "Gm"],
-      // Chorus: 6 Chords + Break -> Trigger Dense
       chorus: ["Cm", "Eb", "Gm", "BREAK", "Ab", "Gm", "Bb"]
     },
     text: `Es ist gar nicht so leicht\nDieses Leben zu verstehen\nManchmal darum vielleicht\nAuch so schwer, einfach weiterzugehen\n\nWenn du denkst, durchzudrehen\nWeil du noch etwas spürst in dir\nLass uns nicht lange reden\nEs gibt viel zu viel zu verlieren\n\nWenn die Welt untergeht\nBin ich bei dir\nDu bist alles, was zählt\nWas ich fühl in mir\nDarum lass uns nicht warten\nWarum sollen wir leiden, wofür?\nDas ist unsere Wahrheit\nAlles was wir noch haben, sind wir\n\nWir sind groß\nWir sind schön, unerreicht\nSchwer zu greifen\nDenn wir schweben federleicht\n\nAuch wenn sie uns versuchen\nzu verführen\nKeine Chance\nWir sind viel zu wir dafür\n\nWenn die Welt untergeht\nBin ich bei dir\nDu bist alles, was zählt\nWas ich fühl in mir\nDarum lass uns nicht warten\nWarum sollen wir leiden, wofür?\nDas ist unsere Wahrheit\nAlles was wir noch haben, sind wir`
@@ -458,9 +506,10 @@ function makeEntry(song, idx){
   div.className = 'song-entry';
   const img = document.createElement('img');
   
-  if(song.image){
+  if(song.image && song.image.trim() !== ""){
     img.src = song.image;
     img.alt = `${song.artist} - ${song.title}`;
+    img.classList.remove('no-img');
     img.onerror = () => { 
         img.classList.add('no-img');
         img.removeAttribute('src'); 
@@ -489,7 +538,7 @@ function makeEntry(song, idx){
 
 function showSong(song){
   coverFlipContainer.classList.remove('flipped');
-  if(song.image){
+  if(song.image && song.image.trim() !== ""){
     coverBg.style.backgroundImage = `url("${song.image}")`;
     coverBg.style.opacity = "var(--bg-opacity)";
   } else {
@@ -502,7 +551,7 @@ function showSong(song){
   }
   content.innerHTML = h + `<pre>${escapeHtml(song.text)}</pre>`;
 
-  if(song.image){
+  if(song.image && song.image.trim() !== ""){
     coverLarge.src = song.image;
     coverLarge.alt = `${song.artist} - ${song.title}`;
     coverLarge.classList.remove('no-img');
@@ -512,12 +561,12 @@ function showSong(song){
   }
 
   coverBackContent.innerHTML = "";
-  coverBackContent.className = "back"; // Reset
+  coverBackContent.className = "back"; 
 
   if(song.chords){
     let html = "";
     
-    // Check dense mode
+    // Check dense mode (STANDARD Logic)
     let totalChords = 0;
     if(song.chords.verse) totalChords += song.chords.verse.filter(c => c !== "BREAK").length;
     if(song.chords.chorus) totalChords += song.chords.chorus.filter(c => c !== "BREAK").length;
@@ -531,11 +580,30 @@ function showSong(song){
     }
 
     const renderSection = (label, chordNames) => {
-      // Determine density for this specific section
+      // 1. Check Standard Dense Logic
       const sectionDense = chordNames.length > 4 || chordNames.includes("BREAK");
-      const sectionClass = sectionDense ? "chord-section dense" : "chord-section";
-      const gridClass = sectionDense ? "chord-grid dense" : "chord-grid";
+      let sectionClass = sectionDense ? "chord-section dense" : "chord-section";
+      let gridClass = sectionDense ? "chord-grid dense" : "chord-grid";
       const labelClass = isDense ? "chord-part-label dense-label" : "chord-part-label";
+      
+      // 2. EXCEPTION LOGIC: Check for chunks >= 6
+      let maxChunkSize = 0;
+      let currentChunk = 0;
+      chordNames.forEach(c => {
+        if(c === "BREAK") {
+          if(currentChunk > maxChunkSize) maxChunkSize = currentChunk;
+          currentChunk = 0;
+        } else {
+          currentChunk++;
+        }
+      });
+      if(currentChunk > maxChunkSize) maxChunkSize = currentChunk;
+
+      // Wenn ein Block 6 oder mehr Akkorde hat -> Extra Dense aktivieren
+      if(maxChunkSize >= 6) {
+        sectionClass += " extra-dense";
+        gridClass += " extra-dense";
+      }
 
       let sectionHtml = `<div class="${sectionClass}"><div class="${labelClass}">${label}</div><div class="${gridClass}">`;
       chordNames.forEach(cName => {
