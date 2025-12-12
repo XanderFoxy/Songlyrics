@@ -121,9 +121,9 @@
     overflow-y: auto; 
   }
   
-  /* SONDERREGEL (Dense Mode): Weniger Padding an den Seiten */
+  /* SONDERREGEL (Dense Mode): Absolut minimalistisches Padding, damit 5 große Pianos passen */
   .back.dense-mode {
-    padding: 10px 2px; 
+    padding: 10px 0px; 
   }
 
   /* STANDARD SPACING (Luftig) */
@@ -155,13 +155,13 @@
     margin-bottom: 4px;
   }
 
-  /* DYNAMISCHES SPACING (KOMPAKT) */
+  /* DYNAMISCHES SPACING (KOMPAKT für 5 Akkorde) */
   .chord-section.dense {
     margin-bottom: 4px; 
   }
   .chord-grid.dense {
-    gap: 2px; /* Reduziert auf 2px, damit 5 große Pianos passen */
-    row-gap: 2px; 
+    gap: 1px; /* Minimaler Gap für 5 Pianos */
+    row-gap: 4px; 
   }
   .chord-grid.dense .piano-box {
     margin-bottom: 1px;
@@ -171,7 +171,7 @@
   .chord-section.extra-dense .chord-grid {
     gap: 2px; 
   }
-  /* Kleineres Piano nur bei 6+ */
+  /* Kleineres Piano für 6er Reihen */
   .chord-section.extra-dense .piano-box svg {
     width: 30px; /* Verkleinert von 40px */
     height: 18px; /* Proportional verkleinert */
@@ -348,17 +348,16 @@ const songs = [
     },
     text: `So lang du denkst\nWie schön es wär\nLebst du dem Traum\nNur hinterher\n\nMit allen Wolken\nWillst du ziehen\nDeinem Gefühl\nNie mehr widerstehen\n\nUnd wenn du fällst\nNimm meine Hand\nIch will mit dir gemeinsam gehen\nEin Leben lang\nDurch diese Welt\nHab keine Angst\nHör auf dein Herz\nUnd wir verlieren den Verstand\n\nDie Sehnsucht brennt\nDer Weg ist weit\nBis in das Licht\nTrägt uns die Zeit\n\nUnd irgendwann\nWird um uns ein\nHimmel so hoch\nUnd endlos sein\n\nUnd wenn du fällst\nNimm meine Hand\nIch will mit dir gemeinsam gehen\nEin Leben lang\nDurch diese Welt\nHab keine Angst\nHör auf dein Herz\nUnd wir verlieren den Verstand`
   },
-  /* 4. Eins (MIT AKKORDEN!) */
+  /* 4. Eins */
   {
     artist: "One Day in Rome", title: "Eins", year: "2025", copyright: "© Xander Fox", image: "IMG_0281.jpeg",
     chords: {
       verse: ["C", "Em", "Am", "G"],
-      // Layout: 2 Akkorde, dann Umbruch, dann 4 Akkorde
       chorus: ["C", "G", "BREAK", "F", "C", "Dm", "G"]
     },
     text: `Es Ist Doch Egal\nOb Du Mich Verstehst\nWas Dich Nicht Berührt\nDas Tut Auch Nicht Weh\n\nEs Gibt Keine Wahl\nKein A Oder B\nDarum Und Deshalb\nBrauchst Du Mich Auch Nicht\nMehr So Anzusehen..\n\nAls Wärst Du Bei Mir\nUnd Wir Noch Eins\nAls Würd Ich Dich Manchmal\nLeise Sagen Hören\nHalt Dich Fest Und Bleib\n\nAls Wärst Du Noch Hier\nWir Niemals Entzweit\nDoch Alles Was Bleibt Sind Meine Fragen\nDurch Die Einsamkeit\n\nNichts Ist Mehr Normal\nDas Chaos Regiert\nMein Herz Schlägt Schlaflos Einfach Leer\nVerbrennt Und Erfriert\n\nIch Weiß Nicht Einmal\nWas Mich Motiviert\nStill - Ohne Signal\nNur Im Freien Fall\nNoch Fängt Und Entführt..\n\nAls Wärst Du Bei Mir\nUnd Wir Noch Eins\nAls Würd Ich Dich Manchmal\nLeise Sagen Hören\nHalt Dich Fest Und Bleib\n\nAls Wärst Du Noch Hier\nWir Niemals Entzweit\nDoch Alles Was Bleibt Sind Meine Fragen\n\nDurch Die Einsamkeit\n\nAls Wärst Du Bei Mir\nUnd Wir Noch Eins\n\nAls Wärst Du Noch Hier\nWir Niemals Entzweit\n\nAls Wärst Du Bei Mir\nUnd Wir Noch Eins\nAls Würd Ich Dich Manchmal\nLeise Sagen Hören\nHalt Dich Fest Und Bleib\n\nAls Wärst Du Noch Hier\nWir Niemals Entzweit\nDoch Alles Was Bleibt Sind Meine Fragen\n\nDurch Die Einsamkeit`
   },
-  /* 5. Everything ( I Want ) (MIT AKKORDEN!) */
+  /* 5. Everything ( I Want ) */
   {
     artist: "One Day in Rome", title: "Everything ( I Want )", year: "2025", copyright: "© Xander Fox", image: "IMG_8314.jpeg",
     chords: {
@@ -367,7 +366,7 @@ const songs = [
     },
     text: `I Ignore\nLike You Would Do\nWe Rise And Fall\nBut Still Got Through\nWhenever You Rely On Me\nI‘m There For You\n\nWhen You Call My Name\nI Suddenly Can‘t Stop\nI‘m Anticipating\nNothing Less But Love\n\nWe Are Playing Hide And Seek\nWhile We‘re Waiting In The Deep\nAnd The Life We Know Has Gone\nGive Me Everything\n\nEverything I Want\n\nOut Of And Into The Blue\nWe Act Before\nWe Think It Through\nWhatever You Have Done To Me\nI Care For You\n\nI Don‘t Mind What Follows\nOnce I‘m Going Blind\nLatest By Tomorrow\nYou Will Still Be Mine\n\nWe Are Playing Hide And Seek\nWhile We‘re Waiting In The Deep\nAnd The Life We Know Has Gone\nGive Me Everything\nEverything I Want\n\nGive Me Everything\nEverything\nI Want Everything\nGive Me Love\n\nWe Are Playing Hide And Seek\nWhile We‘re Waiting In The Deep\nAnd The Life We Know Has Gone\nGive Me Everything\nEverything I Want`
   },
-  /* 6. Halt mich! (MIT BREAK 4/4) */
+  /* 6. Halt mich! (MIT BREAK) */
   {
     artist: "One Day in Rome", title: "Halt mich!", year: "2025", copyright: "© Xander Fox", image: "fQ5C8n5z.jpeg",
     chords: {
@@ -407,7 +406,7 @@ const songs = [
     artist: "One Day in Rome", title: "Meine Heiligkeit (What If..?)", year: "2025", copyright: "© Xander Fox", image: "IMG_0174.jpeg",
     chords: {
       verse: ["Ebm", "F#", "Gb", "C#"],
-      chorus: ["Ebm", "F#", "C#", "Gb", "C#"] // 5 Akkorde -> DENSE (passt in 1 Zeile)
+      chorus: ["Ebm", "F#", "C#", "Gb", "C#"]
     },
     text: `Wenn mein Herz sich nach dir sehnt\nSo heiß, wie ein Feuer brennt\nTrag mich bis zu dir hinauf\nWeil ich an deine Liebe glaub\n\nMeine Heiligkeit bist du\nHörst du, wie mein Herz dich ruft?\nDu bist alles, was es sucht\nWenn ich fall, fängst du mich auf\nDu und ich, fühlst du es auch?\nJetzt wird alles wieder gut\n\nDenn ich lieb dich unentwegt\nWie ein Gefühl, das nie vergeht\nWenn mich niemand mehr versteht\nHilft deine Hand mir auf den Weg\n\nMeine Heiligkeit bist du\nHörst du, wie mein Herz dich ruft?\nDu bist alles, was es sucht\nWenn ich fall, fängst du mich auf\nDu und ich, fühlst du es auch?\nJetzt wird alles wieder gut\n\nDenn ich lieb dich unentwegt\nWie ein Gefühl, das nie vergeht\nWenn mich niemand mehr versteht\nHilft deine Hand mir auf den Weg\n\nMeine Heiligkeit bist du\nHörst du, wie mein Herz dich ruft?\nDu bist alles, was es sucht\nWenn ich fall, fängst du mich auf\nDu und ich, fühlst du es auch?\nJetzt wird alles wieder gut`
   },
@@ -603,14 +602,29 @@ function showSong(song){
   if(song.chords){
     let html = "";
     
-    // Check dense mode (STANDARD Logic)
+    // Check dense mode (STANDARD Logic) + EXTENDED CHECK for 5 chords
     let totalChords = 0;
     if(song.chords.verse) totalChords += song.chords.verse.filter(c => c !== "BREAK").length;
     if(song.chords.chorus) totalChords += song.chords.chorus.filter(c => c !== "BREAK").length;
 
+    // Check if any section has a chunk of 5 or more chords
+    let hasFiveChunk = false;
+    const checkChunk5 = (arr) => {
+      let c = 0;
+      arr.forEach(x => {
+        if(x==='BREAK') { if(c>=5) hasFiveChunk=true; c=0; }
+        else c++;
+      });
+      if(c>=5) hasFiveChunk=true;
+    };
+    if(song.chords.verse) checkChunk5(song.chords.verse);
+    if(song.chords.chorus) checkChunk5(song.chords.chorus);
+
+    // Global "Dense Mode" Trigger (Tight padding on card)
     const isDense = totalChords > 14 || 
                     (song.chords.verse && song.chords.verse.includes("BREAK")) || 
-                    (song.chords.chorus && song.chords.chorus.includes("BREAK"));
+                    (song.chords.chorus && song.chords.chorus.includes("BREAK")) ||
+                    hasFiveChunk; // NEW: Activate tight card padding if 5 chords in a row!
     
     if(isDense) {
       coverBackContent.classList.add("dense-mode");
@@ -623,7 +637,7 @@ function showSong(song){
       let gridClass = sectionDense ? "chord-grid dense" : "chord-grid";
       const labelClass = isDense ? "chord-part-label dense-label" : "chord-part-label";
       
-      // 2. EXCEPTION LOGIC: Check for chunks >= 6 (THRESHOLD RESET TO 6)
+      // 2. EXCEPTION LOGIC: Check for chunks >= 6 (OLD LOGIC RESTORED)
       let maxChunkSize = 0;
       let currentChunk = 0;
       chordNames.forEach(c => {
@@ -636,7 +650,7 @@ function showSong(song){
       });
       if(currentChunk > maxChunkSize) maxChunkSize = currentChunk;
 
-      // Wenn ein Block 6 oder mehr Akkorde hat -> Extra Dense aktivieren
+      // Wenn ein Block 6 oder mehr Akkorde hat -> Extra Dense (Small Pianos) aktivieren
       if(maxChunkSize >= 6) {
         sectionClass += " extra-dense";
         gridClass += " extra-dense";
