@@ -291,7 +291,7 @@ const CHORD_MAP = {
   // SPEZIAL-AKKORDE für "Kein Mensch" Refrain (Sphärisch)
   "Gbsus2": [6, 13, 20],   
   "Dbsus2": [1, 3, 8],     // Des, Es, As
-  "Ebm": [3, 10, 18],      
+  "Ebm": [3, 6, 10],       // KORREKTUR: Ebm als Dreiklang (Eb-Gb-Bb) - auch für "What If" genutzt
   // "Gb/Bb" existiert schon
   "Absus2": [8, 10, 15],   
   "Gb5": [6, 13, 18],     
@@ -309,14 +309,14 @@ const CHORD_MAP = {
 
   // SPEZIAL für "What If":
   // User unterscheidet F# (Fis Dur) und Gb (Dreiklang B-Db-Gb)
-  "F#": [6, 10, 13],         // Gb-Bb-Db (tief)
+  "F#": [6, 10, 13],         // Gb-Bb-Db (tief, Fis-Griff)
   "Gb": [10, 13, 18],        // B-Db-Ges (hoch, Umkehrung) -> Überschreibt Standard Gb für die Anzeige
   "C#": [1, 5, 8]            // Db-F-Ab
 };
 
 /* ---------- SONGDATA ---------- */
 const songs = [
-  /* 0. And What Remains.. ? (MIT AKKORDEN) */
+  /* 0. And What Remains.. ? */
   {
     artist: "One Day in Rome", title: "And What Remains.. ?", year: "2025", copyright: "© Xander Fox", image: "Facetune.jpeg",
     chords: {
@@ -325,7 +325,7 @@ const songs = [
     },
     text: `Take It All Away From Me\nWhen I Fall\nYou Make Me See\nI Suffer From The Silence\nDiscovering The Fears\nYour Shadows Fights The Light When\nWhenever You‘re With Me\n\nThe Other Day\nYou Ran Away\nBut What Remains\nWill Always Stay\n\nThe Walls I Face\nReflect Your Name\nAnd What Remains\nWill Never Fade\n\nThe Love We Had\nThe Things You Say\nTears We Not Shed\nThe Years Of Pain\n\nThe Moments Shared\nI Can‘t Forget\nWon‘t Get\nGet Out\nOut Of My Head\n\nThe Scent Of You\nResends Me Through\nThe Night That Seems To Never End\n\nI Have To See It All Again\nYou‘re Leaving Me\n\nAnother Day\nYou Run Away\nBut What Remains\nWill Always Stay\n\nThe Walls I Face\nReflect Your Name\nAnd What Remains\n\nWill Never Fade\n\nAnother Day\nYou Run Away\nBut What Remains\nWill Always Stay\n\nThe Walls I Face\nReflect Your Name\nAnd What Remains\nWill Never Fade`
   },
-  /* 1. Bis Ans Ende Der Welt (MIT AKKORDEN!) */
+  /* 1. Bis Ans Ende Der Welt */
   {
     artist: "One Day in Rome", title: "Bis Ans Ende Der Welt", year: "2025", copyright: "© Xander Fox", image: "ytKWKVWJ.jpeg",
     chords: {
@@ -352,17 +352,16 @@ const songs = [
     },
     text: `So lang du denkst\nWie schön es wär\nLebst du dem Traum\nNur hinterher\n\nMit allen Wolken\nWillst du ziehen\nDeinem Gefühl\nNie mehr widerstehen\n\nUnd wenn du fällst\nNimm meine Hand\nIch will mit dir gemeinsam gehen\nEin Leben lang\nDurch diese Welt\nHab keine Angst\nHör auf dein Herz\nUnd wir verlieren den Verstand\n\nDie Sehnsucht brennt\nDer Weg ist weit\nBis in das Licht\nTrägt uns die Zeit\n\nUnd irgendwann\nWird um uns ein\nHimmel so hoch\nUnd endlos sein\n\nUnd wenn du fällst\nNimm meine Hand\nIch will mit dir gemeinsam gehen\nEin Leben lang\nDurch diese Welt\nHab keine Angst\nHör auf dein Herz\nUnd wir verlieren den Verstand`
   },
-  /* 4. Eins (MIT AKKORDEN!) */
+  /* 4. Eins */
   {
     artist: "One Day in Rome", title: "Eins", year: "2025", copyright: "© Xander Fox", image: "IMG_0281.jpeg",
     chords: {
       verse: ["C", "Em", "Am", "G"],
-      // Layout: 2 Akkorde, dann Umbruch, dann 4 Akkorde
       chorus: ["C", "G", "BREAK", "F", "C", "Dm", "G"]
     },
     text: `Es Ist Doch Egal\nOb Du Mich Verstehst\nWas Dich Nicht Berührt\nDas Tut Auch Nicht Weh\n\nEs Gibt Keine Wahl\nKein A Oder B\nDarum Und Deshalb\nBrauchst Du Mich Auch Nicht\nMehr So Anzusehen..\n\nAls Wärst Du Bei Mir\nUnd Wir Noch Eins\nAls Würd Ich Dich Manchmal\nLeise Sagen Hören\nHalt Dich Fest Und Bleib\n\nAls Wärst Du Noch Hier\nWir Niemals Entzweit\nDoch Alles Was Bleibt Sind Meine Fragen\nDurch Die Einsamkeit\n\nNichts Ist Mehr Normal\nDas Chaos Regiert\nMein Herz Schlägt Schlaflos Einfach Leer\nVerbrennt Und Erfriert\n\nIch Weiß Nicht Einmal\nWas Mich Motiviert\nStill - Ohne Signal\nNur Im Freien Fall\nNoch Fängt Und Entführt..\n\nAls Wärst Du Bei Mir\nUnd Wir Noch Eins\nAls Würd Ich Dich Manchmal\nLeise Sagen Hören\nHalt Dich Fest Und Bleib\n\nAls Wärst Du Noch Hier\nWir Niemals Entzweit\nDoch Alles Was Bleibt Sind Meine Fragen\n\nDurch Die Einsamkeit\n\nAls Wärst Du Bei Mir\nUnd Wir Noch Eins\n\nAls Wärst Du Noch Hier\nWir Niemals Entzweit\n\nAls Wärst Du Bei Mir\nUnd Wir Noch Eins\nAls Würd Ich Dich Manchmal\nLeise Sagen Hören\nHalt Dich Fest Und Bleib\n\nAls Wärst Du Noch Hier\nWir Niemals Entzweit\nDoch Alles Was Bleibt Sind Meine Fragen\n\nDurch Die Einsamkeit`
   },
-  /* 5. Everything ( I Want ) (MIT AKKORDEN!) */
+  /* 5. Everything ( I Want ) */
   {
     artist: "One Day in Rome", title: "Everything ( I Want )", year: "2025", copyright: "© Xander Fox", image: "IMG_8314.jpeg",
     chords: {
@@ -384,13 +383,11 @@ const songs = [
   {
     artist: "One Day in Rome", title: "Kein Mensch", year: "2025", copyright: "© Xander Fox", image: "7qKpkBlp.jpeg",
     chords: {
-      // Verse: 12 Chords total. Split 6 / 6
       verse: [
         "Absus2 ", "Dbsus2", "Abm(no5)", "Bsus2", "Absus2", "Dbsus2", 
         "BREAK", 
         "Gb", "Dbsus2", "Gb", "Gbsus2", "Db(add2)", "Ab5"
       ],
-      // Chorus: 12 Chords total. Split 6 / 6
       chorus: [
         "Gbsus2", "Dbsus2", "Ebm", "Gb", "Absus2", "Dbsus2", 
         "BREAK", 
@@ -408,12 +405,12 @@ const songs = [
     },
     text: `Since I am born, I beg and cry\nFor love I yearn each day at night\nDark, like my world inside you hide\nNo sign, no word, no wrong or right\n\nWhenever you return let me know why\nDo I have to burn while I'm alive\nIf there's a chance to get out and survive\nGive me a light to see, open up my eyes\n\nMy life, it hurts without you now\nI find no cure, can’t make it out\nIf I deserve please set me free\nAlmighty girl, let it be me\n\nWhenever you return let me know why\nDo I have to burn while I'm alive\nIf there's a chance to get out and survive\nGive me a light to see, open up my eyes`
   },
-  /* 9. Meine Heiligkeit (What If..?) (JETZT MIT AKKORDEN!) */
+  /* 9. Meine Heiligkeit (What If..?) (KORRIGIERTES Ebm) */
   {
     artist: "One Day in Rome", title: "Meine Heiligkeit (What If..?)", year: "2025", copyright: "© Xander Fox", image: "IMG_0174.jpeg",
     chords: {
       verse: ["Ebm", "F#", "Gb", "C#"],
-      chorus: ["Ebm", "F#", "C#", "Gb", "C#"]
+      chorus: ["Ebm", "F#", "C#", "Gb", "C#"] // 5 Akkorde in einer Reihe
     },
     text: `Wenn mein Herz sich nach dir sehnt\nSo heiß, wie ein Feuer brennt\nTrag mich bis zu dir hinauf\nWeil ich an deine Liebe glaub\n\nMeine Heiligkeit bist du\nHörst du, wie mein Herz dich ruft?\nDu bist alles, was es sucht\nWenn ich fall, fängst du mich auf\nDu und ich, fühlst du es auch?\nJetzt wird alles wieder gut\n\nDenn ich lieb dich unentwegt\nWie ein Gefühl, das nie vergeht\nWenn mich niemand mehr versteht\nHilft deine Hand mir auf den Weg\n\nMeine Heiligkeit bist du\nHörst du, wie mein Herz dich ruft?\nDu bist alles, was es sucht\nWenn ich fall, fängst du mich auf\nDu und ich, fühlst du es auch?\nJetzt wird alles wieder gut\n\nDenn ich lieb dich unentwegt\nWie ein Gefühl, das nie vergeht\nWenn mich niemand mehr versteht\nHilft deine Hand mir auf den Weg\n\nMeine Heiligkeit bist du\nHörst du, wie mein Herz dich ruft?\nDu bist alles, was es sucht\nWenn ich fall, fängst du mich auf\nDu und ich, fühlst du es auch?\nJetzt wird alles wieder gut`
   },
