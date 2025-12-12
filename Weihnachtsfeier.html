@@ -302,10 +302,16 @@ const CHORD_MAP = {
   "Abm(no5)": [8, 11, 20],   // As, H, As(okt)
   "Bsus2": [11, 13, 18],     // H, Des, Ges
   // "Absus2" existiert schon (Standard)
-  "Gb": [10, 13, 18],        // Mapped auf Gb/Bb voicing, aber heißt kurz "Gb"
+  // "Gb" und "Gb/Bb" existieren
   "Gbsus2": [6, 13, 20],
   "Db(add2)": [3, 5, 13],    // Es, F, Des (ehemals Db(add2)/Eb)
-  "Ab5": [8, 20, 27]         // As, As(okt), Es 
+  "Ab5": [8, 20, 27],        // As, As(okt), Es 
+
+  // SPEZIAL für "What If":
+  // User unterscheidet F# (Fis Dur) und Gb (Dreiklang B-Db-Gb)
+  "F#": [6, 10, 13],         // Gb-Bb-Db (tief)
+  "Gb": [10, 13, 18],        // B-Db-Ges (hoch, Umkehrung) -> Überschreibt Standard Gb für die Anzeige
+  "C#": [1, 5, 8]            // Db-F-Ab
 };
 
 /* ---------- SONGDATA ---------- */
@@ -402,10 +408,14 @@ const songs = [
     },
     text: `Since I am born, I beg and cry\nFor love I yearn each day at night\nDark, like my world inside you hide\nNo sign, no word, no wrong or right\n\nWhenever you return let me know why\nDo I have to burn while I'm alive\nIf there's a chance to get out and survive\nGive me a light to see, open up my eyes\n\nMy life, it hurts without you now\nI find no cure, can’t make it out\nIf I deserve please set me free\nAlmighty girl, let it be me\n\nWhenever you return let me know why\nDo I have to burn while I'm alive\nIf there's a chance to get out and survive\nGive me a light to see, open up my eyes`
   },
-  /* 9. Meine Heiligkeit (What If..?) */
+  /* 9. Meine Heiligkeit (What If..?) (JETZT MIT AKKORDEN!) */
   {
     artist: "One Day in Rome", title: "Meine Heiligkeit (What If..?)", year: "2025", copyright: "© Xander Fox", image: "IMG_0174.jpeg",
-    text: `Wenn mein Herz sich nach dir sehnt\nSo heiß, wie ein Feuer brennt\nTrag mich bis zu dir hinauf\nWeil ich an deine Liebe glaub\n\nMeine Heiligkeit bist du\nHörst du, wie mein Herz dich ruft?\nDu bist alles, was es sucht\nWenn ich fall, fängst du mich auf\nDu und ich, fühlst du es auch?\nJetzt wird alles wieder gut\n\nDenn ich lieb dich unentwegt\nWie ein Gefühl, das nie vergeht\nWenn mich niemand mehr versteht\nHilft deine Hand mir auf den Weg\n\nMeine Heiligkeit bist du\nHörst du, wie mein Herz dich ruft?\nDu bist alles, was es sucht\nWenn ich fall, fängst du mich auf\nDu und ich, fühlst du es auch?\nJetzt wird alles wieder gut\n\nDenn ich lieb dich unentwegt\nWie ein Gefühl, das nie vergeht\nWenn mich niemand mehr versteht\nHilft deine Hand mir auf den Weg\n\nMeine Heiligkeit bist du\nHörst du, wie mein Herz dich ruft?\nDu bist alles, was es sucht\nWenn ich fall, fängst du mich auf\nDu und ich, fühlst du es auch?\nJetzt wird alles wieder gut\n\nDenn ich lieb dich unentwegt\nWie ein Gefühl, das nie vergeht\nWenn mich niemand mehr versteht\nHilft deine Hand mir auf den Weg\n\nMeine Heiligkeit bist du\nHörst du, wie mein Herz dich ruft?\nDu bist alles, was es sucht\nWenn ich fall, fängst du mich auf\nDu und ich, fühlst du es auch?\nJetzt wird alles wieder gut`
+    chords: {
+      verse: ["Ebm", "F#", "Gb", "C#"],
+      chorus: ["Ebm", "F#", "C#", "Gb", "C#"]
+    },
+    text: `Wenn mein Herz sich nach dir sehnt\nSo heiß, wie ein Feuer brennt\nTrag mich bis zu dir hinauf\nWeil ich an deine Liebe glaub\n\nMeine Heiligkeit bist du\nHörst du, wie mein Herz dich ruft?\nDu bist alles, was es sucht\nWenn ich fall, fängst du mich auf\nDu und ich, fühlst du es auch?\nJetzt wird alles wieder gut\n\nDenn ich lieb dich unentwegt\nWie ein Gefühl, das nie vergeht\nWenn mich niemand mehr versteht\nHilft deine Hand mir auf den Weg\n\nMeine Heiligkeit bist du\nHörst du, wie mein Herz dich ruft?\nDu bist alles, was es sucht\nWenn ich fall, fängst du mich auf\nDu und ich, fühlst du es auch?\nJetzt wird alles wieder gut\n\nDenn ich lieb dich unentwegt\nWie ein Gefühl, das nie vergeht\nWenn mich niemand mehr versteht\nHilft deine Hand mir auf den Weg\n\nMeine Heiligkeit bist du\nHörst du, wie mein Herz dich ruft?\nDu bist alles, was es sucht\nWenn ich fall, fängst du mich auf\nDu und ich, fühlst du es auch?\nJetzt wird alles wieder gut`
   },
   /* 10. Nah */
   {
