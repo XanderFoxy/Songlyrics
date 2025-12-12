@@ -167,11 +167,11 @@
     margin-bottom: 1px;
   }
 
-  /* --- EXTREM-KOMPAKT MODUS (NUR FÜR 6-SPALTEN LAYOUTS wie KEIN MENSCH) --- */
+  /* --- EXTREM-KOMPAKT MODUS (NUR FÜR 5+ SPALTEN LAYOUTS wie KEIN MENSCH & WHAT IF) --- */
   .chord-section.extra-dense .chord-grid {
     gap: 2px; /* Noch engerer Spalt */
   }
-  /* Kleineres Piano für 6er Reihen */
+  /* Kleineres Piano für 5er/6er Reihen */
   .chord-section.extra-dense .piano-box svg {
     width: 30px; /* Verkleinert von 40px */
     height: 18px; /* Proportional verkleinert */
@@ -264,8 +264,8 @@
 const CHORD_MAP = {
   "C":  [0, 4, 7],      // C-Dur
   "Am": [9, 12, 16],    // A-Moll
-  "Em": [4, 7, 11],     // E-Moll (Neu!)
-  "D":  [2, 6, 9],      // D-Dur (Neu!)
+  "Em": [4, 7, 11],     // E-Moll
+  "D":  [2, 6, 9],      // D-Dur
   "F":  [5, 9, 12],     // F-Dur
   "G":  [7, 11, 14],    // G-Dur
   "Dm": [2, 5, 9],      // D-Moll
@@ -288,29 +288,25 @@ const CHORD_MAP = {
   "Db": [1, 5, 8],        
   "Ab/C": [0, 3, 8],
   
-  // SPEZIAL-AKKORDE für "Kein Mensch" Refrain (Sphärisch)
+  // SPEZIAL-AKKORDE für "Kein Mensch" Refrain
   "Gbsus2": [6, 13, 20],   
   "Dbsus2": [1, 3, 8],     // Des, Es, As
-  "Ebm": [3, 6, 10],       // KORREKTUR: Ebm als Dreiklang (Eb-Gb-Bb) - auch für "What If" genutzt
-  // "Gb/Bb" existiert schon
+  "Ebm": [3, 6, 10],       // Eb-Gb-Bb (Dreiklang wie gewünscht)
   "Absus2": [8, 10, 15],   
   "Gb5": [6, 13, 18],     
 
-  // SPEZIAL-AKKORDE für "Kein Mensch" Verse (Text) - OPTIMIERT (Kurznamen)
-  // Trick: "Absus2 " (mit Leerzeichen) ist optisch kurz, aber hat die anderen Noten
-  "Absus2 ": [3, 8, 10],     // Es, As, B (ehemals Absus2/Eb)
-  "Abm(no5)": [8, 11, 20],   // As, H, As(okt)
-  "Bsus2": [11, 13, 18],     // H, Des, Ges
-  // "Absus2" existiert schon (Standard)
-  // "Gb" und "Gb/Bb" existieren
+  // SPEZIAL-AKKORDE für "Kein Mensch" Verse
+  "Absus2 ": [3, 8, 10],     
+  "Abm(no5)": [8, 11, 20],   
+  "Bsus2": [11, 13, 18],     
+  "Gb": [10, 13, 18],        
   "Gbsus2": [6, 13, 20],
-  "Db(add2)": [3, 5, 13],    // Es, F, Des (ehemals Db(add2)/Eb)
-  "Ab5": [8, 20, 27],        // As, As(okt), Es 
+  "Db(add2)": [3, 5, 13],    
+  "Ab5": [8, 20, 27],        
 
   // SPEZIAL für "What If":
-  // User unterscheidet F# (Fis Dur) und Gb (Dreiklang B-Db-Gb)
-  "F#": [6, 10, 13],         // Gb-Bb-Db (tief, Fis-Griff)
-  "Gb": [10, 13, 18],        // B-Db-Ges (hoch, Umkehrung) -> Überschreibt Standard Gb für die Anzeige
+  "F#": [6, 10, 13],         // Gb-Bb-Db (tief)
+  // "Gb" ist oben definiert [10,13,18]
   "C#": [1, 5, 8]            // Db-F-Ab
 };
 
@@ -405,12 +401,12 @@ const songs = [
     },
     text: `Since I am born, I beg and cry\nFor love I yearn each day at night\nDark, like my world inside you hide\nNo sign, no word, no wrong or right\n\nWhenever you return let me know why\nDo I have to burn while I'm alive\nIf there's a chance to get out and survive\nGive me a light to see, open up my eyes\n\nMy life, it hurts without you now\nI find no cure, can’t make it out\nIf I deserve please set me free\nAlmighty girl, let it be me\n\nWhenever you return let me know why\nDo I have to burn while I'm alive\nIf there's a chance to get out and survive\nGive me a light to see, open up my eyes`
   },
-  /* 9. Meine Heiligkeit (What If..?) (KORRIGIERTES Ebm) */
+  /* 9. Meine Heiligkeit (What If..?) */
   {
     artist: "One Day in Rome", title: "Meine Heiligkeit (What If..?)", year: "2025", copyright: "© Xander Fox", image: "IMG_0174.jpeg",
     chords: {
       verse: ["Ebm", "F#", "Gb", "C#"],
-      chorus: ["Ebm", "F#", "C#", "Gb", "C#"] // 5 Akkorde in einer Reihe
+      chorus: ["Ebm", "F#", "C#", "Gb", "C#"]
     },
     text: `Wenn mein Herz sich nach dir sehnt\nSo heiß, wie ein Feuer brennt\nTrag mich bis zu dir hinauf\nWeil ich an deine Liebe glaub\n\nMeine Heiligkeit bist du\nHörst du, wie mein Herz dich ruft?\nDu bist alles, was es sucht\nWenn ich fall, fängst du mich auf\nDu und ich, fühlst du es auch?\nJetzt wird alles wieder gut\n\nDenn ich lieb dich unentwegt\nWie ein Gefühl, das nie vergeht\nWenn mich niemand mehr versteht\nHilft deine Hand mir auf den Weg\n\nMeine Heiligkeit bist du\nHörst du, wie mein Herz dich ruft?\nDu bist alles, was es sucht\nWenn ich fall, fängst du mich auf\nDu und ich, fühlst du es auch?\nJetzt wird alles wieder gut\n\nDenn ich lieb dich unentwegt\nWie ein Gefühl, das nie vergeht\nWenn mich niemand mehr versteht\nHilft deine Hand mir auf den Weg\n\nMeine Heiligkeit bist du\nHörst du, wie mein Herz dich ruft?\nDu bist alles, was es sucht\nWenn ich fall, fängst du mich auf\nDu und ich, fühlst du es auch?\nJetzt wird alles wieder gut`
   },
@@ -626,7 +622,7 @@ function showSong(song){
       let gridClass = sectionDense ? "chord-grid dense" : "chord-grid";
       const labelClass = isDense ? "chord-part-label dense-label" : "chord-part-label";
       
-      // 2. EXCEPTION LOGIC: Check for chunks >= 6
+      // 2. EXCEPTION LOGIC: Check for chunks >= 5 (NEW THRESHOLD)
       let maxChunkSize = 0;
       let currentChunk = 0;
       chordNames.forEach(c => {
@@ -639,8 +635,8 @@ function showSong(song){
       });
       if(currentChunk > maxChunkSize) maxChunkSize = currentChunk;
 
-      // Wenn ein Block 6 oder mehr Akkorde hat -> Extra Dense aktivieren
-      if(maxChunkSize >= 6) {
+      // Wenn ein Block 5 oder mehr Akkorde hat -> Extra Dense aktivieren
+      if(maxChunkSize >= 5) {
         sectionClass += " extra-dense";
         gridClass += " extra-dense";
       }
