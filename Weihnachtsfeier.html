@@ -160,7 +160,7 @@
     margin-bottom: 4px; 
   }
   .chord-grid.dense {
-    gap: 3px; 
+    gap: 2px; /* Reduziert auf 2px, damit 5 große Pianos passen */
     row-gap: 2px; 
   }
   .chord-grid.dense .piano-box {
@@ -169,9 +169,9 @@
 
   /* --- EXTREM-KOMPAKT MODUS (NUR FÜR 6-SPALTEN LAYOUTS wie KEIN MENSCH) --- */
   .chord-section.extra-dense .chord-grid {
-    gap: 2px; /* Noch engerer Spalt */
+    gap: 2px; 
   }
-  /* Kleineres Piano für 6er Reihen */
+  /* Kleineres Piano nur bei 6+ */
   .chord-section.extra-dense .piano-box svg {
     width: 30px; /* Verkleinert von 40px */
     height: 18px; /* Proportional verkleinert */
@@ -402,12 +402,12 @@ const songs = [
     },
     text: `Since I am born, I beg and cry\nFor love I yearn each day at night\nDark, like my world inside you hide\nNo sign, no word, no wrong or right\n\nWhenever you return let me know why\nDo I have to burn while I'm alive\nIf there's a chance to get out and survive\nGive me a light to see, open up my eyes\n\nMy life, it hurts without you now\nI find no cure, can’t make it out\nIf I deserve please set me free\nAlmighty girl, let it be me\n\nWhenever you return let me know why\nDo I have to burn while I'm alive\nIf there's a chance to get out and survive\nGive me a light to see, open up my eyes`
   },
-  /* 9. Meine Heiligkeit (What If..?) (KORRIGIERTES Ebm) */
+  /* 9. Meine Heiligkeit (What If..?) */
   {
     artist: "One Day in Rome", title: "Meine Heiligkeit (What If..?)", year: "2025", copyright: "© Xander Fox", image: "IMG_0174.jpeg",
     chords: {
       verse: ["Ebm", "F#", "Gb", "C#"],
-      chorus: ["Ebm", "F#", "C#", "Gb", "C#"] // 5 Akkorde in einer Reihe
+      chorus: ["Ebm", "F#", "C#", "Gb", "C#"] // 5 Akkorde -> DENSE (passt in 1 Zeile)
     },
     text: `Wenn mein Herz sich nach dir sehnt\nSo heiß, wie ein Feuer brennt\nTrag mich bis zu dir hinauf\nWeil ich an deine Liebe glaub\n\nMeine Heiligkeit bist du\nHörst du, wie mein Herz dich ruft?\nDu bist alles, was es sucht\nWenn ich fall, fängst du mich auf\nDu und ich, fühlst du es auch?\nJetzt wird alles wieder gut\n\nDenn ich lieb dich unentwegt\nWie ein Gefühl, das nie vergeht\nWenn mich niemand mehr versteht\nHilft deine Hand mir auf den Weg\n\nMeine Heiligkeit bist du\nHörst du, wie mein Herz dich ruft?\nDu bist alles, was es sucht\nWenn ich fall, fängst du mich auf\nDu und ich, fühlst du es auch?\nJetzt wird alles wieder gut\n\nDenn ich lieb dich unentwegt\nWie ein Gefühl, das nie vergeht\nWenn mich niemand mehr versteht\nHilft deine Hand mir auf den Weg\n\nMeine Heiligkeit bist du\nHörst du, wie mein Herz dich ruft?\nDu bist alles, was es sucht\nWenn ich fall, fängst du mich auf\nDu und ich, fühlst du es auch?\nJetzt wird alles wieder gut`
   },
@@ -623,7 +623,7 @@ function showSong(song){
       let gridClass = sectionDense ? "chord-grid dense" : "chord-grid";
       const labelClass = isDense ? "chord-part-label dense-label" : "chord-part-label";
       
-      // 2. EXCEPTION LOGIC: Check for chunks >= 5 (NEW THRESHOLD)
+      // 2. EXCEPTION LOGIC: Check for chunks >= 6 (THRESHOLD RESET TO 6)
       let maxChunkSize = 0;
       let currentChunk = 0;
       chordNames.forEach(c => {
@@ -636,8 +636,8 @@ function showSong(song){
       });
       if(currentChunk > maxChunkSize) maxChunkSize = currentChunk;
 
-      // Wenn ein Block 5 oder mehr Akkorde hat -> Extra Dense aktivieren
-      if(maxChunkSize >= 5) {
+      // Wenn ein Block 6 oder mehr Akkorde hat -> Extra Dense aktivieren
+      if(maxChunkSize >= 6) {
         sectionClass += " extra-dense";
         gridClass += " extra-dense";
       }
