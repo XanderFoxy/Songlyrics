@@ -207,7 +207,8 @@ const CHORD_MAP = {
   "F":  [5, 9, 12],
   "G":  [7, 11, 14],
   "Am": [9, 12, 16],
-  "Dm": [2, 5, 9]
+  "Dm": [2, 5, 9],
+  "Em": [4, 7, 11] // Vorsorglich hinzugefügt
 };
 
 const songs = [
@@ -234,6 +235,18 @@ const songs = [
       chorus: ["Am", "F", "C", "G"]
     },
     text: `Everything Is Light\nSince You Shine On Me\nSomething In Your Eyes\nCaught Me By Surprise\nAnd Now I Believe\n\nWhen I’m In Your Arms\nWe’re Just You And Me\nAnd Nothing Around Could Ever\nBreak Your Spells On Me\n\nYou Have The Love I Need\nYou Mean The World To Me\nYou Are The Light\nWhen I Can’t See\nYou Turn Me Upside Down\nYou Love Me Inside Out\nYou Rule The Heart\nThat Beats In Me\n\nLet Your Worries Fly\nMe Be Your Release\nThere’s A Reason Why\nFor A Girl Like You\nAnd A Boy Like Me\n\nLay Your Hands In Mine\nTell Me Can You Feel\nWe Can Pass The Time\nCross The Borderline\nAnd We’ll Be Free\n\nI Have The Love You Need\nHold Me And Let Me Be\nYour Safe Embrace\nWhen You Feel Down\nI Want To Take You High\nGive You The Wings To Fly\nCarry You On\nTo Lead You Home`
+  },
+  {
+    artist: "Xander Fox", 
+    title: "Die Liebe Heilt", 
+    year: "11.05.2024", 
+    copyright: "© Xander Fox", 
+    image: "", 
+    chords: {
+      verse: ["C"], // HIER AKKORDE FÜR TEXT TEIL EINTRAGEN
+      chorus: ["C"] // HIER AKKORDE FÜR REFRAIN EINTRAGEN
+    },
+    text: `Ein Blick In Deine Augen\nKennt Die Einsamkeit\nDie Aus Deinen Tränen Dich In\nMeine Arme Treibt\n\nIrgendwann Hast Du Erfahren\nDas Der Weg Sich Teilt\nZwischen Hoffnung Und Gefahren\nUnerträglich Scheint\n\nNur Wenn Du Träumst\nFühlst Du Dich Frei\nUnd Wo Du Willst\nDort Wirst Du Sein\n\nDer Sehnsucht Folgt\nDie Seligkeit\nNach Allem Was\nDie Liebe Heilt\n\nKein Zurück\nNur Kein Bedauern\nWeil Du Weißt Was Bleibt\nKilometer Hohe Mauern\nDem Verfall Geweiht\n\nImmer Wenn Du Meine Hand Hältst\nSeh Ich Dich Verstehn\nDas Wir Höher Tiefer\nImmer Weiter Gehen\n\nWenn Du Mir Glaubst\nSind Wir Bereit\nDenn Was Uns Eint\nSoll Nur So Sein\n\nMit Dir Bis In\nDie Ewigkeit\nZu Fühlen Was\nDeine Liebe Heilt`
   }
 ];
 
@@ -283,7 +296,7 @@ function showSong(song){
       return html + `</div></div>`;
     };
     back.innerHTML = renderSection("Text Teil", song.chords.verse) + renderSection("Refrain", song.chords.chorus);
-    if(song.chords.chorus.length > 5) back.classList.add("dense-mode");
+    if(song.chords.chorus.length > 5 || song.chords.verse.length > 5) back.classList.add("dense-mode");
   }
 }
 
