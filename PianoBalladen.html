@@ -294,14 +294,14 @@ function showSong(song){
   document.getElementById('meta-artist').textContent = song.artist;
   document.getElementById('meta-title').textContent = song.title;
   
-  // HIER WAR DER FEHLER: Das Bild wurde nicht aktualisiert.
-  // Jetzt wird geprüft, ob ein Bild vorhanden ist, und das Cover entsprechend gesetzt.
+  // BILD-LOGIK AUS DER ORIGINAL-DATEI WIEDERHERGESTELLT
   const coverLarge = document.getElementById('cover-large');
-  if(song.image){
+  if(song.image && song.image.trim() !== ""){
     coverLarge.src = song.image;
     coverLarge.classList.remove('no-img');
   } else {
-    coverLarge.src = "";
+    // Leeres Bild/Platzhalter, wenn kein Bild vorhanden ist
+    coverLarge.src = ""; 
     coverLarge.classList.add('no-img');
   }
 
@@ -328,9 +328,9 @@ window.onload = () => {
   songs.forEach(s => {
     const div = document.createElement('div');
     div.className = 'song-entry';
-    // Auch im Menü wird jetzt das Bild angezeigt, falls vorhanden
-    const thumbSrc = s.image ? s.image : ''; 
-    const thumbClass = s.image ? '' : 'no-img';
+    // BILD-LOGIK FÜR DAS MENÜ AUS DER ORIGINAL-DATEI WIEDERHERGESTELLT
+    const thumbSrc = (s.image && s.image.trim() !== "") ? s.image : ''; 
+    const thumbClass = (s.image && s.image.trim() !== "") ? '' : 'no-img';
     div.innerHTML = `<img src="${thumbSrc}" class="${thumbClass}"><div class="meta"><div class="artist">${s.title}</div><div class="title">${s.artist}</div></div>`;
     div.onclick = () => showSong(s);
     menu.appendChild(div);
