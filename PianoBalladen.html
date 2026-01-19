@@ -294,6 +294,17 @@ function showSong(song){
   document.getElementById('meta-artist').textContent = song.artist;
   document.getElementById('meta-title').textContent = song.title;
   
+  // HIER WAR DER FEHLER: Das Bild wurde nicht aktualisiert.
+  // Jetzt wird geprüft, ob ein Bild vorhanden ist, und das Cover entsprechend gesetzt.
+  const coverLarge = document.getElementById('cover-large');
+  if(song.image){
+    coverLarge.src = song.image;
+    coverLarge.classList.remove('no-img');
+  } else {
+    coverLarge.src = "";
+    coverLarge.classList.add('no-img');
+  }
+
   const back = document.getElementById('cover-back-content');
   back.innerHTML = "";
   back.className = "back";
@@ -317,7 +328,10 @@ window.onload = () => {
   songs.forEach(s => {
     const div = document.createElement('div');
     div.className = 'song-entry';
-    div.innerHTML = `<img src="${s.image}" class="no-img"><div class="meta"><div class="artist">${s.title}</div><div class="title">${s.artist}</div></div>`;
+    // Auch im Menü wird jetzt das Bild angezeigt, falls vorhanden
+    const thumbSrc = s.image ? s.image : ''; 
+    const thumbClass = s.image ? '' : 'no-img';
+    div.innerHTML = `<img src="${thumbSrc}" class="${thumbClass}"><div class="meta"><div class="artist">${s.title}</div><div class="title">${s.artist}</div></div>`;
     div.onclick = () => showSong(s);
     menu.appendChild(div);
   });
