@@ -135,9 +135,6 @@
   .chord-section.dense { margin-bottom: 4px; }
   .chord-grid.dense { gap: 4px; row-gap: 4px; }
 
-  .chord-section.extra-dense .piano-box svg { width: 30px; height: 18px; }
-  .chord-section.extra-dense .piano-name { font-size: 9px; }
-
   .break { flex-basis: 100%; height: 0; }
 
   .piano-name {
@@ -175,8 +172,8 @@
 <body>
 
   <nav id="menu">
-    <h1><a href="Songtexte.html">Piano Balladen</a></h1>
-    </nav>
+    <h1><a href="Songtexte.html">Songtexte</a></h1>
+  </nav>
 
   <section id="content-wrap">
     <div id="cover-bg"></div>
@@ -217,9 +214,9 @@ const songs = [
   {
     artist: "Xander Fox", 
     title: "This World Of Mine", 
-    year: "2021", 
+    year: "20.01.2021", 
     copyright: "© Xander Fox", 
-    image: "", // Hier Bildpfad eintragen
+    image: "", 
     chords: {
       verse: ["C", "F", "G", "C"],
       chorus: ["G", "C", "G", "C", "BREAK", "F", "Dm", "G", "C"]
@@ -229,9 +226,9 @@ const songs = [
   {
     artist: "Xander Fox", 
     title: "Inside Out", 
-    year: "2021", 
+    year: "05.08.2021", 
     copyright: "© Xander Fox", 
-    image: "", // Hier Bildpfad eintragen
+    image: "", 
     chords: {
       verse: ["C", "F", "Dm", "G"],
       chorus: ["Am", "F", "C", "G"]
@@ -247,7 +244,6 @@ function createPianoSVG(activeKeys) {
   let whiteWidth = 40 / 7; 
   let whitePositions = {};
 
-  // White Keys
   for(let k=0; k<12; k++) {
     if(isWhite(k)) {
       let cls = activeKeys.includes(k) ? "key-white key-active" : "key-white";
@@ -256,7 +252,6 @@ function createPianoSVG(activeKeys) {
       currentX += whiteWidth;
     }
   }
-  // Black Keys
   for(let k=0; k<12; k++) {
     if(!isWhite(k)) {
       let xPos = whitePositions[k-1] + (whiteWidth * 0.7);
@@ -280,14 +275,7 @@ function showSong(song){
 
   if(song.chords){
     const renderSection = (label, names) => {
-      let maxChunk = 0; let curr = 0;
-      names.forEach(n => { if(n==="BREAK"){maxChunk=Math.max(maxChunk,curr); curr=0;} else curr++; });
-      maxChunk = Math.max(maxChunk,curr);
-
-      let sClass = maxChunk >= 5 ? "chord-section dense" : "chord-section";
-      if(maxChunk >= 6) sClass += " extra-dense";
-      
-      let html = `<div class="${sClass}"><div class="chord-part-label">${label}</div><div class="chord-grid">`;
+      let html = `<div class="chord-section"><div class="chord-part-label">${label}</div><div class="chord-grid">`;
       names.forEach(n => {
         if(n === "BREAK") html += `<div class="break"></div>`;
         else html += `<div class="piano-box"><div class="piano-name">${n}</div>${createPianoSVG(CHORD_MAP[n]||[])}</div>`;
@@ -295,7 +283,7 @@ function showSong(song){
       return html + `</div></div>`;
     };
     back.innerHTML = renderSection("Text Teil", song.chords.verse) + renderSection("Refrain", song.chords.chorus);
-    if(back.innerHTML.length > 500) back.classList.add("dense-mode");
+    if(song.chords.chorus.length > 5) back.classList.add("dense-mode");
   }
 }
 
