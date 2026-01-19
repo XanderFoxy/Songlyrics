@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Xander Fox - Piano Balladen</title>
+<style>
+  :root{
+    --menu-w:320px;
+    --thumb-size:56px;
+    --cover-side:260px;
+    --bg-opacity:0.08;
+    --bg-blur:6px;
+    --accent:#f3c64a;
+    --menu-bg:#111;
+    --menu-hover:#2b2b2b;
+    --text-color:#222;
+  }
+
+  html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;}
+  body{display:flex;background:#efefef;color:var(--text-color);height:100vh;overflow:hidden;}
+
+  /* LEFT MENU */
+  #menu{
+    width:var(--menu-w);
+    background:var(--menu-bg);
+    color:#fff;
+    box-sizing:border-box;
+    padding:14px;
+    overflow:auto;
+    border-right:1px solid rgba(255,255,255,0.03);
+  }
+  
+  #menu h1{
+    margin:0 0 10px 0;font-size:18px;letter-spacing:0.3px;
+    font-weight:600;color:var(--accent);
+  }
+
+  #menu h1 a { color: inherit; text-decoration: none; cursor: pointer; }
+
+  .song-entry{
+    display:flex; gap:10px; align-items:center; padding:8px; border-radius:8px;
+    margin-bottom:8px; cursor:pointer; transition:background .15s, transform .06s;
+  }
+  .song-entry:hover{ background:var(--menu-hover); transform:translateY(-1px); }
+  .song-entry img{
+    width:var(--thumb-size); height:var(--thumb-size); object-fit:cover;
+    border-radius:6px; background:#666; flex:0 0 auto;
+  }
+  .meta{ display:flex; flex-direction:column; min-width:0; }
+  
+  .artist{ font-weight:700; font-size:15px; line-height:1; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .title{ font-style:italic; font-size:13px; color:#ddd; margin-top:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+  /* CONTENT AREA */
+  #content-wrap{flex:1;position:relative;display:flex;overflow:hidden;}
+  #cover-bg{
+    position:absolute;inset:0;z-index:0;pointer-events:none;
+    background-size:cover;background-position:center;
+    opacity:var(--bg-opacity);filter:blur(var(--bg-blur));
+    transition:background-image .25s ease, opacity .2s ease;
+  }
+  #content{
+    position:relative; z-index:1; padding:28px; overflow:auto; display:flex;
+    gap:22px; align-items:flex-start; box-sizing:border-box; width:100%;
+  }
+  .lyrics{
+    flex:1 1 auto; max-width:calc(100% - var(--cover-side) - 40px);
+    background:rgba(255,255,255,0.8); padding:22px; border-radius:10px;
+    box-shadow:0 6px 20px rgba(0,0,0,0.08); backdrop-filter: blur(2px);
+    font-family: "Cormorant Garamond", "Georgia", serif;
+    font-style:italic; font-size:18px; line-height:1.6; color:var(--text-color);
+  }
+  .lyrics h2{
+    margin:0 0 2px 0; font-style:normal; font-size:22px; color:#111;
+  }
+  .song-copyright {
+    font-family: Inter, sans-serif; font-style: normal; font-size: 14px;
+    color: #666; margin-bottom: 20px; display: block;
+  }
+  .lyrics pre{
+    margin:0; white-space:pre-wrap; word-break:break-word; font-family:inherit;
+    font-style:italic; font-size:17px; color:#222;
+  }
+
+  /* COVER & 3D FLIP */
+  .cover-aside{
+    width:var(--cover-side); flex:0 0 var(--cover-side); display:flex;
+    flex-direction:column; gap:12px; align-items:center;
+  }
+  
+  .flip-container {
+    perspective: 1000px;
+    width: 220px; height: 220px; cursor: pointer;
+  }
+  .flipper {
+    transition: 0.6s; transform-style: preserve-3d; position: relative;
+    width: 100%; height: 100%; border-radius:8px;
+    box-shadow:0 8px 30px rgba(0,0,0,0.12);
+  }
+  .flip-container.flipped .flipper { transform: rotateY(180deg); }
+  .front, .back {
+    backface-visibility: hidden; position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%; border-radius:8px; overflow: hidden;
+  }
+  .front { z-index: 2; transform: rotateY(0deg); }
+  .front img { width: 100%; height: 100%; object-fit: cover; background:#ddd; }
+  
+  .back {
+    transform: rotateY(180deg);
+    background: #1a1a1a;
+    color: #fff;
+    display: flex; flex-direction: column; 
+    justify-content: center; 
+    align-items: center;
+    padding: 10px; 
+    box-sizing: border-box; text-align: center;
+    overflow-y: auto; 
+  }
+  
+  .back.dense-mode { padding: 10px 0px; }
+
+  .chord-section { width: 100%; margin-bottom: 12px; }
+  .chord-part-label {
+    font-family: Inter, sans-serif; font-size: 10px; text-transform: uppercase;
+    color: #666; margin: 0 0 4px 0; 
+    letter-spacing: 1px; width:100%; text-align:left; border-bottom:1px solid #333;
+  }
+  
+  .back.dense-mode .chord-part-label { margin-left: 8px; margin-right: 8px; width: auto; }
+
+  .chord-grid { display: flex; flex-flow: row wrap; justify-content: center; gap: 12px; row-gap: 12px; }
+  .piano-box { display: flex; flex-direction: column; align-items: center; margin-bottom: 4px; }
+
+  .chord-section.dense { margin-bottom: 4px; }
+  .chord-grid.dense { gap: 4px; row-gap: 4px; }
+
+  .chord-section.extra-dense .piano-box svg { width: 30px; height: 18px; }
+  .chord-section.extra-dense .piano-name { font-size: 9px; }
+
+  .break { flex-basis: 100%; height: 0; }
+
+  .piano-name {
+    font-family: Inter, sans-serif; font-weight: 700; font-size: 10px; 
+    color: var(--accent); margin-bottom: 2px; line-height: 1;
+  }
+  .key-white { fill: #fff; stroke: #888; stroke-width: 0.5px; } 
+  .key-black { fill: #000; stroke: #000; stroke-width: 0.5px; }
+  .key-active { fill: var(--accent) !important; }
+
+  .meta-right{ width:100%; text-align:center; color:#333; font-family:Inter, Arial, sans-serif; }
+  .meta-right .year{font-weight:600;color:#111;}
+  .meta-right .artist{font-weight:700;font-size:16px;color:#111;}
+  .meta-right .title{font-style:italic;color:#333;font-size:15px;margin-top:4px;}
+
+  .no-img {
+    background: linear-gradient(135deg,#ddd,#eee);
+    display: flex; align-items: center; justify-content: center;
+    color: #999; font-weight: 600; font-size: 12px;
+  }
+
+  @media (max-width:900px){
+    :root{--menu-w:240px; --cover-side:180px;}
+    .lyrics{font-size:16px;}
+    .flip-container{width:160px;height:160px;}
+  }
+  @media (max-width:700px){
+    body{flex-direction:column;}
+    #menu{width:100%; height:200px;}
+    #content-wrap{height:calc(100vh - 200px);}
+    .cover-aside{display:none;}
+  }
+</style>
+</head>
+<body>
+
+  <nav id="menu">
+    <h1><a href="Songtexte.html">Piano Balladen</a></h1>
+    </nav>
+
+  <section id="content-wrap">
+    <div id="cover-bg"></div>
+    <main id="content">
+      <article class="lyrics" id="lyrics">
+        <h2>Wähle ein Piano Lied</h2>
+        <pre>Wähle links ein Lied aus, um Text und Akkorde zu sehen.</pre>
+      </article>
+
+      <aside class="cover-aside">
+        <div class="flip-container" id="cover-flip-container">
+          <div class="flipper">
+            <div class="front">
+              <img id="cover-large" alt="Cover" class="no-img" />
+            </div>
+            <div class="back" id="cover-back-content"></div>
+          </div>
+        </div>
+        <div class="meta-right">
+          <div class="year" id="meta-year"></div>
+          <div class="artist" id="meta-artist"></div>
+          <div class="title" id="meta-title"></div>
+        </div>
+      </aside>
+    </main>
+  </section>
+
+<script>
+const CHORD_MAP = {
+  "C":  [0, 4, 7],
+  "F":  [5, 9, 12],
+  "G":  [7, 11, 14],
+  "Am": [9, 12, 16],
+  "Dm": [2, 5, 9]
+};
+
+const songs = [
+  {
+    artist: "Xander Fox", 
+    title: "This World Of Mine", 
+    year: "2021", 
+    copyright: "© Xander Fox", 
+    image: "", // Hier Bildpfad eintragen
+    chords: {
+      verse: ["C", "F", "G", "C"],
+      chorus: ["G", "C", "G", "C", "BREAK", "F", "Dm", "G", "C"]
+    },
+    text: `In This World Of Mine\nYou Tell The Sun To Shine\nMaking Me See The Light\nEvery Day Every Night\n\nIn This Heart Of Mine\nYou Are The Beat And Rhyme\nThe Only Reason Why\nI Feel Alive\n\nAnd I Need You So\nWhen You Are Not Around\nI Am Loosing Control\nCatch Me\nDon‘t Let Me Don‘t Let Me\nDon‘t Let Me Fall\nI Can Not Be Without\nYour Light In My Soul\nTouch Me So\nLove Me Slow\nI Don‘t Know\nIf You Know\nYou‘re My Haven My Home\nAll That There Is To Find\nIn This World Of Mine\n\nIn This World Of Mine\nYou Are My Heaven High\nYou Are My Open Sky\nLet Us Go For A Ride\n\nIn The Darkest Night\nYou Never Leave My Side\nAlways Will Be My Guide\nTo A Place Deep Inside\n\nYes I Need You So\nTo Be Safe And Sound\nWhen My Life Is Too Loud\nHold Me Tight\nLove Me Right\nLet Me Find\nThe Way Out\nIf It‘s Dragging Me Down\nLeave Me No Doubt About\nYou Know What\nYou Know Why\nYou Know When\nYou Know How\nYou‘re My Everything\nAnd Between These Lines\nThis World Of Mine`
+  },
+  {
+    artist: "Xander Fox", 
+    title: "Inside Out", 
+    year: "2021", 
+    copyright: "© Xander Fox", 
+    image: "", // Hier Bildpfad eintragen
+    chords: {
+      verse: ["C", "F", "Dm", "G"],
+      chorus: ["Am", "F", "C", "G"]
+    },
+    text: `Everything Is Light\nSince You Shine On Me\nSomething In Your Eyes\nCaught Me By Surprise\nAnd Now I Believe\n\nWhen I’m In Your Arms\nWe’re Just You And Me\nAnd Nothing Around Could Ever\nBreak Your Spells On Me\n\nYou Have The Love I Need\nYou Mean The World To Me\nYou Are The Light\nWhen I Can’t See\nYou Turn Me Upside Down\nYou Love Me Inside Out\nYou Rule The Heart\nThat Beats In Me\n\nLet Your Worries Fly\nMe Be Your Release\nThere’s A Reason Why\nFor A Girl Like You\nAnd A Boy Like Me\n\nLay Your Hands In Mine\nTell Me Can You Feel\nWe Can Pass The Time\nCross The Borderline\nAnd We’ll Be Free\n\nI Have The Love You Need\nHold Me And Let Me Be\nYour Safe Embrace\nWhen You Feel Down\nI Want To Take You High\nGive You The Wings To Fly\nCarry You On\nTo Lead You Home`
+  }
+];
+
+function createPianoSVG(activeKeys) {
+  const isWhite = (k) => [0,2,4,5,7,9,11].includes((k % 12 + 12) % 12);
+  let svgContent = "";
+  let currentX = 0;
+  let whiteWidth = 40 / 7; 
+  let whitePositions = {};
+
+  // White Keys
+  for(let k=0; k<12; k++) {
+    if(isWhite(k)) {
+      let cls = activeKeys.includes(k) ? "key-white key-active" : "key-white";
+      svgContent += `<rect x="${currentX}" y="0" width="${whiteWidth}" height="24" class="${cls}" />`;
+      whitePositions[k] = currentX;
+      currentX += whiteWidth;
+    }
+  }
+  // Black Keys
+  for(let k=0; k<12; k++) {
+    if(!isWhite(k)) {
+      let xPos = whitePositions[k-1] + (whiteWidth * 0.7);
+      let cls = activeKeys.includes(k) ? "key-black key-active" : "key-black";
+      svgContent += `<rect x="${xPos}" y="0" width="${whiteWidth*0.6}" height="14" class="${cls}" />`;
+    }
+  }
+  return `<svg width="40" height="24" viewBox="0 0 40 24">${svgContent}</svg>`;
+}
+
+function showSong(song){
+  document.getElementById('cover-flip-container').classList.remove('flipped');
+  document.getElementById('lyrics').innerHTML = `<h2>${song.title}</h2><span class="song-copyright">${song.copyright}</span><pre>${song.text}</pre>`;
+  document.getElementById('meta-year').textContent = song.year;
+  document.getElementById('meta-artist').textContent = song.artist;
+  document.getElementById('meta-title').textContent = song.title;
+  
+  const back = document.getElementById('cover-back-content');
+  back.innerHTML = "";
+  back.className = "back";
+
+  if(song.chords){
+    const renderSection = (label, names) => {
+      let maxChunk = 0; let curr = 0;
+      names.forEach(n => { if(n==="BREAK"){maxChunk=Math.max(maxChunk,curr); curr=0;} else curr++; });
+      maxChunk = Math.max(maxChunk,curr);
+
+      let sClass = maxChunk >= 5 ? "chord-section dense" : "chord-section";
+      if(maxChunk >= 6) sClass += " extra-dense";
+      
+      let html = `<div class="${sClass}"><div class="chord-part-label">${label}</div><div class="chord-grid">`;
+      names.forEach(n => {
+        if(n === "BREAK") html += `<div class="break"></div>`;
+        else html += `<div class="piano-box"><div class="piano-name">${n}</div>${createPianoSVG(CHORD_MAP[n]||[])}</div>`;
+      });
+      return html + `</div></div>`;
+    };
+    back.innerHTML = renderSection("Text Teil", song.chords.verse) + renderSection("Refrain", song.chords.chorus);
+    if(back.innerHTML.length > 500) back.classList.add("dense-mode");
+  }
+}
+
+window.onload = () => {
+  const menu = document.getElementById('menu');
+  songs.forEach(s => {
+    const div = document.createElement('div');
+    div.className = 'song-entry';
+    div.innerHTML = `<img src="${s.image}" class="no-img"><div class="meta"><div class="artist">${s.title}</div><div class="title">${s.artist}</div></div>`;
+    div.onclick = () => showSong(s);
+    menu.appendChild(div);
+  });
+  if(songs.length) showSong(songs[0]);
+};
+
+document.getElementById('cover-flip-container').onclick = function() { this.classList.toggle('flipped'); };
+</script>
+</body>
+</html>
