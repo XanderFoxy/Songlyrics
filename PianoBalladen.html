@@ -102,7 +102,6 @@
   .chord-section.dense { margin-bottom: 4px; }
   .chord-grid.dense { gap: 4px; row-gap: 4px; }
 
-  /* Extra Dense Modus */
   .chord-section.extra-dense .chord-grid { gap: 2px; }
   .chord-section.extra-dense .piano-box svg { width: 30px; height: 18px; }
   .chord-section.extra-dense .piano-name { font-size: 9px; margin-bottom: 1px; }
@@ -173,7 +172,7 @@ const CHORD_MAP = {
   "Am": [9, 12, 16],
   "Dm": [2, 5, 9],
   "Em": [4, 7, 11],
-  "B":  [11, 15, 18], // Invertiertes B/H (H-D#-F#)
+  "B":  [11, 15, 18], 
   "D":  [2, 6, 9]
 };
 
@@ -181,27 +180,27 @@ const songs = [
   {
     artist: "Xander Fox", title: "This World Of Mine", year: "20.01.2021", copyright: "© Xander Fox", image: "", 
     chords: { verse: ["C", "F", "G", "C"], chorus: ["G", "C", "G", "C", "BREAK", "F", "Dm", "G", "C"] },
-    text: `In This World Of Mine\nYou Tell The Sun To Shine\nMaking Me See The Light\nEvery Day Every Night...`
+    text: `In This World Of Mine\nYou Tell The Sun To Shine\nMaking Me See The Light\nEvery Day Every Night\n\nYou Pull Me Through The Dark\nWhen I Search For A Spark\nInside Of Me\nYou’re The One To Keep Me Warm\nProtect Me From The Storm\nMaking Me See\n\nThis World Of Mine\nWill Always Be Fine\nAs Long As You’re Here\nBy My Side`
   },
   {
     artist: "Xander Fox", title: "Inside Out", year: "05.08.2021", copyright: "© Xander Fox", image: "", 
     chords: { verse: ["C", "F", "Dm", "G"], chorus: ["Am", "F", "C", "G"] },
-    text: `Everything Is Light\nSince You Shine On Me...`
+    text: `Everything Is Light\nSince You Shine On Me\nYou Set My Soul On Flight\nAnd Now I Can See\n\nYou Turned My Life Around\nFrom The Inside Out\nNow I Have Found\nWhat Love Is All About`
   },
   {
     artist: "Xander Fox", title: "Die Liebe Heilt", year: "11.05.2024", copyright: "© Xander Fox", image: "", 
     chords: { verse: ["C"], chorus: ["C"] },
-    text: `Ein Blick In Deine Augen\nKennt Die Einsamkeit...`
+    text: `Ein Blick In Deine Augen\nKennt Die Einsamkeit\nIch Will Dir Alles Glauben\nFür Alle Ewigkeit\n\nDenn Die Liebe Heilt\nWas Der Schmerz Geteilt\nSie Bringt Uns Wieder Heim\nLässt Uns Nicht Mehr Allein`
   },
   {
     artist: "One Day in Rome", title: "Würden wir uns nicht berühren..", year: "13.06.2024", copyright: "© One Day in Rome", image: "IMG_2293.png", 
     chords: { verse: ["C"], chorus: ["C"] },
-    text: `Jeden Augenblick, den du mir gibst\nJeden Atemzug, den du mich liebst...`
+    text: `Jeden Augenblick, den du mir gibst\nJeden Atemzug, den du mich liebst\nIst wie ein Versprechen in der Nacht\nDas mich aus meinen Träumen weckt und sacht\n\nWürden wir uns nicht berühren\nKönnt ich deine Seele nicht so spüren\nEs wär so leer in mir\nOhne das Licht von dir`
   },
   {
     artist: "Xander Fox", title: "Words of Love (dt.)", year: "10.05.2026", copyright: "© Xander Fox", image: "IMG_0105.jpeg", 
     chords: { verse: ["Am", "Em", "B", "D"], chorus: ["Am", "Em", "B", "D"] },
-    text: `Sag mir still und heimlich\nalles, was du von mir willst.\nDenn meine Liebe,\ndie dein Herz zerbricht,\nist nur für dich.\nIch lass dir keine andere Wahl,\ndenn wir sind uns bestimmt\nschließ deine Augen\ngib dich mir nur hin\ndas Spiel beginnt...`
+    text: `Sag mir still und heimlich\nalles, was du von mir willst.\nDenn meine Liebe,\ndie dein Herz zerbricht,\nist nur für dich.\n\nIch lass dir keine andere Wahl,\ndenn wir sind uns bestimmt\nschließ deine Augen\ngib dich mir nur hin\ndas Spiel beginnt.\n\nMeine Worte der Liebe\nsind wie ein sanfter Dieb\nsie stehlen deine Sorgen\nbis nur noch Sehnsucht blieb.`
   }
 ];
 
