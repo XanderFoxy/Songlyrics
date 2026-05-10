@@ -208,7 +208,9 @@ const CHORD_MAP = {
   "G":  [7, 11, 14],
   "Am": [9, 12, 16],
   "Dm": [2, 5, 9],
-  "Em": [4, 7, 11]
+  "Em": [4, 7, 11],
+  "B":  [11, 15, 18],
+  "D":  [2, 6, 9]
 };
 
 const songs = [
@@ -258,7 +260,19 @@ const songs = [
       verse: ["C"], 
       chorus: ["C"] 
     },
-    text: `Jeden Augenblick, den du mir gibst\nJeden Atemzug, den du mich liebst\nJedes Wunder, das mit dir geschieht\n\nKönnte ich niemals so wahr spüren\nwärst du nicht, wer du bist mit mir\n\nJedes Feuer, das in mir entfacht\njeden Tag, jedes Mal, jede Nacht\nDeine Wahrheit, die mich inspiriert\n\nHätte ich Angst, niemals zu sehen\nwürdest du nicht mit mir gehen\n\nUnsere Sterne, die am Himmel stehen\n\nKönnten uns nie hierher führen\nWürden wir uns nicht berühren..\n\nDeine Augen illuminieren\nWenn ich mich in dich verlier`
+    text: `Jeden Augenblick, den du mir gibst\nJeden Atemzug, den du mich liebst\nJedes Wunder, das mit dir geschieht\n\nKönnte ich niemals so wahr spüren\nwärst du nicht, wer du bist mit mir\n\nJedes Feuer, das in mir entfacht\njeden Tag, jedes Mal, jede Nacht\nDeine Wahrheit, die mich inspiriert\n\nHätte ich Angst, niemals zu sehen\würdest du nicht mit mir gehen\n\nUnsere Sterne, die am Himmel stehen\n\nKönnten uns nie hierher führen\nWürden wir uns nicht berühren..\n\nDeine Augen illuminieren\nWenn ich mich in dich verlier`
+  },
+  {
+    artist: "Xander Fox", 
+    title: "Words of Love (dt.)", 
+    year: "10.05.2026", 
+    copyright: "© Xander Fox", 
+    image: "IMG_4521.jpeg", 
+    chords: {
+      verse: ["Am", "Em", "B", "D"], 
+      chorus: ["Am", "Em", "B", "D"] 
+    },
+    text: `Sag mir still und heimlich\nalles, was du von mir willst.\nDenn meine Liebe,\ndie dein Herz zerbricht,\nist nur für dich.\nIch lass dir keine andere Wahl,\ndenn wir sind uns bestimmt\nschließ deine Augen\ngib dich mir nur hin\ndas Spiel beginnt\n\nsag dass du mir meine Worte glaubst.\nIch bin die Sehnsucht tief in dir.\nNichts, was du noch spürst, ist Wirklichkeit\nDie Schatten, die du fühlst, ziehen dich zu mir\n\nSag, dass du mir voll und ganz vertraust,\ndann werde ich dein Herz regieren\nnichts und niemanden, den du noch brauchst,\nwirst du dich erst in mir verlieren\n\nSei doch mal ganz ehrlich,\nwillst du es nicht ausprobieren,\nbevor es zu spät ist\ndrum brich dein Schweigen.\nSpiegel mich in dir.\nKomm, geh mit mir.\nIch Reiß dich auf\ich leg dich still\nIch nehme dir den Verstand\nWillst du es leugnen,\nmach dir diese Welt\nWie es mir gefällt`
   }
 ];
 
@@ -294,13 +308,11 @@ function showSong(song){
   document.getElementById('meta-artist').textContent = song.artist;
   document.getElementById('meta-title').textContent = song.title;
   
-  // BILD-LOGIK AUS DER ORIGINAL-DATEI WIEDERHERGESTELLT
   const coverLarge = document.getElementById('cover-large');
   if(song.image && song.image.trim() !== ""){
     coverLarge.src = song.image;
     coverLarge.classList.remove('no-img');
   } else {
-    // Leeres Bild/Platzhalter, wenn kein Bild vorhanden ist
     coverLarge.src = ""; 
     coverLarge.classList.add('no-img');
   }
@@ -328,7 +340,6 @@ window.onload = () => {
   songs.forEach(s => {
     const div = document.createElement('div');
     div.className = 'song-entry';
-    // BILD-LOGIK FÜR DAS MENÜ AUS DER ORIGINAL-DATEI WIEDERHERGESTELLT
     const thumbSrc = (s.image && s.image.trim() !== "") ? s.image : ''; 
     const thumbClass = (s.image && s.image.trim() !== "") ? '' : 'no-img';
     div.innerHTML = `<img src="${thumbSrc}" class="${thumbClass}"><div class="meta"><div class="artist">${s.title}</div><div class="title">${s.artist}</div></div>`;
